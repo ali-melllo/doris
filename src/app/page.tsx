@@ -25,12 +25,15 @@ import {
   Sparkles,
   Database,
   Languages,
+  User,
+  Map,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ModeToggle } from "@/components/mode-toggle"
+import Link from "next/link"
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -102,7 +105,7 @@ export default function LandingPage() {
               <MessageCircle className="w-4 h-4 text-white" />
             </div>
             <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              GlobalHelp
+              Doris AI
             </span>
           </div>
           <div className="flex items-center space-x-2 md:space-x-4">
@@ -110,12 +113,13 @@ export default function LandingPage() {
             <Button variant="outline" size="sm" className="hidden sm:inline-flex">
               Sign In
             </Button>
-            <Button
-              size="sm"
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-xs md:text-sm px-3 md:px-4"
+            <Link
+              href="/chat"
+              className="bg-gradient-to-r flex items-center gap-2 py-2 rounded-lg from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-xs md:text-sm px-3 md:px-4"
             >
-              Launch Chat
-            </Button>
+              Login
+              <User size={15} />
+            </Link>
           </div>
         </div>
       </nav>
@@ -147,21 +151,7 @@ export default function LandingPage() {
 
         <div className="container mx-auto text-center relative z-10">
           <motion.div initial="initial" animate="animate" variants={staggerContainer} className="max-w-6xl mx-auto">
-            <motion.div variants={fadeInUp} className="mb-6 md:mb-8">
-              <div className="relative inline-block">
-                <Badge
-                  variant="secondary"
-                  className="px-4 md:px-6 py-2 md:py-3 text-xs md:text-sm relative overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-teal-500/20 animate-pulse"></div>
-                  <span className="relative z-10">🚀 Now powered by GPT + Government Data</span>
-                </Badge>
-                {/* Border Beam Effect */}
-                <div className="absolute inset-0 rounded-full opacity-75">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-teal-500 opacity-75 blur-sm animate-spin-slow"></div>
-                </div>
-              </div>
-            </motion.div>
+
 
             <motion.h1
               variants={fadeInUp}
@@ -186,10 +176,12 @@ export default function LandingPage() {
                   size="lg"
                   className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-sm md:text-lg px-6 md:px-8 py-4 md:py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden w-full sm:w-auto"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                  <MessageCircle className="w-4 md:w-5 h-4 md:h-5 mr-2 relative z-10" />
-                  <span className="relative z-10">Launch the Chat</span>
-                  <ChevronRight className="w-4 md:w-5 h-4 md:h-5 ml-2 relative z-10" />
+                  <Link href={"/chat"} className="flex items-center">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                    <MessageCircle className="w-4 md:w-5 h-4 md:h-5 mr-2 relative z-10 stroke-white" />
+                    <span className="relative z-10 text-white">Launch the Chat</span>
+                    <ChevronRight className="w-4 md:w-5 stroke-white h-4 md:h-5 ml-2 relative z-10" />
+                  </Link>
                 </Button>
                 {/* Border Beam */}
                 <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -198,14 +190,21 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-              <Button
-                variant="outline"
-                size="lg"
-                className="text-sm md:text-lg px-6 md:px-8 py-4 md:py-6 rounded-xl relative group overflow-hidden w-full sm:w-auto"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <span className="relative z-10">Watch Demo</span>
-              </Button>
+              <div>
+                <Button
+                  size="lg"
+                  className="bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] text-sm md:text-lg px-6 md:px-8 py-4 md:py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden w-full sm:w-auto"
+                >
+                  <Link href={"/map"} className="flex items-center">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                    <Map className="w-4 stroke-primary dark:stroke-white md:w-5 h-4 md:h-5 mr-2 relative z-10" />
+                    <span className="relative z-10 text-primary dark:text-white">Browse On Map</span>
+                    <ChevronRight className="w-4 md:w-5 dark:stroke-white stroke-primary h-4 md:h-5 ml-2 relative z-10" />
+                  </Link>
+                </Button>
+              </div>
+
+
             </motion.div>
           </motion.div>
 
@@ -224,7 +223,7 @@ export default function LandingPage() {
               {/* Main Chat Interface Card */}
               <div className="relative">
                 {/* Border Beam Container */}
-                <div className="absolute inset-0 rounded-2xl md:rounded-3xl p-[2px] bg-gradient-to-r from-blue-500 via-purple-500 via-teal-500 to-blue-500 animate-spin-slow">
+                <div className="absolute inset-0 rounded-2xl md:rounded-3xl p-[2px] bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 animate-spin-slow">
                   <div className="w-full h-full rounded-2xl md:rounded-3xl bg-card/80 backdrop-blur-xl"></div>
                 </div>
 
@@ -265,7 +264,7 @@ export default function LandingPage() {
 
                       {/* Center - AI Flow Visualization */}
                       <motion.div
-                        className="lg:col-span-1 flex justify-center relative"
+                        className="lg:col-span-1 flex justify-center relative my-10"
                         initial={{ scale: 0, rotateY: 180 }}
                         animate={{ scale: 1, rotateY: 0 }}
                         transition={{ delay: 0.8, duration: 1, type: "spring" }}

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import dynamic from "next/dynamic"
-import { MapPin, Star, Navigation, Phone, Clock, ChevronLeft, Menu, ChevronRight } from "lucide-react"
+import { MapPin, Star, Navigation, Phone, Clock, ChevronLeft, Menu, ChevronRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -12,6 +12,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import type { Map as LeafletMap } from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { ModeToggle } from "@/components/mode-toggle"
+import Link from "next/link"
 
 // Dynamically import map components to avoid SSR issues
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false })
@@ -84,14 +85,14 @@ const locations = [
   {
     id: 6,
     title: "Language Learning Center",
-    address: "Rokin 75, 1012 KL Amsterdam",
+    address: "Rokin 75 Rokin st, 1012 KL Amsterdam",
     category: "Education",
     distance: "0.5 km",
     rating: 4.6,
     phone: "+31 20 555 0654",
     hours: "Mon-Sat 9:00-21:00",
     coordinates: [52.3702, 4.8952] as [number, number],
-    description: "Dutch language courses and integration programs",
+    description: "Dutch language courses and integration programs for migrants and new travelers",
   },
 ]
 
@@ -185,7 +186,7 @@ export default function MapPage() {
       transition={{ duration: 0.2 }}
     >
       <Card
-        className={`cursor-pointer transition-all duration-300 backdrop-blur-xl bg-card/90 border-border/50 hover:shadow-xl hover:shadow-blue-500/10 ${
+        className={`cursor-pointer p-3 transition-all duration-300 backdrop-blur-xl bg-card/90 border-border/50 hover:shadow-xl hover:shadow-blue-500/10 ${
           isSelected ? "ring-2 ring-blue-500 shadow-xl shadow-blue-500/20 bg-card" : ""
         }`}
         onClick={() => handleLocationClick(location.id)}
@@ -303,14 +304,14 @@ export default function MapPage() {
             <MapPin className="w-3 h-3 text-muted-foreground mt-0.5 flex-shrink-0" />
             <span className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{location.address}</span>
           </div>
-          <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{location.description}</p>
+          <p className="text-xs text-muted-foreground line-clamp-1 leading-relaxed">{location.description}</p>
         </CardContent>
       </Card>
     </motion.div>
   )
 
   const DesktopLocationsList = () => (
-    <ScrollArea className="h-full">
+    <ScrollArea className="h-full rounded-none">
       <div className="space-y-4 p-6">
         <div className="mb-6">
           <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -342,7 +343,7 @@ export default function MapPage() {
   }
 
   return (
-    <div className="h-screen relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/10">
+    <div className="h-[100dvh] relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/10">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse-slow"></div>
@@ -358,12 +359,12 @@ export default function MapPage() {
       >
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center space-x-3">
-            <Button variant="ghost" size="icon" className="md:hidden hover:bg-muted/50">
+            <Link href={"/"} className="md:hidden hover:bg-muted/50">
               <ChevronLeft className="w-5 h-5" />
-            </Button>
+            </Link>
             <div>
               <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-teal-600 bg-clip-text text-transparent">
-                Location Map
+                Doris AI
               </h1>
               <p className="text-sm text-muted-foreground hidden sm:block">Find services and support in Amsterdam</p>
             </div>
@@ -382,9 +383,9 @@ export default function MapPage() {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.2 }}
-        className="hidden md:block absolute left-4 top-20 bottom-4 w-96 z-[1000]"
+        className="hidden md:block absolute left-0 top-20 bottom-0 w-96 z-[1000]"
       >
-        <Card className="h-full backdrop-blur-xl bg-card/95 border-border/50 shadow-2xl shadow-black/5">
+        <Card className="h-full rounded-none backdrop-blur-xl bg-card/95 border-border/50 shadow-2xl shadow-black/5">
           <DesktopLocationsList />
         </Card>
       </motion.div>
@@ -447,15 +448,15 @@ export default function MapPage() {
         transition={{ delay: 0.4 }}
         className="md:hidden absolute bottom-0 left-0 right-0 z-[1000]"
       >
-        <div className="backdrop-blur-xl bg-background/95 border-t border-border/50 shadow-2xl">
-          <div className="p-4 pb-6">
+        <div className="bg-transparent shadow-2xl">
+          <div className="pb-6">
             <div className="flex items-center justify-between mb-4">
-              <div>
+              {/* <div>
                 <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Locations
                 </h3>
                 <p className="text-xs text-muted-foreground">{locations.length} places nearby</p>
-              </div>
+              </div> */}
               <Button variant="ghost" size="sm" className="text-xs">
                 View All
                 <ChevronRight className="w-3 h-3 ml-1" />
@@ -464,7 +465,7 @@ export default function MapPage() {
 
             <div
               ref={carouselRef}
-              className="flex space-x-4 overflow-x-auto scrollbar-hide pb-2"
+              className="flex space-x-3 pl-4 last:pr-4 overflow-x-auto scrollbar-hide pb-2"
               style={{
                 scrollSnapType: "x mandatory",
                 scrollBehavior: "smooth",
@@ -485,12 +486,12 @@ export default function MapPage() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.3 }}
-        className="absolute bottom-4 right-4 z-[1000] flex flex-col space-y-2 md:bottom-4"
+        className="absolute bottom-[30%] right-4 z-[1000] flex flex-col space-y-2 md:bottom-4"
       >
         <Button
           variant="outline"
           size="icon"
-          className="backdrop-blur-xl bg-background/90 hover:bg-background border-border/50 shadow-lg hover:shadow-xl transition-all duration-200"
+          className="backdrop-blur-xl bg-primary hover:bg-background border-border/50 shadow-lg hover:shadow-xl transition-all duration-200"
           onClick={() => mapRef.current?.zoomIn()}
         >
           <span className="text-lg font-bold">+</span>
@@ -498,7 +499,7 @@ export default function MapPage() {
         <Button
           variant="outline"
           size="icon"
-          className="backdrop-blur-xl bg-background/90 hover:bg-background border-border/50 shadow-lg hover:shadow-xl transition-all duration-200"
+          className="backdrop-blur-xl bg-primary hover:bg-background border-border/50 shadow-lg hover:shadow-xl transition-all duration-200"
           onClick={() => mapRef.current?.zoomOut()}
         >
           <span className="text-lg font-bold">−</span>
@@ -510,14 +511,22 @@ export default function MapPage() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.5 }}
-        className="md:hidden absolute top-20 right-4 z-[1000]"
+        className="md:hidden absolute flex flex-col top-20 right-4 z-[1000]"
       >
         <Button
           size="icon"
           className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-200"
         >
-          <MapPin className="w-5 h-5" />
+          <MapPin className="w-5 h-5 stroke-white" />
         </Button>
+
+        <Link
+          href="/chat"
+          className="w-12 h-12 mt-3 flex justify-center items-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-200"
+        >
+          <Sparkles className="w-5 h-5 stroke-white" />
+        </Link>
+
       </motion.div>
     </div>
   )
