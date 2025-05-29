@@ -1,23 +1,383 @@
-'use client';
+"use client"
 
-import dynamic from 'next/dynamic';
-import { Card, CardContent } from "@/components/ui/card";
+import { useState, useEffect, useRef } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import dynamic from "next/dynamic"
+import { MapPin, Star, Navigation, Phone, Clock, ChevronLeft, Menu, X } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import type { Map as LeafletMap } from "leaflet"
+import "leaflet/dist/leaflet.css"
+import { ModeToggle } from "@/components/mode-toggle"
 
+// Dynamically import map components to avoid SSR issues
+const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false })
+const TileLayer = dynamic(() => import("react-leaflet").then((mod) => mod.TileLayer), { ssr: false })
+const Marker = dynamic(() => import("react-leaflet").then((mod) => mod.Marker), { ssr: false })
+const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), { ssr: false })
 
-const LeafletMap = dynamic(() => import('@/components/leaflet-map'), {
-  ssr: false,
-});
+// Mock location data
+const locations = [
+  {
+    id: 1,
+    title: "Amsterdam Immigration Center",
+    address: "Stadhouderskade 85, 1073 AX Amsterdam",
+    category: "Government",
+    distance: "1.2 km",
+    rating: 4.2,
+    phone: "+31 20 624 1111",
+    hours: "Mon-Fri 9:00-17:00",
+    coordinates: [52.3602, 4.8891] as [number, number],
+    description: "Official immigration services and documentation",
+  },
+  {
+    id: 2,
+    title: "Job Support Hub",
+    address: "Nieuwezijds Voorburgwal 67, 1012 RE Amsterdam",
+    category: "Employment",
+    distance: "0.8 km",
+    rating: 4.5,
+    phone: "+31 20 555 0123",
+    hours: "Mon-Fri 8:30-18:00",
+    coordinates: [52.3738, 4.8909] as [number, number],
+    description: "Career guidance and job placement services",
+  },
+  {
+    id: 3,
+    title: "Affordable Housing Desk",
+    address: "Haarlemmerweg 10, 1014 BE Amsterdam",
+    category: "Housing",
+    distance: "2.1 km",
+    rating: 3.8,
+    phone: "+31 20 555 0456",
+    hours: "Tue-Thu 10:00-16:00",
+    coordinates: [52.389, 4.8729] as [number, number],
+    description: "Social housing applications and support",
+  },
+  {
+    id: 4,
+    title: "Social Services Point",
+    address: "Oostelijke Handelskade 12, 1019 BN Amsterdam",
+    category: "Support",
+    distance: "3.5 km",
+    rating: 4.1,
+    phone: "+31 20 555 0789",
+    hours: "Mon-Wed 9:00-15:00",
+    coordinates: [52.3731, 4.9214] as [number, number],
+    description: "General social support and benefits information",
+  },
+  {
+    id: 5,
+    title: "Medical Assistance Office",
+    address: "Weteringschans 32, 1017 SG Amsterdam",
+    category: "Healthcare",
+    distance: "1.8 km",
+    rating: 4.7,
+    phone: "+31 20 555 0321",
+    hours: "Mon-Fri 8:00-17:00",
+    coordinates: [52.3615, 4.8847] as [number, number],
+    description: "Healthcare registration and medical support",
+  },
+  {
+    id: 6,
+    title: "Language Learning Center",
+    address: "Rokin 75, 1012 KL Amsterdam",
+    category: "Education",
+    distance: "0.5 km",
+    rating: 4.6,
+    phone: "+31 20 555 0654",
+    hours: "Mon-Sat 9:00-21:00",
+    coordinates: [52.3702, 4.8952] as [number, number],
+    description: "Dutch language courses and integration programs",
+  },
+]
+
+// Category colors and icons
+const categoryConfig = {
+  Government: { color: "from-blue-500 to-blue-600", icon: "🏛️" },
+  Employment: { color: "from-purple-500 to-purple-600", icon: "💼" },
+  Housing: { color: "from-teal-500 to-teal-600", icon: "🏠" },
+  Support: { color: "from-green-500 to-green-600", icon: "🤝" },
+  Healthcare: { color: "from-red-500 to-red-600", icon: "🏥" },
+  Education: { color: "from-orange-500 to-orange-600", icon: "📚" },
+}
 
 export default function MapPage() {
-  return (
-    <div className="p-4">
-      <Card className="rounded-2xl shadow-lg">
-        <CardContent className="p-0 overflow-hidden">
-          <div className="h-[500px] w-full rounded-b-2xl">
-            <LeafletMap />
+  const [selectedLocation, setSelectedLocation] = useState<number | null>(null)
+  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false)
+  const [mapLoaded, setMapLoaded] = useState(false)
+  const mapRef = useRef<LeafletMap | null>(null)
+
+  // Amsterdam center coordinates
+  const amsterdamCenter: [number, number] = [52.3676, 4.9041]
+
+  useEffect(() => {
+    // Import Leaflet CSS
+    
+    setMapLoaded(true)
+  }, [])
+
+  const handleLocationClick = (locationId: number) => {
+    setSelectedLocation(locationId)
+    const location = locations.find((loc) => loc.id === locationId)
+    if (location && mapRef.current) {
+      mapRef.current.setView(location.coordinates, 15, { animate: true })
+    }
+    // Close mobile sheet when location is selected
+    setIsMobileSheetOpen(false)
+  }
+
+  const renderStars = (rating: number) => {
+    const fullStars = Math.floor(rating)
+    const hasHalfStar = rating % 1 !== 0
+    const stars = []
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)
+    }
+
+    if (hasHalfStar) {
+      stars.push(<Star key="half" className="w-4 h-4 fill-yellow-400/50 text-yellow-400" />)
+    }
+
+    const emptyStars = 5 - Math.ceil(rating)
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<Star key={`empty-${i}`} className="w-4 h-4 text-gray-300" />)
+    }
+
+    return stars
+  }
+
+  const LocationCard = ({ location, isSelected }: { location: (typeof locations)[0]; isSelected: boolean }) => (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.2 }}
+    >
+      <Card
+        className={`cursor-pointer transition-all duration-300 backdrop-blur-md bg-card/80 border-border/50 hover:shadow-lg ${
+          isSelected ? "ring-2 ring-blue-500 shadow-lg" : ""
+        }`}
+        onClick={() => handleLocationClick(location.id)}
+      >
+        <CardHeader className="pb-3">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center space-x-3">
+              <Avatar className="w-10 h-10">
+                <AvatarFallback
+                  className={`bg-gradient-to-br ${
+                    categoryConfig[location.category as keyof typeof categoryConfig]?.color
+                  } text-white text-lg`}
+                >
+                  {categoryConfig[location.category as keyof typeof categoryConfig]?.icon}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <CardTitle className="text-lg font-semibold">{location.title}</CardTitle>
+                <Badge variant="secondary" className="mt-1">
+                  {location.category}
+                </Badge>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="flex items-center space-x-1 mb-1">
+                {renderStars(location.rating)}
+                <span className="text-sm text-muted-foreground ml-1">{location.rating}</span>
+              </div>
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Navigation className="w-3 h-3 mr-1" />
+                {location.distance}
+              </div>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <div className="space-y-2">
+            <div className="flex items-start space-x-2">
+              <MapPin className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+              <span className="text-sm text-muted-foreground">{location.address}</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Phone className="w-4 h-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">{location.phone}</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Clock className="w-4 h-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">{location.hours}</span>
+            </div>
+            <p className="text-sm text-muted-foreground mt-2">{location.description}</p>
           </div>
         </CardContent>
       </Card>
+    </motion.div>
+  )
+
+  const LocationsList = () => (
+    <ScrollArea className="h-full">
+      <div className="space-y-4 p-4">
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold mb-2">Nearby Locations</h2>
+          <p className="text-sm text-muted-foreground">{locations.length} locations found in Amsterdam</p>
+        </div>
+        <AnimatePresence>
+          {locations.map((location) => (
+            <LocationCard key={location.id} location={location} isSelected={selectedLocation === location.id} />
+          ))}
+        </AnimatePresence>
+      </div>
+    </ScrollArea>
+  )
+
+  if (!mapLoaded) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading map...</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="h-screen relative overflow-hidden">
+      {/* Header */}
+      <motion.header
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="absolute top-0 left-0 right-0 z-[1000] backdrop-blur-md bg-background/80 border-b border-border/50"
+      >
+        <div className="flex items-center justify-between p-4">
+          <div className="flex items-center space-x-3">
+            <Button variant="ghost" size="icon" className="md:hidden">
+              <ChevronLeft className="w-5 h-5" />
+            </Button>
+            <div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Location Map
+              </h1>
+              <p className="text-sm text-muted-foreground hidden sm:block">Find services and support in Amsterdam</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <ModeToggle />
+            <Sheet open={isMobileSheetOpen} onOpenChange={setIsMobileSheetOpen}>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="icon" className="md:hidden">
+                  <Menu className="w-4 h-4" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="bottom" className="h-[80vh]">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Locations</h3>
+                  <Button variant="ghost" size="icon" onClick={() => setIsMobileSheetOpen(false)}>
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+                <LocationsList />
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </motion.header>
+
+      {/* Desktop Sidebar */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.2 }}
+        className="hidden md:block absolute left-4 top-20 bottom-4 w-96 z-[1000]"
+      >
+        <Card className="h-full backdrop-blur-md bg-card/80 border-border/50 shadow-lg">
+          <LocationsList />
+        </Card>
+      </motion.div>
+
+      {/* Map Container */}
+      <div className="h-full w-full">
+        <MapContainer
+          center={amsterdamCenter}
+          zoom={13}
+          style={{ height: "100%", width: "100%" }}
+          ref={mapRef}
+          zoomControl={false}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {locations.map((location) => (
+            <Marker
+              key={location.id}
+              position={location.coordinates}
+              eventHandlers={{
+                click: () => handleLocationClick(location.id),
+              }}
+            >
+              <Popup>
+                <div className="p-2 min-w-[200px]">
+                  <h3 className="font-semibold text-sm mb-1">{location.title}</h3>
+                  <p className="text-xs text-gray-600 mb-2">{location.address}</p>
+                  <div className="flex items-center space-x-1 mb-2">
+                    {renderStars(location.rating).slice(0, 5)}
+                    <span className="text-xs text-gray-600 ml-1">{location.rating}</span>
+                  </div>
+                  <Badge variant="secondary" className="text-xs">
+                    {location.category}
+                  </Badge>
+                </div>
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </div>
+
+      {/* Mobile Quick Access Button */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="md:hidden absolute bottom-4 left-4 right-4 z-[1000]"
+      >
+        <Button
+          onClick={() => setIsMobileSheetOpen(true)}
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 backdrop-blur-md"
+        >
+          <MapPin className="w-4 h-4 mr-2" />
+          View All Locations ({locations.length})
+        </Button>
+      </motion.div>
+
+      {/* Zoom Controls */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.3 }}
+        className="absolute bottom-4 right-4 z-[1000] flex flex-col space-y-2"
+      >
+        <Button
+          variant="outline"
+          size="icon"
+          className="backdrop-blur-md bg-background/80"
+          onClick={() => mapRef.current?.zoomIn()}
+        >
+          +
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          className="backdrop-blur-md bg-background/80"
+          onClick={() => mapRef.current?.zoomOut()}
+        >
+          −
+        </Button>
+      </motion.div>
     </div>
-  );
+  )
 }
