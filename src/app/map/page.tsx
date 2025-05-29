@@ -10,10 +10,9 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import type { Map as LeafletMap } from "leaflet"
-import "leaflet/dist/leaflet.css"
+import type { Map as LeafletMap } from "leaflet";
+import "leaflet/dist/leaflet.css";
 import { ModeToggle } from "@/components/mode-toggle"
-
 // Dynamically import map components to avoid SSR issues
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false })
 const TileLayer = dynamic(() => import("react-leaflet").then((mod) => mod.TileLayer), { ssr: false })
@@ -110,15 +109,31 @@ export default function MapPage() {
   const [selectedLocation, setSelectedLocation] = useState<number | null>(null)
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false)
   const [mapLoaded, setMapLoaded] = useState(false)
+  const [leafletLoaded, setLeafletLoaded] = useState(false)
   const mapRef = useRef<LeafletMap | null>(null)
 
   // Amsterdam center coordinates
   const amsterdamCenter: [number, number] = [52.3676, 4.9041]
 
   useEffect(() => {
-    // Import Leaflet CSS
-    
-    setMapLoaded(true)
+    // Import Leaflet CSS and fix marker icons
+    const loadLeaflet = async () => {
+
+      const L = await import("leaflet")
+
+      // Fix marker icon issue
+      delete (L.Icon.Default.prototype as any)._getIconUrl
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+        iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+      })
+
+      setLeafletLoaded(true)
+      setMapLoaded(true)
+    }
+
+    loadLeaflet()
   }, [])
 
   const handleLocationClick = (locationId: number) => {
@@ -234,7 +249,7 @@ export default function MapPage() {
     </ScrollArea>
   )
 
-  if (!mapLoaded) {
+  if (!mapLoaded || !leafletLoaded) {
     return (
       <div className="h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20">
         <div className="text-center">
@@ -301,41 +316,43 @@ export default function MapPage() {
 
       {/* Map Container */}
       <div className="h-full w-full">
-        <MapContainer
-          center={amsterdamCenter}
-          zoom={13}
-          style={{ height: "100%", width: "100%" }}
-          ref={mapRef}
-          zoomControl={false}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {locations.map((location) => (
-            <Marker
-              key={location.id}
-              position={location.coordinates}
-              eventHandlers={{
-                click: () => handleLocationClick(location.id),
-              }}
-            >
-              <Popup>
-                <div className="p-2 min-w-[200px]">
-                  <h3 className="font-semibold text-sm mb-1">{location.title}</h3>
-                  <p className="text-xs text-gray-600 mb-2">{location.address}</p>
-                  <div className="flex items-center space-x-1 mb-2">
-                    {renderStars(location.rating).slice(0, 5)}
-                    <span className="text-xs text-gray-600 ml-1">{location.rating}</span>
+        {leafletLoaded && (
+          <MapContainer
+            center={amsterdamCenter}
+            zoom={13}
+            style={{ height: "100%", width: "100%" }}
+            ref={mapRef}
+            zoomControl={false}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {locations.map((location) => (
+              <Marker
+                key={location.id}
+                position={location.coordinates}
+                eventHandlers={{
+                  click: () => handleLocationClick(location.id),
+                }}
+              >
+                <Popup>
+                  <div className="p-2 min-w-[200px]">
+                    <h3 className="font-semibold text-sm mb-1">{location.title}</h3>
+                    <p className="text-xs text-gray-600 mb-2">{location.address}</p>
+                    <div className="flex items-center space-x-1 mb-2">
+                      {renderStars(location.rating).slice(0, 5)}
+                      <span className="text-xs text-gray-600 ml-1">{location.rating}</span>
+                    </div>
+                    <Badge variant="secondary" className="text-xs">
+                      {location.category}
+                    </Badge>
                   </div>
-                  <Badge variant="secondary" className="text-xs">
-                    {location.category}
-                  </Badge>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        )}
       </div>
 
       {/* Mobile Quick Access Button */}
