@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Search, MapPin, Briefcase, Calendar, Star, StarOff, Filter, X, Grid, List, Euro } from "lucide-react"
+import { Search, MapPin, Briefcase, Calendar, Star, StarOff, Filter, X, Grid, List, Euro, Sparkles, Map, Bot, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -16,6 +16,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { ModeToggle } from "@/components/mode-toggle"
+import Link from "next/link"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 // Mock job data
 const jobsData = [
@@ -138,6 +140,21 @@ export default function JobsPage() {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false)
   const [filteredJobs, setFilteredJobs] = useState(jobsData)
   const [isLoading, setIsLoading] = useState(true)
+
+     // AI Chat states
+     const [isAiChatOpen, setIsAiChatOpen] = useState(false)
+     const [chatMessages, setChatMessages] = useState<any[]>([
+         {
+             id: "1",
+             content:
+                 "Hello! I'm your AI housing assistant. I can help you find the perfect home based on your preferences, budget, and lifestyle. What kind of housing are you looking for?",
+             sender: "ai",
+             timestamp: new Date(Date.now() - 300000),
+         },
+     ])
+     const [chatInput, setChatInput] = useState("")
+     const [isTyping, setIsTyping] = useState(false)
+     const chatScrollRef = useRef<HTMLDivElement>(null)
 
   // Simulate loading
   useEffect(() => {
@@ -502,7 +519,6 @@ export default function JobsPage() {
                         ))}
                       </div>
                     </div>
-
                     <div className="flex space-x-2 pt-4">
                       <Button onClick={resetFilters} variant="outline" className="flex-1">
                         Reset
@@ -556,36 +572,36 @@ export default function JobsPage() {
                 selectedCategories.length > 0 ||
                 selectedLocation !== "All Locations" ||
                 remoteOnly) && (
-                <div className="flex flex-wrap gap-2">
-                  {selectedLocation !== "All Locations" && (
-                    <Badge variant="secondary" className="bg-muted/50 backdrop-blur-sm">
-                      {selectedLocation}
-                      <X className="w-3 h-3 ml-1 cursor-pointer" onClick={() => setSelectedLocation("All Locations")} />
-                    </Badge>
-                  )}
-                  {remoteOnly && (
-                    <Badge variant="secondary" className="bg-muted/50 backdrop-blur-sm">
-                      Remote Only
-                      <X className="w-3 h-3 ml-1 cursor-pointer" onClick={() => setRemoteOnly(false)} />
-                    </Badge>
-                  )}
-                  {selectedTypes.map((type) => (
-                    <Badge key={type} variant="secondary" className="bg-muted/50 backdrop-blur-sm">
-                      {type}
-                      <X className="w-3 h-3 ml-1 cursor-pointer" onClick={() => toggleJobType(type)} />
-                    </Badge>
-                  ))}
-                  {selectedCategories.map((category) => (
-                    <Badge key={category} variant="secondary" className="bg-muted/50 backdrop-blur-sm">
-                      {category}
-                      <X className="w-3 h-3 ml-1 cursor-pointer" onClick={() => toggleCategory(category)} />
-                    </Badge>
-                  ))}
-                  <Button variant="ghost" size="sm" onClick={resetFilters} className="h-6 text-xs">
-                    Clear All
-                  </Button>
-                </div>
-              )}
+                  <div className="flex flex-wrap gap-2">
+                    {selectedLocation !== "All Locations" && (
+                      <Badge variant="secondary" className="bg-muted/50 backdrop-blur-sm">
+                        {selectedLocation}
+                        <X className="w-3 h-3 ml-1 cursor-pointer" onClick={() => setSelectedLocation("All Locations")} />
+                      </Badge>
+                    )}
+                    {remoteOnly && (
+                      <Badge variant="secondary" className="bg-muted/50 backdrop-blur-sm">
+                        Remote Only
+                        <X className="w-3 h-3 ml-1 cursor-pointer" onClick={() => setRemoteOnly(false)} />
+                      </Badge>
+                    )}
+                    {selectedTypes.map((type) => (
+                      <Badge key={type} variant="secondary" className="bg-muted/50 backdrop-blur-sm">
+                        {type}
+                        <X className="w-3 h-3 ml-1 cursor-pointer" onClick={() => toggleJobType(type)} />
+                      </Badge>
+                    ))}
+                    {selectedCategories.map((category) => (
+                      <Badge key={category} variant="secondary" className="bg-muted/50 backdrop-blur-sm">
+                        {category}
+                        <X className="w-3 h-3 ml-1 cursor-pointer" onClick={() => toggleCategory(category)} />
+                      </Badge>
+                    ))}
+                    <Button variant="ghost" size="sm" onClick={resetFilters} className="h-6 text-xs">
+                      Clear All
+                    </Button>
+                  </div>
+                )}
             </div>
 
             {/* Results Count */}
@@ -598,9 +614,8 @@ export default function JobsPage() {
             {/* Job Cards */}
             {isLoading ? (
               <div
-                className={`grid gap-4 ${
-                  viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3" : "grid-cols-1"
-                }`}
+                className={`grid gap-4 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3" : "grid-cols-1"
+                  }`}
               >
                 {[...Array(6)].map((_, index) => (
                   <JobCardSkeleton key={index} />
@@ -608,9 +623,8 @@ export default function JobsPage() {
               </div>
             ) : filteredJobs.length > 0 ? (
               <div
-                className={`grid gap-4 ${
-                  viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3" : "grid-cols-1"
-                }`}
+                className={`grid gap-4 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3" : "grid-cols-1"
+                  }`}
               >
                 <AnimatePresence>
                   {filteredJobs.map((job) => (
@@ -623,9 +637,8 @@ export default function JobsPage() {
                       transition={{ duration: 0.2 }}
                     >
                       <Card
-                        className={`bg-card/50 p-3 backdrop-blur-sm border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 ${
-                          viewMode === "list" ? "flex flex-col md:flex-row md:items-center" : ""
-                        }`}
+                        className={`bg-card/50 p-3 backdrop-blur-sm border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 ${viewMode === "list" ? "flex flex-col md:flex-row md:items-center" : ""
+                          }`}
                       >
                         <div className={viewMode === "list" ? "flex-1" : ""}>
                           <CardHeader className={`pb-2 ${viewMode === "list" ? "md:py-4" : ""}`}>
@@ -646,12 +659,25 @@ export default function JobsPage() {
                             </div>
                           </CardHeader>
                           <CardContent className={`pb-2 ${viewMode === "list" ? "md:py-4" : ""}`}>
-                            <div className="flex items-center space-x-2 mb-3">
+                            <div className="flex items-center justify-between space-x-2 mb-3">
+                              <div className="flex items-center gap-2">
+
                               <Avatar className="w-8 h-8">
                                 <AvatarImage src={job.logo || "/placeholder.svg"} alt={job.company} />
                                 <AvatarFallback>{job.company.substring(0, 2)}</AvatarFallback>
                               </Avatar>
                               <span className="font-medium">{job.company}</span>
+                              </div>
+
+                              <div className="ml-auto">
+                                <div className="relative rounded-2xl flex items-center gap-2 border dark:text-purple-400 font-medium text-purple-500 bg-background text-sm px-4 py-1 [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
+                                  <Sparkles size={15} />
+                                  <p className="text-primary font-bold">%{"87"} </p>
+
+                                  AI Matched
+
+                                </div>
+                              </div>
                             </div>
                             <div className="space-y-2">
                               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
@@ -664,7 +690,8 @@ export default function JobsPage() {
                                 <Euro className="w-4 h-4" />
                                 <span>{job.salary}</span>
                               </div>
-                              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                              <div className="flex justify-between items-center space-x-2 text-sm text-muted-foreground">
+
                                 <Calendar className="w-4 h-4" />
                                 <span>Posted {job.postedDate}</span>
                               </div>
@@ -673,11 +700,10 @@ export default function JobsPage() {
                         </div>
                         <CardFooter className={`${viewMode === "list" ? "md:border-l md:pl-6 md:pr-4 md:py-4" : ""}`}>
                           <div
-                            className={`flex ${
-                              viewMode === "list"
+                            className={`flex ${viewMode === "list"
                                 ? "flex-col md:flex-row md:items-center md:space-x-4"
                                 : "justify-between items-center w-full"
-                            }`}
+                              }`}
                           >
                             <div className="flex flex-wrap gap-2 mb-3 md:mb-0">
                               {job.category.slice(0, 2).map((cat) => (
@@ -721,6 +747,104 @@ export default function JobsPage() {
                 </Button>
               </div>
             )}
+
+             {/* AI Chat Fixed Button */}
+             <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5 }}
+                className="fixed bottom-6 right-6 z-40"
+            >
+                <div className="flex flex-col gap-3">
+                    <Button className="size-14 shadow-2xl rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-200 group">
+                        <Link href={'/map'}>
+                            <Map className="stroke-white"/>
+                        </Link>
+                    </Button>
+
+                    <Sheet open={isAiChatOpen} onOpenChange={setIsAiChatOpen}>
+                        <SheetTrigger asChild>
+                            <Button
+                                className="size-14 shadow-2xl rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-200 group"
+                            >
+                                <Bot className="w-6 h-6 stroke-white group-hover:scale-110 transition-transform" />
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="right" className="w-[90%] sm:w-[400px] p-0 flex flex-col">
+                            {/* Chat Header */}
+                            <div className="p-4 border-b border-border/50 bg-gradient-to-r from-blue-500/10 to-purple-500/10">
+                                <div className="flex items-center space-x-3">
+                                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                        <Bot className="w-5 h-5 text-white" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold">Housing AI Assistant</h3>
+                                        <p className="text-sm text-muted-foreground">Ask me about housing options</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Chat Messages */}
+                            <ScrollArea className="flex-1 p-4" ref={chatScrollRef}>
+                                <div className="space-y-4">
+                                    {chatMessages.map((message) => (
+                                        <div
+                                            key={message.id}
+                                            className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                                        >
+                                            <div
+                                                className={`max-w-[80%] rounded-lg p-3 ${message.sender === "user"
+                                                    ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+                                                    : "bg-muted/50 backdrop-blur-sm"
+                                                    }`}
+                                            >
+                                                <p className="text-sm leading-relaxed">{message.content}</p>
+                                                <p className="text-xs opacity-70 mt-1">
+                                                    {message.timestamp.toLocaleTimeString("en-US", {
+                                                        hour: "2-digit",
+                                                        minute: "2-digit",
+                                                    })}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                    {/* Typing Indicator */}
+                                    {isTyping && (
+                                        <div className="flex justify-start">
+                                            <div className="bg-muted/50 backdrop-blur-sm rounded-lg p-3">
+                                                <div className="flex space-x-1">
+                                                    <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce"></div>
+                                                    <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce delay-100"></div>
+                                                    <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce delay-200"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </ScrollArea>
+
+                            {/* Chat Input */}
+                            <div className="p-4 border-t border-border/50">
+                                <div className="flex items-center space-x-2">
+                                    <Input
+                                        value={chatInput}
+                                        onChange={(e) => setChatInput(e.target.value)}
+                                        placeholder="Ask about housing options..."
+                                        className="flex-1 outline-none"
+                                    />
+                                    <Button
+                                        disabled={!chatInput.trim()}
+                                        className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                                    >
+                                        <Send className="size-5 stroke-white" />
+                                    </Button>
+                                </div>
+                            </div>
+                        </SheetContent>
+                    </Sheet>
+                </div>
+            </motion.div>
           </div>
         </div>
       </div>
