@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import dynamic from "next/dynamic"
-import { MapPin, Star, Navigation, Phone, Clock, ChevronLeft, Menu, ChevronRight, Sparkles } from "lucide-react"
+import { MapPin, Star, Navigation, Phone, Clock, ChevronLeft, Menu, ChevronRight, Sparkles, Bot, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -13,6 +13,8 @@ import type { Map as LeafletMap } from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { ModeToggle } from "@/components/mode-toggle"
 import Link from "next/link"
+import { Input } from "@/components/ui/input"
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
 // Dynamically import map components to avoid SSR issues
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false })
@@ -110,8 +112,23 @@ export default function MapPage() {
   const [selectedLocation, setSelectedLocation] = useState<number | null>(null)
   const [mapLoaded, setMapLoaded] = useState(false)
   const [leafletLoaded, setLeafletLoaded] = useState(false)
+  const [isAiChatOpen, setIsAiChatOpen] = useState(false)
+  const [chatMessages, setChatMessages] = useState<any[]>([
+    {
+      id: "1",
+      content:
+        "Hello! I'm your AI housing assistant. I can help you find the perfect home based on your preferences, budget, and lifestyle. What kind of housing are you looking for?",
+      sender: "ai",
+      timestamp: new Date(Date.now() - 300000),
+    },
+  ]);
+
+  const [chatInput, setChatInput] = useState("")
+  const [isTyping, setIsTyping] = useState(false)
+
   const mapRef = useRef<LeafletMap | null>(null)
   const carouselRef = useRef<HTMLDivElement>(null)
+  const chatScrollRef = useRef<HTMLDivElement>(null)
 
   // Amsterdam center coordinates
   const amsterdamCenter: [number, number] = [52.3676, 4.9041]
@@ -186,9 +203,8 @@ export default function MapPage() {
       transition={{ duration: 0.2 }}
     >
       <Card
-        className={`cursor-pointer p-3 transition-all duration-300 backdrop-blur-xl bg-card/90 border-border/50 hover:shadow-xl hover:shadow-blue-500/10 ${
-          isSelected ? "ring-2 ring-blue-500 shadow-xl shadow-blue-500/20 bg-card" : ""
-        }`}
+        className={`cursor-pointer p-3 transition-all duration-300 backdrop-blur-xl bg-card/90 border-border/50 hover:shadow-xl hover:shadow-blue-500/10 ${isSelected ? "ring-2 ring-blue-500 shadow-xl shadow-blue-500/20 bg-card" : ""
+          }`}
         onClick={() => handleLocationClick(location.id)}
       >
         <CardHeader className="pb-3">
@@ -196,9 +212,8 @@ export default function MapPage() {
             <div className="flex items-center space-x-3">
               <Avatar className="w-12 h-12 shadow-lg">
                 <AvatarFallback
-                  className={`bg-gradient-to-br ${
-                    categoryConfig[location.category as keyof typeof categoryConfig]?.color
-                  } text-white text-lg shadow-inner`}
+                  className={`bg-gradient-to-br ${categoryConfig[location.category as keyof typeof categoryConfig]?.color
+                    } text-white text-lg shadow-inner`}
                 >
                   {categoryConfig[location.category as keyof typeof categoryConfig]?.icon}
                 </AvatarFallback>
@@ -209,9 +224,8 @@ export default function MapPage() {
                 </CardTitle>
                 <Badge
                   variant="secondary"
-                  className={`mt-1 bg-gradient-to-r ${
-                    categoryConfig[location.category as keyof typeof categoryConfig]?.color
-                  } text-white border-0 shadow-sm`}
+                  className={`mt-1 bg-gradient-to-r ${categoryConfig[location.category as keyof typeof categoryConfig]?.color
+                    } text-white border-0 shadow-sm`}
                 >
                   {location.category}
                 </Badge>
@@ -260,18 +274,16 @@ export default function MapPage() {
       className="flex-shrink-0 w-64"
     >
       <Card
-        className={`cursor-pointer p-3 transition-all duration-300 backdrop-blur-xl bg-card/95 border-border/50 hover:shadow-lg hover:shadow-blue-500/10 h-full ${
-          isSelected ? "ring-2 ring-blue-500 shadow-lg shadow-blue-500/20 bg-card" : ""
-        }`}
+        className={`cursor-pointer p-3 transition-all duration-300 backdrop-blur-xl bg-card/95 border-border/50 hover:shadow-lg hover:shadow-blue-500/10 h-full ${isSelected ? "ring-2 ring-blue-500 shadow-lg shadow-blue-500/20 bg-card" : ""
+          }`}
         onClick={() => handleLocationClick(location.id)}
       >
         <CardHeader className="pb-2">
           <div className="flex items-center space-x-3">
             <Avatar className="w-10 h-10 shadow-md">
               <AvatarFallback
-                className={`bg-gradient-to-br ${
-                  categoryConfig[location.category as keyof typeof categoryConfig]?.color
-                } text-white text-base shadow-inner`}
+                className={`bg-gradient-to-br ${categoryConfig[location.category as keyof typeof categoryConfig]?.color
+                  } text-white text-base shadow-inner`}
               >
                 {categoryConfig[location.category as keyof typeof categoryConfig]?.icon}
               </AvatarFallback>
@@ -280,9 +292,8 @@ export default function MapPage() {
               <CardTitle className="text-base font-semibold truncate">{location.title}</CardTitle>
               <Badge
                 variant="secondary"
-                className={`mt-1 bg-gradient-to-r ${
-                  categoryConfig[location.category as keyof typeof categoryConfig]?.color
-                } text-white border-0 shadow-sm text-xs`}
+                className={`mt-1 bg-gradient-to-r ${categoryConfig[location.category as keyof typeof categoryConfig]?.color
+                  } text-white border-0 shadow-sm text-xs`}
               >
                 {location.category}
               </Badge>
@@ -427,9 +438,8 @@ export default function MapPage() {
                     </div>
                     <Badge
                       variant="secondary"
-                      className={`text-xs bg-gradient-to-r ${
-                        categoryConfig[location.category as keyof typeof categoryConfig]?.color
-                      } text-white border-0`}
+                      className={`text-xs bg-gradient-to-r ${categoryConfig[location.category as keyof typeof categoryConfig]?.color
+                        } text-white border-0`}
                     >
                       {location.category}
                     </Badge>
@@ -449,7 +459,7 @@ export default function MapPage() {
         className="md:hidden absolute bottom-0 left-0 right-0 z-[1000]"
       >
         <div className="bg-transparent shadow-2xl">
-          <div className="pb-6">
+          <div className="pb-6 pl-4">
             <div className="flex items-center justify-between mb-4">
               {/* <div>
                 <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -465,7 +475,7 @@ export default function MapPage() {
 
             <div
               ref={carouselRef}
-              className="flex space-x-3 pl-4 last:pr-4 overflow-x-auto scrollbar-hide pb-2"
+              className="flex space-x-3 last:pr-4 overflow-x-auto scrollbar-hide pb-2"
               style={{
                 scrollSnapType: "x mandatory",
                 scrollBehavior: "smooth",
@@ -511,22 +521,115 @@ export default function MapPage() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.5 }}
-        className="md:hidden absolute flex flex-col top-20 right-4 z-[1000]"
+        className=" absolute flex flex-col top-24 md:top-28 right-4 z-[1000]"
       >
         <Button
+          onClick={() => {
+            if (!navigator.geolocation) {
+              return;
+            }
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                console.log("User location:", position.coords.latitude, position.coords.longitude);
+              },
+              (error) => {
+                if (error.code === error.PERMISSION_DENIED) {
+                  console.log("Please enable location permissions in your browser.");
+                } else {
+                  console.log("Error getting location: " + error.message);
+                }
+              }
+            );
+          }}
           size="icon"
           className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-200"
         >
           <MapPin className="w-5 h-5 stroke-white" />
         </Button>
 
-        <Link
-          href="/chat"
-          className="w-12 h-12 mt-3 flex justify-center items-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-200"
-        >
-          <Sparkles className="w-5 h-5 stroke-white" />
-        </Link>
+        {/* AI Chat Fixed Button */}
 
+        <Sheet >
+          <SheetTrigger asChild>
+            <Button
+              className="size-12 mt-3 shadow-2xl rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-200 group"
+            >
+              <Sparkles className="w-6 h-6 stroke-white group-hover:scale-110 transition-transform" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[90%] fixed sm:w-[400px] p-0 !z-[1000] flex flex-col">
+            {/* Chat Header */}
+            <div className="p-4 border-b border-border/50 bg-gradient-to-r from-blue-500/10 to-purple-500/10">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                  <Bot className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Housing AI Assistant</h3>
+                  <p className="text-sm text-muted-foreground">Ask me about housing options</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Chat Messages */}
+            <ScrollArea className="flex-1 p-4" ref={chatScrollRef}>
+              <div className="space-y-4">
+                {chatMessages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                  >
+                    <div
+                      className={`max-w-[80%] rounded-lg p-3 ${message.sender === "user"
+                        ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+                        : "bg-muted/50 backdrop-blur-sm"
+                        }`}
+                    >
+                      <p className="text-sm leading-relaxed">{message.content}</p>
+                      <p className="text-xs opacity-70 mt-1">
+                        {message.timestamp.toLocaleTimeString("en-US", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Typing Indicator */}
+                {isTyping && (
+                  <div className="flex justify-start">
+                    <div className="bg-muted/50 backdrop-blur-sm rounded-lg p-3">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce delay-100"></div>
+                        <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce delay-200"></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+
+            {/* Chat Input */}
+            <div className="p-4 border-t border-border/50">
+              <div className="flex items-center space-x-2">
+                <Input
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder="Ask about housing options..."
+                  className="flex-1 outline-none"
+                />
+                <Button
+                  disabled={!chatInput.trim()}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                >
+                  <Send className="size-5 stroke-white" />
+                </Button>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       </motion.div>
     </div>
   )
