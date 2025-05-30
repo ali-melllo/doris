@@ -179,14 +179,14 @@ export default function ChatPage() {
         <div className="container mx-auto px-4 py-4 md:py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-14 md:w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
                 <Bot className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  GlobalHelp Chat
+                  Doris AI
                 </h1>
-                <p className="text-sm md:text-base text-muted-foreground">
+                <p className="text-xs md:text-base text-muted-foreground">
                   Ask questions about jobs, housing, government info, and more
                 </p>
               </div>
@@ -204,7 +204,7 @@ export default function ChatPage() {
       {/* Chat Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <ScrollArea className="flex-1 px-4" ref={scrollAreaRef}>
-          <div className="container mx-auto max-w-4xl py-6 space-y-6">
+          <div className="md:max-w-3xl mx-auto pb-48 py-6 space-y-6">
             {/* Welcome Message */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -275,7 +275,11 @@ export default function ChatPage() {
                         } shadow-lg`}
                       >
                         <CardContent className="p-4">
-                          <div className="whitespace-pre-wrap text-sm md:text-base leading-relaxed">
+                          <div className={`${
+                          message.sender === "user"
+                            ? "text-white"
+                            : "text-gray-500"
+                        } whitespace-pre-wrap text-left text-sm md:text-base leading-relaxed`}>
                             {message.content}
                           </div>
                         </CardContent>
@@ -305,10 +309,10 @@ export default function ChatPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="sticky bottom-0 backdrop-blur-md bg-background/80 border-t border-border/50 p-4"
+          className="fixed inset-x-2 md:inset-x-1/4 bottom-2 md:bottom-4 backdrop-blur-md rounded-3xl pl-0 md:pl-4 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] flex p-4"
         >
-          <div className="container mx-auto max-w-4xl">
-            <div className="flex items-end space-x-3">
+          <div className=" mx-auto w-full">
+            <div className="flex items-start space-x-3">
               {/* Quick Actions */}
               <div className="hidden md:flex flex-col space-y-2">
                 <Button variant="ghost" size="sm" className="w-10 h-10 p-0">
@@ -323,9 +327,8 @@ export default function ChatPage() {
                     ref={inputRef}
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    onKeyPress={handleKeyPress}
                     placeholder="Ask me anything about life in the Netherlands..."
-                    className="pr-20 py-6 text-base rounded-2xl border-border/50 bg-background/50 backdrop-blur-sm focus:bg-background transition-all duration-200"
+                    className="pr-20 w-full py-6 text-base rounded-2xl border-border/50 bg-background backdrop-blur-sm !outline-none focus:bg-background transition-all duration-200"
                   />
 
                   {/* Input Actions */}
@@ -340,7 +343,7 @@ export default function ChatPage() {
                 </div>
 
                 {/* Quick Service Buttons */}
-                <div className="flex flex-wrap gap-2 mt-3">
+                <div className="md:flex hidden flex-wrap gap-2 mt-3">
                   {[
                     { icon: Home, label: "Housing", color: "from-teal-500 to-teal-600" },
                     { icon: Building2, label: "Government", color: "from-blue-500 to-blue-600" },
@@ -366,7 +369,7 @@ export default function ChatPage() {
                 disabled={!inputValue.trim()}
                 className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send className="w-5 h-5" />
+                <Send className="size-6 stroke-white" />
               </Button>
             </div>
           </div>
