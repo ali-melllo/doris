@@ -4,31 +4,10 @@ import { HomeIcon, NotebookIcon } from "lucide-react";
 export const DATA = {
   name: "Doris AI",
   initials: "DV",
-  url: "https://dillion.io",
-  location: "San Francisco, CA",
+  url: "https://doris-pi.vercel.app/",
+  location: "Netherlands, AM",
   locationLink: "https://www.google.com/maps/place/sanfrancisco",
-  description: ` Black Labs is a forward-thinking software development team specializing in building robust, scalable, and high-performance digital products. From modern web applications to intelligent automation and system integrations, we deliver solutions that drive real business impact.
-
-Who We Are
-We’re a team of engineers, designers, and product thinkers committed to pushing the limits of what’s possible with code. Our focus is on simplicity, performance, and clean architecture — always with a user-first approach.
-
-What We Do
-We specialize in:
-
-Full-Stack Web Development
-Scalable and maintainable applications using modern frameworks like Next.js, Node.js, React, and MongoDB.
-
-AI-Integrated Applications
-Intelligent platforms using OpenAI, LangChain, and other machine learning APIs to automate and enhance user experiences.
-
-API Design & Backend Systems
-Secure, modular backends with RESTful and GraphQL APIs, authentication systems, and real-time infrastructure (WebSockets, Redis, etc.).
-
-UI/UX & Frontend Engineering
-Fast, accessible, and pixel-perfect interfaces using Tailwind CSS, TypeScript, and component-based design systems.
-
-DevOps & Cloud Deployment
-CI/CD pipelines, containerization with Docker, and deployment on platforms like Vercel, AWS, Railway, and Liara.`,
+  description: `Doris AI , Global Helper in Netherlands`,
   summary:
     `Why 'Black Labs'?
 We chose the name Black Labs as a tribute to the curious, intelligent, and loyal nature of black labrador retrievers — qualities we mirror in how we build software: smart, reliable, and always exploring new ground.
