@@ -117,7 +117,7 @@ export default function MapPage() {
     {
       id: "1",
       content:
-        "Hello! I'm your AI housing assistant. I can help you find the perfect home based on your preferences, budget, and lifestyle. What kind of housing are you looking for?",
+        "Hello! I'm your AI Map assistant. I can help you find the perfect home or jobs or events based on your preferences, budget, and lifestyle. What kind of location are you looking for?",
       sender: "ai",
       timestamp: new Date(Date.now() - 300000),
     },
@@ -565,8 +565,8 @@ export default function MapPage() {
                   <Bot className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Housing AI Assistant</h3>
-                  <p className="text-sm text-muted-foreground">Ask me about housing options</p>
+                  <h3 className="font-semibold">Map AI Assistant</h3>
+                  <p className="text-sm text-muted-foreground">Ask me about location options</p>
                 </div>
               </div>
             </div>
