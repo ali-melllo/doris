@@ -27,6 +27,11 @@ import {
   Languages,
   User,
   Map,
+  ArrowRight,
+  Play,
+  Heart,
+  Star,
+  MapIcon,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -34,6 +39,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ModeToggle } from "@/components/mode-toggle"
 import Link from "next/link"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -48,6 +54,115 @@ const staggerContainer = {
     },
   },
 }
+
+const testimonials = [
+  {
+    name: "Maria Rodriguez",
+    location: "Madrid → Amsterdam",
+    avatar: "/placeholder.svg?height=40&width=40",
+    rating: 5,
+    quote: "Doris AI helped me find housing and understand Dutch bureaucracy in just 2 weeks. Incredible!",
+  },
+  {
+    name: "Ahmed Hassan",
+    location: "Cairo → Berlin",
+    avatar: "/placeholder.svg?height=40&width=40",
+    rating: 5,
+    quote: "The job matching feature connected me with opportunities I never would have found on my own.",
+  },
+  {
+    name: "Priya Patel",
+    location: "Mumbai → Toronto",
+    avatar: "/placeholder.svg?height=40&width=40",
+    rating: 5,
+    quote: "Moving to a new country felt overwhelming until I found Doris AI. Now I feel confident and supported.",
+  },
+  {
+    name: "Jean-Luc Dubois",
+    location: "Paris → New York",
+    avatar: "/placeholder.svg?height=40&width=40",
+    rating: 5,
+    quote: "The social matching helped me build a network of friends before I even arrived. Amazing technology!",
+  },
+  {
+    name: "Sofia Chen",
+    location: "Beijing → London",
+    avatar: "/placeholder.svg?height=40&width=40",
+    rating: 5,
+    quote: "Doris AI's government help feature saved me countless hours of confusion and paperwork.",
+  },
+  {
+    name: "Carlos Silva",
+    location: "São Paulo → Sydney",
+    avatar: "/placeholder.svg?height=40&width=40",
+    rating: 5,
+    quote: "The AI assistant feels like having a local friend who knows everything about the city.",
+  },
+]
+
+const howItWorksSteps = [
+  {
+    step: "01",
+    title: "Tell Doris About You",
+    description: "Share your destination, goals, and preferences. Doris learns what matters most to you.",
+    icon: MessageCircle,
+  },
+  {
+    step: "02",
+    title: "Get Personalized Guidance",
+    description: "Receive tailored recommendations for housing, jobs, and local services based on your profile.",
+    icon: Sparkles,
+  },
+  {
+    step: "03",
+    title: "Connect & Thrive",
+    description: "Join your new community with confidence. Doris continues supporting your journey.",
+    icon: Heart,
+  },
+]
+
+const mainFeatures = [
+  {
+    href:"/",
+    icon: Building2,
+    title: "Government Help",
+    description: "Navigate bureaucracy with ease",
+    color: "from-blue-500 to-blue-600",
+    gradient: "from-blue-500/20 to-blue-600/20",
+  },
+  {
+    href:"/houses",
+    icon: Home,
+    title: "Housing Solutions",
+    description: "Find your perfect home",
+    color: "from-emerald-500 to-emerald-600",
+    gradient: "from-emerald-500/20 to-emerald-600/20",
+  },
+  {
+    href:"/jobs",
+    icon: Briefcase,
+    title: "Job Discovery",
+    description: "Land your dream career",
+    color: "from-purple-500 to-purple-600",
+    gradient: "from-purple-500/20 to-purple-600/20",
+  },
+  {
+    href:"/map",
+    icon: Users,
+    title: "Social Matching",
+    description: "Connect with your community",
+    color: "from-pink-500 to-pink-600",
+    gradient: "from-pink-500/20 to-pink-600/20",
+  },
+  {
+    href:"/chat",
+    icon: Bot,
+    title: "Global AI Assistant",
+    description: "24/7 intelligent support",
+    color: "from-indigo-500 to-indigo-600",
+    gradient: "from-indigo-500/20 to-indigo-600/20",
+  },
+]
 
 export default function LandingPage() {
   const [email, setEmail] = useState("")
@@ -125,285 +240,214 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-20 md:pt-28 lg:pt-32 pb-8 md:pb-16 lg:pb-20 px-4 relative overflow-hidden">
+      <section className="pt-24 pb-20 px-4 relative overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-64 md:w-96 h-64 md:h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
-          <div className="absolute top-1/3 right-1/4 w-48 md:w-80 h-48 md:h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow delay-1000"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-40 md:w-72 h-40 md:h-72 bg-teal-500/10 rounded-full blur-3xl animate-pulse-slow delay-2000"></div>
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+          <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow delay-1000"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl animate-pulse-slow delay-2000"></div>
         </div>
 
         {/* Floating Particles */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(15)].map((_, i) => (
-            <div
+          {[...Array(20)].map((_, i) => (
+            <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-blue-400/30 rounded-full animate-float"
+              className="absolute w-1 h-1 bg-blue-400/30 rounded-full"
+              animate={{
+                y: [0, -100, 0],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Number.POSITIVE_INFINITY,
+                delay: Math.random() * 5,
+              }}
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${3 + Math.random() * 4}s`,
               }}
             />
           ))}
         </div>
 
-        <div className="container mx-auto text-center relative z-10">
-          <motion.div initial="initial" animate="animate" variants={staggerContainer} className="max-w-6xl mx-auto">
-
-
-            <motion.h1
-              variants={fadeInUp}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-teal-600 bg-clip-text text-transparent leading-tight px-2"
-            >
-              Your AI Assistant for Life in the Netherlands
-            </motion.h1>
-
-            <motion.p
-              variants={fadeInUp}
-              className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground mb-6 md:mb-8 max-w-4xl mx-auto leading-relaxed px-4"
-            >
-              Ask anything about jobs, housing, government support, or integration — in your own language
-            </motion.p>
-
-            <motion.div
-              variants={fadeInUp}
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4 mb-8 md:mb-16"
-            >
-              <div className="relative group">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-sm md:text-lg px-6 md:px-8 py-4 md:py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden w-full sm:w-auto"
+        <div className="md:container mx-auto relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Side - Content */}
+            <motion.div initial="initial" animate="animate" variants={staggerContainer} className="space-y-4 md:space-y-8 -mt-5">
+              <motion.div variants={fadeInUp}>
+                <Badge
+                  variant="secondary"
+                  className="px-4 py-2 text-sm bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-500/30 mb-6"
                 >
-                  <Link href={"/chat"} className="flex items-center">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                    <MessageCircle className="w-4 md:w-5 h-4 md:h-5 mr-2 relative z-10 stroke-white" />
-                    <span className="relative z-10 text-white">Launch the Chat</span>
-                    <ChevronRight className="w-4 md:w-5 stroke-white h-4 md:h-5 ml-2 relative z-10" />
-                  </Link>
-                </Button>
-                {/* Border Beam */}
-                <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 p-[2px] animate-spin-slow">
-                    <div className="w-full h-full rounded-xl bg-background"></div>
-                  </div>
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  AI-Powered Migration Assistant
+                </Badge>
+              </motion.div>
+
+              <motion.h1 variants={fadeInUp} className="text-3xl  md:text-5xl lg:text-6xl font-bold leading-tight">
+                Welcome to{" "}
+                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  Doris AI
+                </span>
+              </motion.h1>
+
+              <motion.p variants={fadeInUp} className="text-sm md:text-xl text-muted-foreground leading-relaxed">
+                Your trusted companion for housing, jobs, and local help — wherever you land. Navigate your new life
+                with confidence and AI-powered guidance.
+              </motion.p>
+
+              {/* Feature Pills */}
+              <motion.div variants={fadeInUp} className="space-y-4">
+                <h3 className="text-lg font-semibold text-muted-foreground">What Doris AI helps with:</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {mainFeatures.map((feature, index) => (
+                    <motion.div
+                      key={feature.title}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.5 + index * 0.1 }}
+                      className="group"
+                    >
+                      <Card className="p-4 bg-card/50 backdrop-blur-sm border-border/50 hover:border-border transition-all duration-300 cursor-pointer group-hover:shadow-lg">
+                        <Link href={feature.href} className="flex items-center space-x-3">
+                          <div
+                            className={`w-10 h-10 rounded-lg bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                          >
+                            <feature.icon className="w-5 h-5 text-white" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-sm">{feature.title}</h4>
+                            <p className="text-xs text-muted-foreground">{feature.description}</p>
+                          </div>
+                        </Link>
+                      </Card>
+                    </motion.div>
+                  ))}
                 </div>
-              </div>
-              <div>
+              </motion.div>
+
+              <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4">
                 <Button
                   size="lg"
-                  className="bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] text-sm md:text-lg px-6 md:px-8 py-4 md:py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden w-full sm:w-auto"
+                  className="bg-gradient-to-r from-blue-500 text-white to-purple-600 hover:from-blue-600 hover:to-purple-700 text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
                 >
-                  <Link href={"/map"} className="flex items-center">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                    <Map className="w-4 stroke-primary dark:stroke-white md:w-5 h-4 md:h-5 mr-2 relative z-10" />
-                    <span className="relative z-10 text-primary dark:text-white">Browse On Map</span>
-                    <ChevronRight className="w-4 md:w-5 dark:stroke-white stroke-primary h-4 md:h-5 ml-2 relative z-10" />
+                  <Link href={"/chat"} className="flex items-center gap-1">
+
+                    Get Started with Doris AI
+
+                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
-              </div>
-
-
+                <Button variant="outline" size="lg" className="text-lg px-8 py-6 rounded-xl group">
+                  <Link href={"/map"} className="flex items-center gap-1">
+                    <MapIcon className="w-5 h-5 mr-2" />
+                    Browse On Map
+                  </Link>
+                </Button>
+              </motion.div>
             </motion.div>
-          </motion.div>
 
-          {/* 3D Hero Illustration with AI Flow */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, rotateX: 20 }}
-            animate={{ opacity: 1, scale: 1, rotateX: 0 }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="relative max-w-7xl mx-auto perspective-1000"
-          >
-            {/* Main 3D Container */}
-            <div className="relative transform-gpu preserve-3d">
-              {/* Background Glow */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-600/20 to-teal-500/20 rounded-3xl blur-3xl transform translate-z-[-50px] scale-110"></div>
-
-              {/* Main Chat Interface Card */}
+            {/* Right Side - Mockup */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, rotateY: 20 }}
+              animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="relative"
+            >
+              {/* Glass Card Overlay */}
               <div className="relative">
-                {/* Border Beam Container */}
-                <div className="absolute inset-0 rounded-2xl md:rounded-3xl p-[2px] bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 animate-spin-slow">
-                  <div className="w-full h-full rounded-2xl md:rounded-3xl bg-card/80 backdrop-blur-xl"></div>
-                </div>
+                {/* Background Glow */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-600/20 to-pink-500/20 rounded-3xl blur-3xl scale-110"></div>
 
-                <Card className="relative backdrop-blur-xl bg-card/80 border-0 rounded-2xl md:rounded-3xl overflow-hidden transform-gpu hover:scale-105 transition-transform duration-500">
-                  <CardContent className="p-4 md:p-8 lg:p-12">
-                    {/* AI Flow Integration */}
-                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-8 items-center relative">
-                      {/* Left Side - Chat Demo */}
-                      <motion.div
-                        className="lg:col-span-2 space-y-4 md:space-y-6 transform-gpu"
-                        initial={{ x: -50, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.6, duration: 0.8 }}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <div className="w-2 md:w-3 h-2 md:h-3 bg-green-500 rounded-full animate-pulse shadow-lg shadow-green-500/50"></div>
-                          <span className="text-xs md:text-sm text-muted-foreground font-medium">
-                            AI Assistant Online
-                          </span>
+                {/* Main Interface Card */}
+                <Card className="relative backdrop-blur-xl bg-card/80 border-border/50 rounded-3xl overflow-hidden shadow-2xl">
+                  <CardContent className="p-8">
+                    {/* Chat Interface Preview */}
+                    <div className="space-y-6">
+                      <div className="flex items-center space-x-3 mb-6">
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                          <Bot className="w-6 h-6 text-white" />
                         </div>
-
-                        <div className="space-y-3 md:space-y-4">
-                          <motion.div
-                            className="text-left bg-gradient-to-r from-muted/80 to-muted/60 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-4 text-xs md:text-sm shadow-lg transform-gpu hover:scale-105 transition-transform duration-300"
-                            whileHover={{ y: -2 }}
-                          >
-                            "How do I apply for housing benefit?"
-                          </motion.div>
-                          <motion.div
-                            className="text-left bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-4 text-xs md:text-sm shadow-lg transform-gpu hover:scale-105 transition-transform duration-300"
-                            whileHover={{ y: -2 }}
-                          >
-                            "I can help you with that! In the Netherlands, housing benefit (huurtoeslag) is available
-                            if..."
-                          </motion.div>
-                        </div>
-                      </motion.div>
-
-                      {/* Center - AI Flow Visualization */}
-                      <motion.div
-                        className="lg:col-span-1 flex justify-center relative my-10"
-                        initial={{ scale: 0, rotateY: 180 }}
-                        animate={{ scale: 1, rotateY: 0 }}
-                        transition={{ delay: 0.8, duration: 1, type: "spring" }}
-                      >
-                        <div className="relative">
-                          {/* AI Brain Core */}
-                          <div className="relative w-20 md:w-24 lg:w-32 h-20 md:h-24 lg:h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl shadow-blue-500/25 transform-gpu hover:scale-110 transition-transform duration-300">
-                            <Bot className="w-8 md:w-10 lg:w-12 h-8 md:h-10 lg:h-12 text-white" />
-
-                            {/* Pulsing Ring */}
-                            <div className="absolute inset-0 rounded-full border-2 border-blue-400/50 animate-ping"></div>
-                          </div>
-
-                          {/* Data Flow Lines */}
-                          <div className="absolute inset-0 pointer-events-none">
-                            {/* Top Flow - Government Data */}
-                            <div className="absolute -top-8 md:-top-12 left-1/2 transform -translate-x-1/2">
-                              <div className="flex flex-col items-center space-y-2">
-                                <div className="w-6 md:w-8 h-6 md:h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                                  <Database className="w-3 md:w-4 h-3 md:h-4 text-white" />
-                                </div>
-                                <div className="w-0.5 h-4 md:h-6 bg-gradient-to-b from-green-500 to-transparent animate-pulse"></div>
-                              </div>
-                            </div>
-
-                            {/* Right Flow - AI Processing */}
-                            <div className="absolute top-1/2 -right-8 md:-right-12 transform -translate-y-1/2">
-                              <div className="flex items-center space-x-2">
-                                <div className="w-4 md:w-6 h-0.5 bg-gradient-to-r from-purple-500 to-transparent animate-pulse"></div>
-                                <div className="w-6 md:w-8 h-6 md:h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
-                                  <Sparkles className="w-3 md:w-4 h-3 md:h-4 text-white" />
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Bottom Flow - Multilingual Output */}
-                            <div className="absolute -bottom-8 md:-bottom-12 left-1/2 transform -translate-x-1/2">
-                              <div className="flex flex-col items-center space-y-2">
-                                <div className="w-0.5 h-4 md:h-6 bg-gradient-to-t from-teal-500 to-transparent animate-pulse"></div>
-                                <div className="w-6 md:w-8 h-6 md:h-8 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center">
-                                  <Languages className="w-3 md:w-4 h-3 md:h-4 text-white" />
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Left Flow - User Input */}
-                            <div className="absolute top-1/2 -left-8 md:-left-12 transform -translate-y-1/2">
-                              <div className="flex items-center space-x-2">
-                                <div className="w-6 md:w-8 h-6 md:h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                                  <MessageCircle className="w-3 md:w-4 h-3 md:h-4 text-white" />
-                                </div>
-                                <div className="w-4 md:w-6 h-0.5 bg-gradient-to-l from-blue-500 to-transparent animate-pulse"></div>
-                              </div>
-                            </div>
+                        <div>
+                          <h3 className="font-semibold">Doris AI</h3>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                            <span className="text-sm text-muted-foreground">Online & Ready to Help</span>
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
 
-                      {/* Right Side - Language Support */}
-                      <motion.div
-                        className="lg:col-span-2 space-y-2 md:space-y-3"
-                        initial={{ x: 50, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 1, duration: 0.8 }}
-                      >
-                        {[
-                          { flag: "🇳🇱", lang: "Dutch", delay: 0 },
-                          { flag: "🇬🇧", lang: "English", delay: 0.1 },
-                          { flag: "🇸🇦", lang: "Arabic", delay: 0.2 },
-                          { flag: "🇫🇷", lang: "French", delay: 0.3 },
-                        ].map((item, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ x: 20, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ delay: 1.2 + item.delay, duration: 0.5 }}
-                          >
-                            <Badge
-                              variant="secondary"
-                              className="w-full justify-start p-2 md:p-3 bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-sm border border-border/50 hover:scale-105 transition-transform duration-300 shadow-lg text-xs md:text-sm"
-                            >
-                              <span className="text-sm md:text-lg mr-2">{item.flag}</span>
-                              {item.lang}
-                            </Badge>
-                          </motion.div>
-                        ))}
+                      {/* Sample Conversation */}
+                      <div className="space-y-4">
                         <motion.div
-                          initial={{ x: 20, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          transition={{ delay: 1.6, duration: 0.5 }}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1 }}
+                          className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl p-4"
                         >
-                          <Badge
-                            variant="secondary"
-                            className="w-full justify-center p-2 md:p-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-blue-500/30 hover:scale-105 transition-transform duration-300 shadow-lg text-xs md:text-sm"
-                          >
-                            <span className="font-semibold">+ 10 more languages</span>
-                          </Badge>
+                          <p className="text-sm">
+                            "Hi! I'm moving to Amsterdam next month. Can you help me find housing and understand the
+                            visa process?"
+                          </p>
                         </motion.div>
+
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1.3 }}
+                          className="bg-muted/50 rounded-2xl p-4"
+                        >
+                          <p className="text-sm mb-3">
+                            I'd love to help you with your move to Amsterdam. Let me create a personalized plan for you:
+                          </p>
+                          <div className="grid grid-cols-2 gap-2">
+                            <Badge variant="outline" className="justify-center">
+                              🏠 Housing Search
+                            </Badge>
+                            <Badge variant="outline" className="justify-center">
+                              📋 Visa Guidance
+                            </Badge>
+                            <Badge variant="outline" className="justify-center">
+                              🏛️ City Registration
+                            </Badge>
+                            <Badge variant="outline" className="justify-center">
+                              🤝 Local Community
+                            </Badge>
+                          </div>
+                        </motion.div>
+                      </div>
+
+                      {/* Feature Cards Preview */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1.6 }}
+                        className="grid grid-cols-2 gap-3"
+                      >
+                        <Card className="p-3 bg-gradient-to-br from-emerald-500/10 to-emerald-600/10 border-emerald-500/20">
+                          <div className="flex items-center space-x-2">
+                            <Home className="w-4 h-4 text-emerald-500" />
+                            <span className="text-xs font-medium">3 Houses Found</span>
+                          </div>
+                        </Card>
+                        <Card className="p-3 bg-gradient-to-br from-purple-500/10 to-purple-600/10 border-purple-500/20">
+                          <div className="flex items-center space-x-2">
+                            <Briefcase className="w-4 h-4 text-purple-500" />
+                            <span className="text-xs font-medium">12 Jobs Match</span>
+                          </div>
+                        </Card>
                       </motion.div>
                     </div>
-
-                    {/* Bottom Feature Cards */}
-                    <motion.div
-                      className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-8 md:mt-12"
-                      initial={{ y: 50, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 1.4, duration: 0.8 }}
-                    >
-                      {[
-                        { icon: Building2, label: "Gov Info", color: "from-blue-500 to-blue-600" },
-                        { icon: Home, label: "Housing", color: "from-teal-500 to-teal-600" },
-                        { icon: Briefcase, label: "Jobs", color: "from-purple-500 to-purple-600" },
-                        { icon: Users, label: "Social", color: "from-indigo-500 to-indigo-600" },
-                      ].map((item, index) => (
-                        <motion.div
-                          key={index}
-                          className="group"
-                          whileHover={{ y: -5, scale: 1.05 }}
-                          transition={{ type: "spring", stiffness: 300 }}
-                        >
-                          <Card className="p-3 md:p-4 text-center backdrop-blur-sm bg-card/60 border border-border/50 hover:border-border transition-all duration-300 shadow-lg hover:shadow-xl">
-                            <div
-                              className={`w-8 md:w-12 h-8 md:h-12 mx-auto rounded-lg md:rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300 shadow-lg`}
-                            >
-                              <item.icon className="w-4 md:w-6 h-4 md:h-6 text-white" />
-                            </div>
-                            <p className="text-xs md:text-sm font-medium">{item.label}</p>
-                          </Card>
-                        </motion.div>
-                      ))}
-                    </motion.div>
                   </CardContent>
                 </Card>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
+    
       {/* Core Services */}
       <section className="py-8 md:py-12 lg:py-20 px-4">
         <div className="container mx-auto">
@@ -460,6 +504,72 @@ export default function LandingPage() {
           </motion.div>
         </div>
       </section>
+
+
+  {/* Testimonials */}
+  <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="text-center mb-16"
+          >
+            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+              Trusted by{" "}
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                100,000+
+              </span>{" "}
+              Newcomers
+            </motion.h2>
+            <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Real stories from people who found their new home with Doris AI
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {testimonials.map((testimonial, index) => (
+              <motion.div key={testimonial.name} transition={{ delay: index * 0.1 }}>
+                <Card className="h-full bg-card/50 backdrop-blur-sm border-border/50 hover:shadow-lg transition-all duration-300">
+                  <CardContent className="p-6">
+                    <div className="flex items-center space-x-1 mb-4">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                    <blockquote className="text-muted-foreground mb-6 leading-relaxed">
+                      "{testimonial.quote}"
+                    </blockquote>
+                    <div className="flex items-center space-x-3">
+                      <Avatar>
+                        <AvatarImage src={testimonial.avatar || "/placeholder.svg"} alt={testimonial.name} />
+                        <AvatarFallback>
+                          {testimonial.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-semibold">{testimonial.name}</p>
+                        <p className="text-sm text-muted-foreground">{testimonial.location}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
 
       {/* Global Chatbot Section */}
       <section className="py-8 md:py-12 lg:py-20 px-4 bg-muted/30">

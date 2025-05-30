@@ -13,26 +13,11 @@ const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
-
 export const metadata: Metadata = {
-  title: {
-    default: DATA.name,
-    template: `%s | ${DATA.name}`,
-  },
-  description: DATA.description,
-  openGraph: {
-    title: `${DATA.name}`,
-    description: DATA.description,
-    url: DATA.url,
-    siteName: `${DATA.name}`,
-    locale: "en_US",
-    type: "website",
-  },
-  verification: {
-    google: "",
-    yandex: "",
-  },
-};
+  title: "Doris AI - Your Trusted Migration Companion",
+  description:
+    "Smart, friendly AI assistant for newcomers, migrants, and those seeking help with life in a new place. Housing, jobs, government help, and social connections.",
+}
 
 export default function RootLayout({
   children,

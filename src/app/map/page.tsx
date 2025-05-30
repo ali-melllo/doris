@@ -496,7 +496,7 @@ export default function MapPage() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.3 }}
-        className="absolute bottom-[30%] right-4 z-[1000] flex flex-col space-y-2 md:bottom-4"
+        className="absolute bottom-[33%] right-4 z-[1000] flex flex-col space-y-2 md:bottom-4"
       >
         <Button
           variant="outline"
