@@ -2,8 +2,8 @@
 
 import type React from "react"
 
-import { useState } from "react"
-import { motion } from "framer-motion"
+import { useRef, useState } from "react"
+import { motion, useScroll, useTransform } from "framer-motion"
 import {
   MessageCircle,
   Building2,
@@ -40,6 +40,7 @@ import { Badge } from "@/components/ui/badge"
 import { ModeToggle } from "@/components/mode-toggle"
 import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { FlickeringGrid } from "@/components/magicui/flickering-grid"
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -123,7 +124,7 @@ const howItWorksSteps = [
 
 const mainFeatures = [
   {
-    href:"/",
+    href: "/",
     icon: Building2,
     title: "Government Help",
     description: "Navigate bureaucracy with ease",
@@ -131,7 +132,7 @@ const mainFeatures = [
     gradient: "from-blue-500/20 to-blue-600/20",
   },
   {
-    href:"/houses",
+    href: "/houses",
     icon: Home,
     title: "Housing Solutions",
     description: "Find your perfect home",
@@ -139,7 +140,7 @@ const mainFeatures = [
     gradient: "from-emerald-500/20 to-emerald-600/20",
   },
   {
-    href:"/jobs",
+    href: "/jobs",
     icon: Briefcase,
     title: "Job Discovery",
     description: "Land your dream career",
@@ -147,7 +148,7 @@ const mainFeatures = [
     gradient: "from-purple-500/20 to-purple-600/20",
   },
   {
-    href:"/map",
+    href: "/map",
     icon: Users,
     title: "Social Matching",
     description: "Connect with your community",
@@ -155,7 +156,7 @@ const mainFeatures = [
     gradient: "from-pink-500/20 to-pink-600/20",
   },
   {
-    href:"/chat",
+    href: "/chat",
     icon: Bot,
     title: "Global AI Assistant",
     description: "24/7 intelligent support",
@@ -167,6 +168,14 @@ const mainFeatures = [
 export default function LandingPage() {
   const [email, setEmail] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const footerRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: footerRef,
+    offset: ["start end", "end end"],
+  })
+
+  const footerTextOpacity = useTransform(scrollYProgress, [0, 0.5], [0, 1])
+  const footerTextScale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1])
 
   const handleWaitlistSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -226,7 +235,7 @@ export default function LandingPage() {
           <div className="flex items-center space-x-2 md:space-x-4">
             <ModeToggle />
             <Button variant="outline" size="sm" className="hidden sm:inline-flex">
-              Sign In
+              Sign Up
             </Button>
             <Link
               href="/chat"
@@ -271,7 +280,7 @@ export default function LandingPage() {
           ))}
         </div>
 
-        <div className="md:container mx-auto relative z-10">
+        <div className="md:container mx-auto md:mt-10 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Side - Content */}
             <motion.div initial="initial" animate="animate" variants={staggerContainer} className="space-y-4 md:space-y-8 -mt-5">
@@ -384,7 +393,7 @@ export default function LandingPage() {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 1 }}
-                          className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl p-4"
+                          className="bg-gradient-to-r rounded-tr-none from-blue-500/20 to-purple-500/20 rounded-[40px] p-4"
                         >
                           <p className="text-sm">
                             "Hi! I'm moving to Amsterdam next month. Can you help me find housing and understand the
@@ -396,22 +405,22 @@ export default function LandingPage() {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 1.3 }}
-                          className="bg-muted/50 rounded-2xl p-4"
+                          className="bg-muted/50 rounded-tl-none rounded-[40px] p-4"
                         >
                           <p className="text-sm mb-3">
                             I'd love to help you with your move to Amsterdam. Let me create a personalized plan for you:
                           </p>
                           <div className="grid grid-cols-2 gap-2">
-                            <Badge variant="outline" className="justify-center">
+                            <Badge variant="outline" className="justify-center p-3 cursor-pointer">
                               🏠 Housing Search
                             </Badge>
-                            <Badge variant="outline" className="justify-center">
+                            <Badge variant="outline" className="justify-center p-3 cursor-pointer">
                               📋 Visa Guidance
                             </Badge>
-                            <Badge variant="outline" className="justify-center">
+                            <Badge variant="outline" className="justify-center p-3 cursor-pointer">
                               🏛️ City Registration
                             </Badge>
-                            <Badge variant="outline" className="justify-center">
+                            <Badge variant="outline" className="justify-center p-3 cursor-pointer">
                               🤝 Local Community
                             </Badge>
                           </div>
@@ -447,7 +456,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-    
+
       {/* Core Services */}
       <section className="py-8 md:py-12 lg:py-20 px-4">
         <div className="container mx-auto">
@@ -506,8 +515,8 @@ export default function LandingPage() {
       </section>
 
 
-  {/* Testimonials */}
-  <section className="py-20 px-4">
+      {/* Testimonials */}
+      <section className="py-20 px-4">
         <div className="container mx-auto">
           <motion.div
             initial="initial"
@@ -778,55 +787,98 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 md:py-12 px-4 border-t border-border/50 bg-muted/30">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+      <footer ref={footerRef} className="py-16 px-4 border-t border-border/50 bg-muted/30 relative overflow-hidden">
+
+        {/* Large Doris AI Text */}
+        <motion.div
+          className="absolute inset-x-0 bottom-48 md:bottom-32 h-48 flex items-center justify-center pointer-events-none"
+          style={{ opacity: footerTextOpacity, scale: footerTextScale }}
+        >
+          <FlickeringGrid
+            className="absolute inset-0 z-0 [mask-image:radial-gradient(150px_circle_at_center,white,transparent)] md:[mask-image:radial-gradient(600px_circle_at_center,white,transparent)]"
+            squareSize={4}
+            gridGap={6}
+            color="#60A5FA"
+            maxOpacity={0.5}
+            flickerChance={0.1}
+          // height={800}
+          // width={800}
+          />
+          <h2 className="text-6xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-blue-600/30 via-purple-600/30 to-pink-600/30 bg-clip-text text-transparent drop-shadow-[0_5px_40px_rgba(147,51,234,0.5)]">
+            Doris AI
+          </h2>
+
+        </motion.div>
+
+        <div className="container mx-auto relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <MessageCircle className="w-4 h-4 text-white" />
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                  <Bot className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  GlobalHelp
+                <span className="text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  Doris AI
                 </span>
               </div>
-              <p className="text-muted-foreground text-sm md:text-base">
-                Your AI assistant for life in the Netherlands. Built with ❤️ for migrants and refugees.
+              <p className="text-muted-foreground">
+                Your trusted AI companion for navigating life in a new place. Built with ❤️ for global citizens.
               </p>
+              <div className="flex space-x-4">
+                <Button variant="ghost" size="icon">
+                  <Twitter className="w-4 h-4" />
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <Github className="w-4 h-4" />
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <Linkedin className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4 text-sm md:text-base">Product</h4>
-              <ul className="space-y-2 text-muted-foreground text-sm md:text-base">
+              <h4 className="font-semibold mb-4">Features</h4>
+              <ul className="space-y-2 text-muted-foreground">
                 <li>
                   <a href="#" className="hover:text-foreground transition-colors">
-                    Features
+                    Government Help
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-foreground transition-colors">
-                    Pricing
+                    Housing Solutions
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-foreground transition-colors">
-                    API
+                    Job Discovery
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:text-foreground transition-colors">
-                    Changelog
+                    Social Matching
                   </a>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4 text-sm md:text-base">Company</h4>
-              <ul className="space-y-2 text-muted-foreground text-sm md:text-base">
+              <h4 className="font-semibold mb-4">Company</h4>
+              <ul className="space-y-2 text-muted-foreground">
                 <li>
                   <a href="#" className="hover:text-foreground transition-colors">
-                    About
+                    About Us
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-foreground transition-colors">
+                    Careers
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-foreground transition-colors">
+                    Press
                   </a>
                 </li>
                 <li>
@@ -834,48 +886,38 @@ export default function LandingPage() {
                     Contact
                   </a>
                 </li>
-                <li>
-                  <a href="#" className="hover:text-foreground transition-colors">
-                    Privacy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-foreground transition-colors">
-                    Terms
-                  </a>
-                </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4 text-sm md:text-base">Connect</h4>
-              <div className="flex space-x-4">
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                  <Twitter className="w-4 md:w-5 h-4 md:h-5" />
-                </a>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                  <Github className="w-4 md:w-5 h-4 md:h-5" />
-                </a>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                  <Linkedin className="w-4 md:w-5 h-4 md:h-5" />
-                </a>
-              </div>
-              <div className="mt-4">
-                <select className="bg-background border border-border rounded-lg px-3 py-2 text-xs md:text-sm w-full">
-                  <option>🇬🇧 English</option>
-                  <option>🇳🇱 Nederlands</option>
-                  <option>🇸🇦 العربية</option>
-                  <option>🇫🇷 Français</option>
-                </select>
-              </div>
+              <h4 className="font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>
+                  <a href="#" className="hover:text-foreground transition-colors">
+                    Help Center
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-foreground transition-colors">
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-foreground transition-colors">
+                    Terms of Service
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-foreground transition-colors">
+                    API Docs
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
 
-          <div className="border-t border-border/50 mt-8 pt-8 text-center text-muted-foreground">
-            <p className="text-xs md:text-sm">
-              &copy; 2024 GlobalHelp. All rights reserved. Made with 💙 for everyone finding their way in the
-              Netherlands.
-            </p>
+          <div className="border-t border-border/50 mt-64 pt-8 text-center text-muted-foreground">
+            <p>&copy; 2024 Doris AI. All rights reserved. Empowering global citizens everywhere. 🌍</p>
           </div>
         </div>
       </footer>
