@@ -331,7 +331,7 @@ export default function OnboardingPage() {
     // Step Indicator Component
     const StepIndicator = () => {
         return (
-            <div className="flex items-center justify-center mb-3">
+            <div className="flex items-center justify-center mb-1">
                 <div className="flex items-center ">
                     {steps.map((step, index) => (
                         <div key={step.id} className="flex items-center">
@@ -381,7 +381,7 @@ export default function OnboardingPage() {
     }
 
     return (
-        <div className="h-[100dvh] bg-gradient-to-br from-background via-background to-muted/20 relative overflow-hidden">
+        <div className="h-[100dvh] pt-5 bg-gradient-to-br from-background via-background to-muted/20 relative overflow-hidden">
             {/* Animated Grid Background */}
             <AnimatedGrid />
 

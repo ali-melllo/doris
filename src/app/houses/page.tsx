@@ -576,152 +576,9 @@ export default function HousesPage() {
     )
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+        <div className="min-h-screen pt-20 md:pt-36 max-w-7xl mx-auto ">
             {/* Header */}
-            <header className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/50">
-                <div className="container mx-auto px-4 py-4">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                Doris AI Houses
-                            </h1>
-                            <p className="text-sm md:text-base text-muted-foreground">
-                                Discover your perfect home in the Netherlands
-                            </p>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <ModeToggle />
-                            <Sheet open={isMobileFilterOpen} onOpenChange={setIsMobileFilterOpen}>
-                                <SheetTrigger asChild>
-                                    <Button variant="outline" size="sm" className="md:hidden">
-                                        <Filter className="w-4 h-4 mr-2" />
-                                        Filters
-                                    </Button>
-                                </SheetTrigger>
-                                <SheetContent side="left" className="w-[85%] sm:w-[400px] overflow-y-auto">
-                                    <div className="flex items-center justify-between mb-6">
-                                        <h3 className="text-lg font-semibold">Filters</h3>
-                                        <Button variant="ghost" size="sm" onClick={resetFilters} className="h-8 text-xs">
-                                            Reset All
-                                        </Button>
-                                    </div>
-                                    <div className="space-y-6">
-                                        {/* Location Filter */}
-                                        <div className="space-y-2">
-                                            <Label className="text-sm font-medium">Location</Label>
-                                            <Select value={selectedLocation} onValueChange={setSelectedLocation}>
-                                                <SelectTrigger className="bg-background/50">
-                                                    <SelectValue placeholder="Select location" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {locations.map((location) => (
-                                                        <SelectItem key={location} value={location}>
-                                                            {location}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-
-                                        {/* Price Range Filter */}
-                                        <div className="space-y-4">
-                                            <div className="flex items-center justify-between">
-                                                <Label className="text-sm font-medium">Price Range</Label>
-                                                <span className="text-xs text-muted-foreground">
-                                                    €{priceRange[0]} - €{priceRange[1]}
-                                                </span>
-                                            </div>
-                                            <Slider
-                                                defaultValue={priceRange}
-                                                min={500}
-                                                max={3000}
-                                                step={50}
-                                                value={priceRange}
-                                                onValueChange={setPriceRange}
-                                                className="mt-2"
-                                            />
-                                        </div>
-
-                                        <Separator />
-
-                                        {/* Bedrooms Filter */}
-                                        <div className="space-y-3">
-                                            <Label className="text-sm font-medium">Bedrooms</Label>
-                                            <div className="flex flex-wrap gap-2">
-                                                {["Studio", "1", "2", "3", "4+"].map((bedroom) => (
-                                                    <Button
-                                                        key={bedroom}
-                                                        variant={selectedBedrooms.includes(bedroom) ? "default" : "outline"}
-                                                        size="sm"
-                                                        onClick={() => toggleBedroom(bedroom)}
-                                                        className={`rounded-full ${selectedBedrooms.includes(bedroom) ? "bg-blue-500 hover:bg-blue-600" : "bg-background"
-                                                            }`}
-                                                    >
-                                                        {bedroom}
-                                                    </Button>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        <Separator />
-
-                                        {/* Amenities Filter */}
-                                        <div className="space-y-3">
-                                            <Label className="text-sm font-medium">Amenities</Label>
-                                            <div className="grid grid-cols-2 gap-2">
-                                                {amenities.map((amenity) => (
-                                                    <div key={amenity} className="flex items-center space-x-2">
-                                                        <Checkbox
-                                                            id={`mobile-amenity-${amenity}`}
-                                                            checked={selectedAmenities.includes(amenity)}
-                                                            onCheckedChange={() => toggleAmenity(amenity)}
-                                                        />
-                                                        <Label htmlFor={`mobile-amenity-${amenity}`} className="text-sm">
-                                                            {amenity}
-                                                        </Label>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        <Separator />
-
-                                        {/* Match Threshold Filter */}
-                                        <div className="space-y-4">
-                                            <div className="flex items-center justify-between">
-                                                <Label className="text-sm font-medium">AI Match Threshold</Label>
-                                                <span className="text-xs text-muted-foreground">{matchThreshold}%+</span>
-                                            </div>
-                                            <Slider
-                                                defaultValue={[matchThreshold]}
-                                                min={60}
-                                                max={95}
-                                                step={5}
-                                                value={[matchThreshold]}
-                                                onValueChange={(value) => setMatchThreshold(value[0])}
-                                                className="mt-2"
-                                            />
-                                        </div>
-
-                                        <div className="flex space-x-2 pt-4">
-                                            <Button onClick={resetFilters} variant="outline" className="flex-1">
-                                                Reset
-                                            </Button>
-                                            <Button
-                                                onClick={() => setIsMobileFilterOpen(false)}
-                                                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600"
-                                            >
-                                                Apply Filters
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </SheetContent>
-                            </Sheet>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
+           
             {/* AI Chat Fixed Button */}
             <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -822,7 +679,7 @@ export default function HousesPage() {
                 </div>
             </motion.div>
 
-            <div className="container mx-auto px-4 py-6">
+            <div className=" mx-auto py-6 px-4 md:px-0">
                 <div className="flex flex-col md:flex-row gap-6">
                     {/* Sidebar - Desktop */}
                     <div className="hidden md:block w-72 flex-shrink-0">

@@ -363,32 +363,7 @@ export default function MapPage() {
       </div>
 
       {/* Header */}
-      <motion.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="absolute top-0 left-0 right-0 z-[1000] backdrop-blur-xl bg-background/90 border-b border-border/50 shadow-lg"
-      >
-        <div className="flex items-center justify-between p-4">
-          <div className="flex items-center space-x-3">
-            <Link href={"/"} className="md:hidden hover:bg-muted/50">
-              <ChevronLeft className="w-5 h-5" />
-            </Link>
-            <div>
-              <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-teal-600 bg-clip-text text-transparent">
-                Doris AI
-              </h1>
-              <p className="text-sm text-muted-foreground hidden sm:block">Find services and support in Amsterdam</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2">
-            <ModeToggle />
-            <Button variant="outline" size="icon" className="hidden md:flex hover:bg-muted/50">
-              <Menu className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      </motion.header>
-
+      
       {/* Desktop Sidebar */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
@@ -496,7 +471,7 @@ export default function MapPage() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.3 }}
-        className="absolute bottom-[33%] right-4 z-[1000] flex flex-col space-y-2 md:bottom-4"
+        className="absolute bottom-[34%] right-4 z-[1000] flex flex-col space-y-2 md:bottom-4"
       >
         <Button
           variant="outline"

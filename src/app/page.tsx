@@ -220,36 +220,10 @@ export default function LandingPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 overflow-x-hidden">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-background/80 border-b border-border/50">
-        <div className="container mx-auto px-4 py-3 md:py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <MessageCircle className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Doris AI
-            </span>
-          </div>
-          <div className="flex items-center space-x-2 md:space-x-4">
-            <ModeToggle />
-            <Button variant="outline" size="sm" className="hidden sm:inline-flex">
-              Sign Up
-            </Button>
-            <Link
-              href="/chat"
-              className="bg-gradient-to-r flex items-center gap-2 py-2 rounded-lg from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-xs md:text-sm px-3 md:px-4"
-            >
-              Login
-              <User size={15} />
-            </Link>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen  max-w-7xl mx-auto">
 
       {/* Hero Section */}
-      <section className="pt-24 pb-20 px-4 relative overflow-hidden">
+      <section className="pt-28 pb-20 px-4 relative overflow-">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
@@ -581,7 +555,7 @@ export default function LandingPage() {
 
 
       {/* Global Chatbot Section */}
-      <section className="py-8 md:py-12 lg:py-20 px-4 bg-muted/30">
+      <section className="py-8 md:py-12 lg:py-20 px-4">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
             <motion.div
@@ -719,7 +693,7 @@ export default function LandingPage() {
       </section>
 
       {/* Waitlist CTA */}
-      <section className="py-8 md:py-12 lg:py-20 px-4 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-teal-500/10">
+      <section className="py-8 md:py-12 lg:py-20 px-4 ">
         <div className="container mx-auto">
           <motion.div
             initial="initial"
@@ -787,7 +761,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer ref={footerRef} className="py-16 px-4 border-t border-border/50 bg-muted/30 relative overflow-hidden">
+      <footer ref={footerRef} className="py-16 px-4 border-t border-border/50  relative overflow-hidden">
 
         {/* Large Doris AI Text */}
         <motion.div
@@ -804,6 +778,9 @@ export default function LandingPage() {
           // height={800}
           // width={800}
           />
+          <div className="absolute h-20 w-full top-0 bg-gradient-to-b from-background to-transparent"/>
+          <div className="absolute h-20 w-full bottom-0 bg-gradient-to-t from-background to-transparent"/>
+         
           <h2 className="text-6xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-blue-600/30 via-purple-600/30 to-pink-600/30 bg-clip-text text-transparent drop-shadow-[0_5px_40px_rgba(147,51,234,0.5)]">
             Doris AI
           </h2>

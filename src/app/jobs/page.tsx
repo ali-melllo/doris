@@ -277,29 +277,11 @@ export default function JobsPage() {
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+    <div className="min-h-screen pt-20 md:pt-24 max-w-7xl mx-auto ">
       {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Find Jobs
-              </h1>
-              <p className="text-sm md:text-base text-muted-foreground">Discover opportunities in the Netherlands</p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <ModeToggle />
-              <Button variant="outline" size="sm" className="md:hidden" onClick={() => setIsMobileFilterOpen(true)}>
-                <Filter className="w-4 h-4 mr-2" />
-                Filters
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      
 
-      <div className="container mx-auto px-4 py-6">
+      <div className=" mx-auto px-4 md:px-0 py-6">
         <div className="flex flex-col md:flex-row gap-6">
           {/* Sidebar - Desktop */}
           <div className="hidden md:block w-64 flex-shrink-0">

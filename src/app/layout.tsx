@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/header";
 import 'leaflet/dist/leaflet.css';
+import { SiteHeader } from "@/components/header";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -28,13 +28,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased  mx-auto ",
+          "min-h-screen bg-background font-sans antialiased  mx-auto",
           fontSans.variable
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="dark">
           <TooltipProvider delayDuration={0}>
-            {/* <Header/> */}
+            <SiteHeader/>
             {children}
             {/* <Navbar /> */}
           </TooltipProvider>
