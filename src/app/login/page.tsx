@@ -381,7 +381,7 @@ export default function OnboardingPage() {
     }
 
     return (
-        <div className="h-[100dvh] pt-5 bg-gradient-to-br from-background via-background to-muted/20 relative ">
+        <div className="h-[100dvh] pt-14 bg-gradient-to-br from-background via-background to-muted/20 relative ">
             {/* Animated Grid Background */}
             <AnimatedGrid />
 
