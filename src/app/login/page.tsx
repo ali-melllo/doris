@@ -381,7 +381,7 @@ export default function OnboardingPage() {
     }
 
     return (
-        <div className="h-[100dvh] pt-5 bg-gradient-to-br from-background via-background to-muted/20 relative overflow-hidden">
+        <div className="h-[100dvh] pt-5 bg-gradient-to-br from-background via-background to-muted/20 relative ">
             {/* Animated Grid Background */}
             <AnimatedGrid />
 
@@ -705,7 +705,7 @@ export default function OnboardingPage() {
                                             animate={{ opacity: 1, x: 0 }}
                                             exit={{ opacity: 0, x: -20 }}
                                             transition={{ duration: 0.3 }}
-                                            className="space-y-6"
+                                            className="space-y-6 overflow-y-scroll"
                                         >
                                             <div className="grid grid-cols-1 gap-3">
                                                 {userGoals.map((goal, index) => (
