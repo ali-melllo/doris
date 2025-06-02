@@ -765,7 +765,7 @@ export default function JobsPage() {
                                 <Bot className="w-6 h-6 stroke-white group-hover:scale-110 transition-transform" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="right" className="w-[90%] sm:w-[400px] p-0 flex flex-col">
+                        <SheetContent side="right" className="w-[90%] sm:w-[400px] z-[1000] p-0 flex flex-col">
                             {/* Chat Header */}
                             <div className="p-4 border-b border-border/50 bg-gradient-to-r from-blue-500/10 to-purple-500/10">
                                 <div className="flex items-center space-x-3">
