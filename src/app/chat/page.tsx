@@ -174,7 +174,7 @@ export default function ChatPage() {
       {/* Chat Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <ScrollArea className="flex-1 px-4" ref={scrollAreaRef}>
-          <div className="md:max-w-3xl mx-auto pb-48 py-6 space-y-6">
+          <div className="md:max-w-3xl mx-auto pt-16 md:pt-20 pb-48 py-6 space-y-6">
             {/* Welcome Message */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}

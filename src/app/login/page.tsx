@@ -381,7 +381,7 @@ export default function OnboardingPage() {
     }
 
     return (
-        <div className="h-[100dvh] pt-10 bg-gradient-to-br from-background via-background to-muted/20 relative ">
+        <div className="h-[100dvh] pt-5 md:pt-10 bg-gradient-to-br from-background via-background to-muted/20 relative ">
             {/* Animated Grid Background */}
             <AnimatedGrid />
 
@@ -396,7 +396,7 @@ export default function OnboardingPage() {
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mb-8"
+          className="mb-6"
         >
           <div className="flex items-center space-x-4">
             
@@ -801,7 +801,7 @@ export default function OnboardingPage() {
                                     onClick={currentStep === 4 ? handleSubmit : handleNext}
                                     disabled={!canProceed() || isSubmitting}
                                     className={cn(
-                                        "transition-all duration-300 shadow-lg hover:shadow-xl",
+                                        "transition-all duration-300 shadow-lg py-5 hover:shadow-xl",
                                         currentStep === 1 ? "w-full" : "flex-1",
                                         currentStep === 4
                                             ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
