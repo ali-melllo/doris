@@ -658,12 +658,18 @@ export default function JobsPage() {
 
                               <Avatar className="w-8 h-8">
                                 <AvatarImage src={job.logo || "/placeholder.svg"} alt={job.company} />
-                                <AvatarFallback>{job.company}</AvatarFallback>
+                                <AvatarFallback>{job.company[0]}</AvatarFallback>
                               </Avatar>
-                              <span className="font-medium">{job.company}</span>
+                              <span className="font-medium text-xs line-clamp-1">{job.company}</span>
                               </div>
 
-                              
+                              <div className="ml-auto">
+                                <div className="relative rounded-2xl justify-center flex items-center gap-1 border dark:text-purple-400 font-medium text-purple-500 bg-background text-sm px-3 py-1 [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
+                                  <Sparkles size={15} />
+                                  <p className="text-primary text-sm text-nowrap font-bold">%87</p>
+                                  AI Matched
+                                </div>
+                              </div>
                             </div>
                             <div className="space-y-2">
                               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
@@ -704,7 +710,7 @@ export default function JobsPage() {
                               onClick={()=> {
                                 handleJobClick(job)
                               }}
-                              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                              className="text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
                             >
                               Apply
                             </Button>
@@ -845,12 +851,3 @@ export default function JobsPage() {
 }
 
 
-{/* <div className="ml-auto">
-                                <div className="relative rounded-2xl flex items-center gap-2 border dark:text-purple-400 font-medium text-purple-500 bg-background text-sm px-4 py-1 [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
-                                  <Sparkles size={15} />
-                                  <p className="text-primary font-bold">%{"87"} </p>
-
-                                  AI Matched
-
-                                </div>
-                              </div> */}
