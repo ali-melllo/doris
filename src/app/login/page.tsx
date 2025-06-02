@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useRouter } from "next/navigation"
 import {
@@ -591,7 +591,7 @@ export default function OnboardingPage() {
   }
 
   // Responsive Step Indicator Component
-  const StepIndicator = () => {
+  const StepIndicator = useCallback(() => {
     return (
       <div className="flex items-center justify-center mb-6 md:mb-8 px-4">
         <div className={cn("flex items-center", isMobile ? "space-x-2" : "space-x-4")}>
@@ -655,7 +655,7 @@ export default function OnboardingPage() {
         </div>
       </div>
     )
-  }
+  },[currentStep])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 relative overflow-hidden">
