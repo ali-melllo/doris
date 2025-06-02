@@ -261,7 +261,7 @@ export default function LandingPage() {
               <motion.div variants={fadeInUp}>
                 <Badge
                   variant="secondary"
-                  className="px-4 py-2 text-sm bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-500/30 mb-6"
+                  className="px-4 py-2 text-sm bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-500/30 md:mb-6"
                 >
                   <Sparkles className="w-4 h-4 mr-2" />
                   AI-Powered Migration Assistant
@@ -275,15 +275,15 @@ export default function LandingPage() {
                 </span>
               </motion.h1>
 
-              <motion.p variants={fadeInUp} className="text-sm md:text-xl text-muted-foreground leading-relaxed">
+              <motion.p variants={fadeInUp} className="text-xs md:text-xl text-muted-foreground leading-relaxed">
                 Your trusted companion for housing, jobs, and local help — wherever you land. Navigate your new life
                 with confidence and AI-powered guidance.
               </motion.p>
 
               {/* Feature Pills */}
               <motion.div variants={fadeInUp} className="space-y-4">
-                <h3 className="text-lg font-semibold text-muted-foreground">What Doris AI helps with:</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <h3 className="text-lg font-semibold text-muted-foreground hidden md:block">What Doris AI helps with:</h3>
+                <div className="grid grid-cols-2 gap-3">
                   {mainFeatures.map((feature, index) => (
                     <motion.div
                       key={feature.title}
@@ -292,8 +292,8 @@ export default function LandingPage() {
                       transition={{ delay: 0.5 + index * 0.1 }}
                       className="group"
                     >
-                      <Card className="p-4 bg-card/50 backdrop-blur-sm border-border/50 hover:border-border transition-all duration-300 cursor-pointer group-hover:shadow-lg">
-                        <Link href={feature.href} className="flex items-center space-x-3">
+                      <Card className="p-2 md:p-4 bg-card/50 backdrop-blur-sm border-border/50 hover:border-border transition-all duration-300 cursor-pointer group-hover:shadow-lg">
+                        <Link href={feature.href} className="flex flex-col md:flex-row items-center gap-3 space-x-3">
                           <div
                             className={`w-10 h-10 rounded-lg bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}
                           >
@@ -301,7 +301,7 @@ export default function LandingPage() {
                           </div>
                           <div>
                             <h4 className="font-semibold text-sm">{feature.title}</h4>
-                            <p className="text-xs text-muted-foreground">{feature.description}</p>
+                            <p className="text-xs text-muted-foreground hidden md:block">{feature.description}</p>
                           </div>
                         </Link>
                       </Card>

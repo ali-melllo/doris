@@ -848,17 +848,17 @@ export default function OnboardingPage() {
                         >
                             <div className="relative">
                                 <motion.div
-                                    className="w-24 h-24 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto shadow-2xl"
-                                    animate={{ rotate: 360 }}
+                                    className="!w-24 h-24 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto shadow-2xl"
+                                    animate={{ rotate: 360,scale: [1, 1.2, 1], opacity: [0.5, 0.2, 0.8]  }}
                                     transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
                                 >
-                                    <Bot className="w-12 h-12 text-white" />
+                                    <Sparkles className="w-12 h-12 text-white" />
                                 </motion.div>
-                                <motion.div
-                                    className="absolute inset-0 rounded-full border-4 border-blue-500/30"
+                                {/* <motion.div
+                                    className="absolute inset-x-1/2 size-24 rounded-full border-4 border-blue-500/30"
                                     animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
                                     transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                                />
+                                /> */}
                             </div>
 
                             <div className="space-y-4">

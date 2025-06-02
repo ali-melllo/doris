@@ -209,14 +209,14 @@ export function SiteHeader() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button
-                onClick={toggleAuth}
-                size="default"
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-sm"
+              <Link
+                // onClick={toggleAuth}
+                href="/login"
+                className="bg-gradient-to-r flex items-center gap-2 rounded-lg px-3 py-2 from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-sm"
               >
                 <LogIn className="w-4 h-4 mr-1" />
                 Sign In
-              </Button>
+              </Link>
             )}
 
             {/* Mobile Menu Trigger */}
