@@ -2,9 +2,9 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { MessageCircle, X, Send, Minimize2, Maximize2 } from "lucide-react"
+import { MessageCircle, X, Send, Minimize2, Maximize2, LogIn, PersonStandingIcon, Globe, Flag, Smile, Mic, Paperclip } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -13,6 +13,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { TypingAnimation } from "./magicui/text-animation"
+import { Badge } from "./ui/badge"
 
 // Messages for each step in different languages
 const stepMessages: Record<string, string[]> = {
@@ -374,14 +375,14 @@ function MessageBubble({
         >
           <Card className="!rounded-tl-none md:ml-5 rounded-3xl bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] border-2 border-blue-200/60 dark:border-blue-700/60 shadow-xl backdrop-blur-md">
             <CardContent className={cn("relative", isMobile ? "p-2.5" : "p-3")}>
-              <p
+              <div
                 className={cn(
                   "font-medium text-gray-700 dark:text-gray-200 leading-relaxed",
                   isMobile ? "text-xs" : "text-sm",
                 )}
               >
                 <TypingAnimation className="text-xs font-medium md:text-sm">{message}</TypingAnimation>
-              </p>
+              </div>
 
             
               {/* Subtle glow effect */}
@@ -407,6 +408,8 @@ function ChatInterface({
   const [messages, setMessages] = useState(sampleMessages[language] || sampleMessages.en)
   const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
+
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return
@@ -440,9 +443,9 @@ function ChatInterface({
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full ">
       {/* Chat Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border/50 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/20 dark:to-purple-900/20">
+      <div className="flex items-center p-3  justify-between border-b border-border/50 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/20 dark:to-purple-900/20">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
             <MessageCircle className="w-5 h-5 text-white" />
@@ -452,9 +455,7 @@ function ChatInterface({
             <p className="text-sm text-muted-foreground">Your personal assistant</p>
           </div>
         </div>
-        <Button variant="ghost" size="icon" onClick={onClose} className="hover:bg-red-100 dark:hover:bg-red-900/20">
-          <X className="w-4 h-4" />
-        </Button>
+        
       </div>
 
       {/* Messages */}
@@ -470,10 +471,10 @@ function ChatInterface({
             >
               <Card
                 className={cn(
-                  "max-w-[80%] p-3 shadow-md",
+                  "max-w-[80%] p-3 shadow-md rounded-3xl",
                   message.role === "user"
-                    ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white border-0"
-                    : "bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-600",
+                    ? "bg-gradient-to-br from-blue-500 rounded-tr-none to-purple-600 text-white border-0"
+                    : "bg-gradient-to-br from-gray-50 rounded-tl-none to-white dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-600",
                 )}
               >
                 <p className="text-sm leading-relaxed">{message.content}</p>
@@ -507,24 +508,72 @@ function ChatInterface({
       </ScrollArea>
 
       {/* Enhanced Input Area */}
-      <div className="p-4 border-t border-border/50 bg-gradient-to-r from-gray-50/50 to-blue-50/50 dark:from-gray-900/50 dark:to-blue-900/20">
-        <div className="flex space-x-2">
-          <Input
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Type your message..."
-            className="flex-1 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
-          />
-          <Button
-            onClick={handleSendMessage}
-            disabled={!inputValue.trim()}
-            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg"
-          >
-            <Send className="w-4 h-4" />
-          </Button>
-        </div>
-      </div>
+      <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="absolute w-full bottom-0  backdrop-blur-md rounded-t-3xl pl-0 md:pl-4 shadow border bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] flex p-4"
+        >
+          <div className=" mx-auto w-full">
+            <div className="flex items-start space-x-3">
+              {/* Quick Actions */}
+              
+
+              {/* Input Field */}
+              <div className="flex-1 relative">
+                <div className="relative pl-3 md:pl-0">
+                  <Input
+                  autoFocus={false}
+                    ref={inputRef}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="Ask me anything ..."
+                    className="pr-20 w-full py-6 text-base rounded-2xl border-border/50 bg-background backdrop-blur-sm !outline-none focus:bg-background transition-all duration-200"
+                  />
+
+                  {/* Input Actions */}
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center space-x-1">
+                    <Button variant="ghost" size="sm" className="w-8 h-8 p-0">
+                      <Smile className="w-4 h-4" />
+                    </Button>
+                    <Button variant="ghost" size="sm" className="w-8 h-8 p-0">
+                      <Mic className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Quick Service Buttons */}
+                <div className="md:flex hidden flex-wrap gap-2 mt-3">
+                  {[
+                    { icon: LogIn, label: "Login", color: "from-teal-500 to-teal-600" },
+                    { icon: PersonStandingIcon, label: "Sign Up", color: "from-blue-500 to-blue-600" },
+                    { icon: Globe, label: "Language", color: "from-purple-500 to-purple-600" },
+                    { icon: Flag, label: "Nationality", color: "from-indigo-500 to-indigo-600" },
+                  ].map((service, index) => (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="cursor-pointer hover:scale-105 transition-transform duration-200 bg-muted/50 hover:bg-muted/80"
+                      onClick={() => setInputValue(`Tell me about ${service.label.toLowerCase()} services`)}
+                    >
+                      <service.icon className="w-3 h-3 mr-1" />
+                      {service.label}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Send Button */}
+              <Button
+                onClick={handleSendMessage}
+                disabled={!inputValue.trim()}
+                className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Send className="size-6 stroke-white" />
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+
     </div>
   )
 }
@@ -667,7 +716,7 @@ export function FixedAIAssistant({
         <SheetContent
           side={isMobile ? "bottom" : "right"}
           className={cn(
-            "bg-gradient-to-br from-background/98 to-muted/30 backdrop-blur-xl border-border/60 shadow-2xl",
+            "bg-gradient-to-br from-background/98 p-0 to-muted/30 backdrop-blur-xl border-border/60 shadow-2xl",
             isMobile ? "h-[85vh] rounded-t-2xl" : "w-[420px]",
           )}
         >
