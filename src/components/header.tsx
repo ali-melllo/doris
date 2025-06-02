@@ -33,6 +33,7 @@ import {
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
+import { usePathname } from "next/navigation"
 
 // Language options
 const languages = [
@@ -46,7 +47,7 @@ const languages = [
 
 // Navigation items
 const navigationItems = [
-//   { name: "Home", href: "/", icon: Home },
+  //   { name: "Home", href: "/", icon: Home },
   { name: "Jobs", href: "/jobs", icon: Briefcase },
   { name: "Housing", href: "/houses", icon: Building2 },
   { name: "Chat", href: "/chat", icon: Users },
@@ -60,6 +61,8 @@ export function SiteHeader() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false) // For demo purposes
   const { theme, setTheme } = useTheme()
+
+  const path = usePathname();
 
   // Handle scroll effect
   useEffect(() => {
@@ -77,7 +80,7 @@ export function SiteHeader() {
     setIsAuthenticated(!isAuthenticated)
   }
 
-  return (
+  return path === '/login' ? null : (
     <motion.header
       className="fixed top-0 z-[1000] left-0 right-0  backdrop-blur-xl bg-card/95 transition-all duration-300 ease-in-out"
     >
