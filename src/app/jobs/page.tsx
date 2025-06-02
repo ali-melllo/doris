@@ -18,6 +18,7 @@ import { Switch } from "@/components/ui/switch"
 import { ModeToggle } from "@/components/mode-toggle"
 import Link from "next/link"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { JobDetailModal } from "@/components/job-detail-modal"
 
 // Mock job data
 const jobsData = [
@@ -119,6 +120,7 @@ const jobsData = [
   },
 ]
 
+
 // Location options
 const locations = ["Amsterdam", "Rotterdam", "Utrecht", "The Hague", "Eindhoven", "All Locations"]
 
@@ -140,6 +142,10 @@ export default function JobsPage() {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false)
   const [filteredJobs, setFilteredJobs] = useState(jobsData)
   const [isLoading, setIsLoading] = useState(true)
+
+
+  const [selectedJob, setSelectedJob] = useState<any>(null)
+  const [isJobDetailOpen, setIsJobDetailOpen] = useState(false)
 
      // AI Chat states
      const [isAiChatOpen, setIsAiChatOpen] = useState(false)
@@ -235,6 +241,11 @@ export default function JobsPage() {
     return `€${Math.round(value / 1000)}k`
   }
 
+  const handleJobClick = (job: any) => {
+    setSelectedJob(job)
+    setIsJobDetailOpen(true)
+  }
+
   // Skeleton loader for job cards
   const JobCardSkeleton = () => (
     <Card className="bg-card/50 p-3 backdrop-blur-sm border border-border/50 shadow-md hover:shadow-lg transition-all duration-300">
@@ -275,6 +286,7 @@ export default function JobsPage() {
       </CardFooter>
     </Card>
   )
+
 
   return (
     <div className="min-h-screen pt-20 md:pt-24 max-w-7xl mx-auto ">
@@ -646,20 +658,12 @@ export default function JobsPage() {
 
                               <Avatar className="w-8 h-8">
                                 <AvatarImage src={job.logo || "/placeholder.svg"} alt={job.company} />
-                                <AvatarFallback>{job.company.substring(0, 2)}</AvatarFallback>
+                                <AvatarFallback>{job.company}</AvatarFallback>
                               </Avatar>
                               <span className="font-medium">{job.company}</span>
                               </div>
 
-                              <div className="ml-auto">
-                                <div className="relative rounded-2xl flex items-center gap-2 border dark:text-purple-400 font-medium text-purple-500 bg-background text-sm px-4 py-1 [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
-                                  <Sparkles size={15} />
-                                  <p className="text-primary font-bold">%{"87"} </p>
-
-                                  AI Matched
-
-                                </div>
-                              </div>
+                              
                             </div>
                             <div className="space-y-2">
                               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
@@ -697,6 +701,9 @@ export default function JobsPage() {
                             </div>
                             <Button
                               size={viewMode === "list" ? "sm" : "default"}
+                              onClick={()=> {
+                                handleJobClick(job)
+                              }}
                               className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
                             >
                               Apply
@@ -830,6 +837,20 @@ export default function JobsPage() {
           </div>
         </div>
       </div>
+
+      <JobDetailModal job={selectedJob} isOpen={isJobDetailOpen} onClose={() => setIsJobDetailOpen(false)} />
+
     </div>
   )
 }
+
+
+{/* <div className="ml-auto">
+                                <div className="relative rounded-2xl flex items-center gap-2 border dark:text-purple-400 font-medium text-purple-500 bg-background text-sm px-4 py-1 [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
+                                  <Sparkles size={15} />
+                                  <p className="text-primary font-bold">%{"87"} </p>
+
+                                  AI Matched
+
+                                </div>
+                              </div> */}

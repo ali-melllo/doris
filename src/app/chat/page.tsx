@@ -170,37 +170,7 @@ export default function ChatPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex flex-col">
-      {/* Header */}
-      <motion.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/50"
-      >
-        <div className="container mx-auto px-4 py-4 md:py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-14 md:w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <Bot className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Doris AI
-                </h1>
-                <p className="text-xs md:text-base text-muted-foreground">
-                  Ask questions about jobs, housing, government info, and more
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <ModeToggle />
-              <Button variant="ghost" size="sm">
-                <MoreVertical className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </motion.header>
-
+      
       {/* Chat Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <ScrollArea className="flex-1 px-4" ref={scrollAreaRef}>
