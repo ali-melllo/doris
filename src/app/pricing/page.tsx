@@ -112,7 +112,7 @@ export default function PricingPage() {
   if (!mounted) return null
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br pt-24 from-background via-background to-muted/20 py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -163,7 +163,7 @@ export default function PricingPage() {
             >
               <Card
                 className={cn(
-                  "relative w-full backdrop-blur-sm border-border/50 shadow-lg overflow-hidden",
+                  "relative w-full backdrop-blur-sm border-border/50 p-5 shadow-lg overflow-hidden",
                   plan.popular ? "shadow-lg shadow-purple-500/10 scale-105 z-10" : "bg-card/50",
                 )}
               >
