@@ -55,83 +55,7 @@ const getStepMessage = (step: number, language: string) => {
   return messages[step - 1] || messages[0]
 }
 
-// Sample chat messages for the AI assistant
-const sampleMessages: Record<string, Array<{ role: "assistant" | "user"; content: string }>> = {
-  en: [
-    {
-      role: "assistant",
-      content: "Hi there! I'm Doris, your AI migration assistant. How can I help you today?",
-    },
-    {
-      role: "user",
-      content: "I'm looking for housing in Amsterdam",
-    },
-    {
-      role: "assistant",
-      content:
-        "Great! I can help you find housing in Amsterdam. What's your budget range and when are you planning to move?",
-    },
-  ],
-  es: [
-    {
-      role: "assistant",
-      content: "¡Hola! Soy Doris, tu asistente de migración con IA. ¿Cómo puedo ayudarte hoy?",
-    },
-    {
-      role: "user",
-      content: "Estoy buscando vivienda en Amsterdam",
-    },
-    {
-      role: "assistant",
-      content:
-        "¡Genial! Puedo ayudarte a encontrar vivienda en Amsterdam. ¿Cuál es tu presupuesto y cuándo planeas mudarte?",
-    },
-  ],
-  fr: [
-    {
-      role: "assistant",
-      content: "Bonjour ! Je suis Doris, votre assistant de migration IA. Comment puis-je vous aider aujourd'hui ?",
-    },
-    {
-      role: "user",
-      content: "Je cherche un logement à Amsterdam",
-    },
-    {
-      role: "assistant",
-      content:
-        "Super ! Je peux vous aider à trouver un logement à Amsterdam. Quel est votre budget et quand prévoyez-vous de déménager ?",
-    },
-  ],
-  de: [
-    {
-      role: "assistant",
-      content: "Hallo! Ich bin Doris, Ihr KI-Migrationsassistent. Wie kann ich Ihnen heute helfen?",
-    },
-    {
-      role: "user",
-      content: "Ich suche eine Wohnung in Amsterdam",
-    },
-    {
-      role: "assistant",
-      content:
-        "Großartig! Ich kann Ihnen helfen, eine Wohnung in Amsterdam zu finden. Wie hoch ist Ihr Budget und wann planen Sie den Umzug?",
-    },
-  ],
-  zh: [
-    {
-      role: "assistant",
-      content: "您好！我是Doris，您的AI移民助手。今天我能为您做些什么？",
-    },
-    {
-      role: "user",
-      content: "我在阿姆斯特丹寻找住房",
-    },
-    {
-      role: "assistant",
-      content: "太好了！我可以帮您在阿姆斯特丹找房子。您的预算范围是多少，计划什么时候搬家？",
-    },
-  ],
-}
+
 
 // Realistic White Dog Component (CSS-based)
 function RealisticWhiteDog({
@@ -269,27 +193,6 @@ function RealisticWhiteDog({
           )}
         </div>
 
-        {/* Tail (visible when active) */}
-        {isActive && (
-          <motion.div
-            className={cn(
-              "absolute bg-white border border-gray-200 rounded-full",
-              isMobile ? "w-2 h-6 -right-4 top-2" : "w-3 h-8 -right-6 top-1",
-            )}
-            animate={{
-              rotate: [0, 15, -15, 0],
-            }}
-            transition={{
-              duration: 0.8,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-            }}
-            style={{
-              transformOrigin: "bottom center",
-            }}
-          />
-        )}
-
         {/* Floating hearts when greeting */}
         {emotion === "greeting" && (
           <motion.div
@@ -384,7 +287,6 @@ function MessageBubble({
                 <TypingAnimation className="text-xs font-medium md:text-sm">{message}</TypingAnimation>
               </div>
 
-            
               {/* Subtle glow effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-lg -z-10 blur-sm" />
             </CardContent>
@@ -405,7 +307,11 @@ function ChatInterface({
   onClose: () => void
   language?: string
 }) {
-  const [messages, setMessages] = useState(sampleMessages[language] || sampleMessages.en)
+
+  const [messages, setMessages] = useState([{
+    role: "assistant",
+    content: "Hi there! I'm Doris, your AI migration assistant. How can I help you today?",
+  }])
   const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
 
@@ -423,22 +329,25 @@ function ChatInterface({
     setInputValue("")
     setIsTyping(true)
 
-    // Simulate AI response
-    setTimeout(() => {
-      const botResponse = {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/prompt`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: inputValue }),
+      });
+      const data = await response.json();
+      const formattedBotResponse = {
         role: "assistant" as const,
         content:
-          "Thanks for your message! I'm here to help you with any questions about the onboarding process or life in the Netherlands.",
+          data.data.response,
       }
-      setMessages((prev) => [...prev, botResponse])
-      setIsTyping(false)
-    }, 1500)
-  }
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      handleSendMessage()
+      setMessages((prev) => [...prev, formattedBotResponse])
+      setIsTyping(false)
+    } catch (err) {
+      setIsTyping(false)
     }
   }
 
@@ -455,7 +364,7 @@ function ChatInterface({
             <p className="text-sm text-muted-foreground">Your personal assistant</p>
           </div>
         </div>
-        
+
       </div>
 
       {/* Messages */}
@@ -491,13 +400,12 @@ function ChatInterface({
                 exit={{ opacity: 0, y: -10 }}
                 className="flex justify-start"
               >
-                <Card className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-600 p-3 shadow-md">
+                <Card className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-600 px-4 py-3 shadow-md">
                   <div className="flex items-center space-x-2">
-                    <RealisticWhiteDog isActive={true} emotion="thinking" isMobile={true} />
                     <div className="flex space-x-1">
                       <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce delay-100"></div>
-                      <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce delay-200"></div>
+                      <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce delay-200"></div>
+                      <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce delay-300"></div>
                     </div>
                   </div>
                 </Card>
@@ -509,70 +417,70 @@ function ChatInterface({
 
       {/* Enhanced Input Area */}
       <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="absolute w-full bottom-0  backdrop-blur-md rounded-t-3xl pl-0 md:pl-4 shadow border bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] flex p-4"
-        >
-          <div className=" mx-auto w-full">
-            <div className="flex items-start space-x-3">
-              {/* Quick Actions */}
-              
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="absolute w-full bottom-0  backdrop-blur-md rounded-t-3xl pl-0 md:pl-4 shadow border bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] flex p-4"
+      >
+        <div className=" mx-auto w-full">
+          <div className="flex items-start space-x-3">
+            {/* Quick Actions */}
 
-              {/* Input Field */}
-              <div className="flex-1 relative">
-                <div className="relative pl-3 md:pl-0">
-                  <Input
+
+            {/* Input Field */}
+            <div className="flex-1 relative">
+              <div className="relative pl-3 md:pl-0">
+                <Input
                   autoFocus={false}
-                    ref={inputRef}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Ask me anything ..."
-                    className="pr-20 w-full py-6 text-base rounded-2xl border-border/50 bg-background backdrop-blur-sm !outline-none focus:bg-background transition-all duration-200"
-                  />
+                  ref={inputRef}
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Ask me anything ..."
+                  className="pr-20 w-full py-6 text-base rounded-2xl border-border/50 bg-background backdrop-blur-sm !outline-none focus:bg-background transition-all duration-200"
+                />
 
-                  {/* Input Actions */}
-                  <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center space-x-1">
-                    <Button variant="ghost" size="sm" className="w-8 h-8 p-0">
-                      <Smile className="w-4 h-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" className="w-8 h-8 p-0">
-                      <Mic className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Quick Service Buttons */}
-                <div className="md:flex hidden flex-wrap gap-2 mt-3">
-                  {[
-                    { icon: LogIn, label: "Login", color: "from-teal-500 to-teal-600" },
-                    { icon: PersonStandingIcon, label: "Sign Up", color: "from-blue-500 to-blue-600" },
-                    { icon: Globe, label: "Language", color: "from-purple-500 to-purple-600" },
-                    { icon: Flag, label: "Nationality", color: "from-indigo-500 to-indigo-600" },
-                  ].map((service, index) => (
-                    <Badge
-                      key={index}
-                      variant="secondary"
-                      className="cursor-pointer hover:scale-105 transition-transform duration-200 bg-muted/50 hover:bg-muted/80"
-                      onClick={() => setInputValue(`Tell me about ${service.label.toLowerCase()} services`)}
-                    >
-                      <service.icon className="w-3 h-3 mr-1" />
-                      {service.label}
-                    </Badge>
-                  ))}
+                {/* Input Actions */}
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center space-x-1">
+                  <Button variant="ghost" size="sm" className="w-8 h-8 p-0">
+                    <Smile className="w-4 h-4" />
+                  </Button>
+                  <Button variant="ghost" size="sm" className="w-8 h-8 p-0">
+                    <Mic className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
 
-              {/* Send Button */}
-              <Button
-                onClick={handleSendMessage}
-                disabled={!inputValue.trim()}
-                className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <Send className="size-6 stroke-white" />
-              </Button>
+              {/* Quick Service Buttons */}
+              <div className="md:flex hidden flex-wrap gap-2 mt-3">
+                {[
+                  { icon: LogIn, label: "Login", color: "from-teal-500 to-teal-600" },
+                  { icon: PersonStandingIcon, label: "Sign Up", color: "from-blue-500 to-blue-600" },
+                  { icon: Globe, label: "Language", color: "from-purple-500 to-purple-600" },
+                  { icon: Flag, label: "Nationality", color: "from-indigo-500 to-indigo-600" },
+                ].map((service, index) => (
+                  <Badge
+                    key={index}
+                    variant="secondary"
+                    className="cursor-pointer hover:scale-105 transition-transform duration-200 bg-muted/50 hover:bg-muted/80"
+                    onClick={() => setInputValue(`Tell me about ${service.label.toLowerCase()} services`)}
+                  >
+                    <service.icon className="w-3 h-3 mr-1" />
+                    {service.label}
+                  </Badge>
+                ))}
+              </div>
             </div>
+
+            {/* Send Button */}
+            <Button
+              onClick={handleSendMessage}
+              disabled={!inputValue.trim()}
+              className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Send className="size-6 stroke-white" />
+            </Button>
           </div>
-        </motion.div>
+        </div>
+      </motion.div>
 
     </div>
   )
@@ -658,7 +566,7 @@ export function FixedAIAssistant({
           <MessageBubble
             message={currentMessage}
             isVisible={showMessage && !isMinimized}
-            position={ messagePosition}
+            position={messagePosition}
             isMobile={isMobile}
           />
 
