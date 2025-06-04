@@ -386,7 +386,10 @@ function ChatInterface({
                     : "bg-gradient-to-br from-gray-50 rounded-tl-none to-white dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-600",
                 )}
               >
-                <p className="text-sm leading-relaxed">{message.content}</p>
+                {(index === messages.length - 1 && message.role === "assistant") ?
+                  <TypingAnimation duration={20} className="text-sm leading-relaxed">{message.content}</TypingAnimation> :
+                  <p className="text-sm leading-relaxed">{message.content}</p>
+                }
               </Card>
             </motion.div>
           ))}
