@@ -452,7 +452,7 @@ export function FixedAIAssistant({
         <SheetContent
           side={isMobile ? "bottom" : "right"}
           className={cn(
-            "bg-gradient-to-br h-auto min-h-[40dvh] from-background/98 p-0 to-muted/30 backdrop-blur-xl border-border/60 shadow-2xl",
+            "bg-gradient-to-br h-auto min-h-[50dvh] z-[1000] from-background/98 p-0 to-muted/30 backdrop-blur-xl border-border/60 shadow-2xl",
             isMobile ? " rounded-t-3xl" : "w-[420px]",
           )}
         >
