@@ -15,6 +15,7 @@ import {
     Languages,
     Users,
     ChevronRight,
+    Map,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -22,20 +23,23 @@ import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { FixedAIAssistant } from "./fixed-ai-assistant"
+import Link from "next/link"
 
 // Service constellation data
 const services = [
     {
         id: "housing",
+        href: "/houses",
         icon: Home,
         title: "Smart Housing",
         description: "AI-powered home search",
         color: "from-emerald-400 to-emerald-600",
-        position: { x: 0, y: -140, z: 20 },
+        position: { x: -120, y: 70, z: 35 },
         mobileOrder: 1,
     },
     {
         id: "jobs",
+        href: "/jobs",
         icon: Briefcase,
         title: "Career Hub",
         description: "Find your dream job",
@@ -45,6 +49,7 @@ const services = [
     },
     {
         id: "government",
+        href: "/government",
         icon: Building2,
         title: "Gov Services",
         description: "Navigate bureaucracy",
@@ -54,7 +59,8 @@ const services = [
     },
     {
         id: "community",
-        icon: Users,
+        href: "/map",
+        icon: Map,
         title: "Community",
         description: "Connect with people",
         color: "from-pink-400 to-pink-600",
@@ -63,15 +69,17 @@ const services = [
     },
     {
         id: "support",
+        href: "/chat",
         icon: MessageCircle,
         title: "AI Support",
         description: "24/7 assistance",
         color: "from-indigo-400 to-indigo-600",
-        position: { x: -120, y: 70, z: 35 },
+        position: { x: 0, y: -140, z: 20 },
         mobileOrder: 5,
     },
     {
         id: "translate",
+        href: "/",
         icon: Languages,
         title: "Translation",
         description: "Multi-language support",
@@ -80,51 +88,6 @@ const services = [
         mobileOrder: 6,
     },
 ]
-
-// Simple floating particles component
-const FloatingParticles = () => {
-    return (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {Array.from({ length: 30 }, (_, i) => (
-                <motion.div
-                    key={i}
-                    className="absolute"
-                    style={{
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                    }}
-                    initial={{
-                        opacity: 0,
-                        scale: 0,
-                    }}
-                    animate={{
-                        opacity: [0, 0.6, 0],
-                        scale: [0, 1, 0],
-                        y: [0, -200, -400],
-                    }}
-                    transition={{
-                        duration: 6 + Math.random() * 3,
-                        repeat: Number.POSITIVE_INFINITY,
-                        delay: Math.random() * 4,
-                        ease: "easeInOut",
-                    }}
-                >
-                    <div
-                        className={cn(
-                            "w-1 h-1 rounded-full bg-gradient-to-r",
-                            i % 3 === 0 && "from-blue-400 to-cyan-400",
-                            i % 3 === 1 && "from-purple-400 to-pink-400",
-                            i % 3 === 2 && "from-emerald-400 to-blue-400",
-                        )}
-                        style={{
-                            boxShadow: "0 0 10px rgba(59, 130, 246, 0.3)",
-                        }}
-                    />
-                </motion.div>
-            ))}
-        </div>
-    )
-}
 
 // Clean animated beam component
 const AnimatedBeam = ({
@@ -240,12 +203,13 @@ const ServiceNode = ({
                 stiffness: 120,
                 damping: 15,
             }}
-            
+
             onClick={() => {
-               
+
             }}
         >
-            <div
+            <Link
+                href={isCenter ? "#" : service.href}
                 className={cn(
                     "w-full h-full rounded-full flex items-center justify-center relative overflow- transition-all duration-300",
                     isCenter
@@ -258,13 +222,13 @@ const ServiceNode = ({
                 }}
             >
                 {/* Simple background gradient */}
-                <div className={`absolute inset-0 ${isCenter ? "bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]" : "bg-gradient-to-br from-white/20 to-transparent "} rounded-full `} />
+                <div className={`absolute inset-0 ${isCenter ? "bg-background transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]" : "bg-gradient-to-br from-white/20 to-transparent "} rounded-full `} />
 
                 {/* Icon */}
                 <div className="relative z-10">
                     {isCenter ?
-                            <FixedAIAssistant showBubble={false} currentStep={0} />
-                    
+                        <FixedAIAssistant showBubble={false} currentStep={0} />
+
                         : <service.icon className="w-8 h-8 text-white" />}
                 </div>
 
@@ -277,7 +241,7 @@ const ServiceNode = ({
                         transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
                     />
                 )}
-            </div>
+            </Link>
 
             {/* Clean tooltip/popover */}
             {showTooltip && !isCenter && (
