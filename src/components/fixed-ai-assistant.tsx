@@ -211,7 +211,7 @@ function ChatInterface({
 
       {/* Messages */}
       <ScrollArea className="flex-1 p-4">
-        <div className="space-y-4">
+        <div className="space-y-4 pb-32">
           {messages.map((message, index) => (
             <motion.div
               key={index}
@@ -275,7 +275,7 @@ function ChatInterface({
             <div className="flex-1 relative">
               <div className="relative pl-3 md:pl-0">
                 <Input
-                  autoFocus={false}
+                  autoFocus
                   ref={inputRef}
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
@@ -337,6 +337,7 @@ interface FixedAIAssistantProps {
   position?: "top-left" | "top-right" | "bottom-left" | "bottom-right"
   className?: string
   language?: string
+  showBubble?: boolean;
 }
 
 const stepEmotions: Array<"neutral" | "happy" | "thinking" | "excited" | "greeting"> = [
@@ -350,6 +351,7 @@ export function FixedAIAssistant({
   currentStep,
   position = "top-left",
   className,
+  showBubble = true,
   language = "en",
 }: FixedAIAssistantProps) {
   const [isActive, setIsActive] = useState(false)
@@ -370,11 +372,11 @@ export function FixedAIAssistant({
 
     const timer2 = setTimeout(() => {
       setIsActive(false)
-    }, 2000)
+    }, 60000)
 
     const timer3 = setTimeout(() => {
       setShowMessage(false)
-    }, 6000)
+    }, 60000)
 
     return () => {
       clearTimeout(timer1)
@@ -382,13 +384,6 @@ export function FixedAIAssistant({
       clearTimeout(timer3)
     }
   }, [currentStep, language])
-
-  const positionClasses = {
-    "top-left": "top-3 left-5 md:top-20 md:left-48",
-    "top-right": "top-4 right-4 md:top-6 md:right-6",
-    "bottom-left": "bottom-4 left-4 md:bottom-6 md:left-6",
-    "bottom-right": "bottom-4 right-4 md:bottom-6 md:right-6",
-  }
 
   const messagePosition = position.includes("left") ? "right" : "left"
 
@@ -399,19 +394,18 @@ export function FixedAIAssistant({
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         className={cn(
-          "fixed z-50 transition-all duration-300",
-          positionClasses[position],
+          "z-50 transition-all duration-300",
           className,
         )}
       >
         <div className="relative">
           {/* Enhanced Message Bubble */}
-          <MessageBubble
+          {showBubble && <MessageBubble
             message={currentMessage}
             isVisible={showMessage}
             position={messagePosition}
             isMobile={isMobile}
-          />
+          />}
 
           {/* Avatar Container */}
           <motion.div
@@ -420,19 +414,19 @@ export function FixedAIAssistant({
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsChatOpen(true)}
           >
-            <Card className="bg-transparent shadow-2xl rounded-2xl backdrop-blur-md overflow">
-              <CardContent className="p-0">
+            <Card className="bg-transparent shadow-none rounded-2xl overflow">
+              <CardContent className="p-0 bg-transparent shadow-none">
                 <div
                   className={cn(
-                    "transition-all duration-300 rounded-2xl p-2 flex items-center justify-center bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
+                    "transition-all duration-300 rounded-2xl p-2 flex items-center justify-center ",
                     isMobile ? "size-16" : "size-20",
                   )}>
                   <Image
                     alt={'Doris'}
                     src={'/doris.webp'}
-                    width={200}
-                    height={200}
-                    className="md:size-16"
+                    width={300}
+                    height={300}
+                    className=" md:size-16"
                   />
                 </div>
 
@@ -443,12 +437,12 @@ export function FixedAIAssistant({
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ duration: 0.5, repeat: Number.POSITIVE_INFINITY }}
                   >
-                    <Sparkles className="stroke-primary fill-primary/75 size-5"/>
+                    <Sparkles className="stroke-primary fill-primary/75 size-5" />
                   </motion.div>
                 )}
               </CardContent>
             </Card>
-            
+
           </motion.div>
         </div>
       </motion.div>
@@ -458,11 +452,11 @@ export function FixedAIAssistant({
         <SheetContent
           side={isMobile ? "bottom" : "right"}
           className={cn(
-            "bg-gradient-to-br from-background/98 p-0 to-muted/30 backdrop-blur-xl border-border/60 shadow-2xl",
-            isMobile ? "h-[85vh] rounded-t-2xl" : "w-[420px]",
+            "bg-gradient-to-br h-auto min-h-[40dvh] from-background/98 p-0 to-muted/30 backdrop-blur-xl border-border/60 shadow-2xl",
+            isMobile ? " rounded-t-3xl" : "w-[420px]",
           )}
         >
-          <SheetHeader className="sr-only">
+          <SheetHeader className="sr-only ">
             <SheetTitle>Chat with Doris AI</SheetTitle>
           </SheetHeader>
           <ChatInterface isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} language={language} />

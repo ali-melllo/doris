@@ -96,13 +96,13 @@ export function SiteHeader() {
       >
         <div className="flex items-center justify-between w-full">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
+          <Link href="/" className="flex items-center group">
             <motion.div
-              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
               whileHover={{ scale: 1.05, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Sparkles className="w-5 stroke-primary h-5 text-white" />
+              <Sparkles className="w-5 stroke-primary h-5  text-white" />
             </motion.div>
             <span className="text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
               Doris AI
@@ -110,7 +110,7 @@ export function SiteHeader() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex ml-14 items-center space-x-1">
+          <div className="hidden md:flex ml-24 items-center space-x-1">
             {navigationItems.map((item) => (
               <Link
                 key={item.name}
@@ -230,7 +230,7 @@ export function SiteHeader() {
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[80%] sm:w-[350px] pr-0">
+              <SheetContent side="right" className="w-[80%] sm:w-[350px] px-0 py-5">
                 <SheetHeader className="mb-6">
                   <SheetTitle className="flex items-center space-x-2">
                     <div className="w-8 h-8 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
@@ -242,7 +242,7 @@ export function SiteHeader() {
                   </SheetTitle>
                 </SheetHeader>
 
-                <div className="flex flex-col space-y-2 pr-6">
+                <div className="flex flex-col space-y-2 px-2">
                   {navigationItems.map((item) => (
                     <SheetClose asChild key={item.name}>
                       <Link
