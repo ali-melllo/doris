@@ -144,16 +144,21 @@ function ChatInterface({
   isOpen,
   onClose,
   language = "en",
+  currentStep,
+  userSoFar
 }: {
   isOpen: boolean
   onClose: () => void
   language?: string
+  currentStep: number;
+  userSoFar: any;
 }) {
 
   const [messages, setMessages] = useState([{
     role: "assistant",
     content: "Hi there! I'm Doris, your AI migration assistant. How can I help you today?",
   }])
+
   const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
 
@@ -177,7 +182,7 @@ function ChatInterface({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: inputValue }),
+        body: JSON.stringify({ prompt: inputValue, currentStep: currentStep , currentPage : "login" }),
       });
       const data = await response.json();
       const formattedBotResponse = {
@@ -338,6 +343,7 @@ interface FixedAIAssistantProps {
   className?: string
   language?: string
   showBubble?: boolean;
+  userSoFar?: any;
 }
 
 const stepEmotions: Array<"neutral" | "happy" | "thinking" | "excited" | "greeting"> = [
@@ -353,6 +359,7 @@ export function FixedAIAssistant({
   className,
   showBubble = true,
   language = "en",
+  userSoFar,
 }: FixedAIAssistantProps) {
   const [isActive, setIsActive] = useState(false)
   const [showMessage, setShowMessage] = useState(true)
@@ -459,7 +466,7 @@ export function FixedAIAssistant({
           <SheetHeader className="sr-only ">
             <SheetTitle>Chat with Doris AI</SheetTitle>
           </SheetHeader>
-          <ChatInterface isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} language={language} />
+          <ChatInterface userSoFar={userSoFar} isOpen={isChatOpen} currentStep={currentStep} onClose={() => setIsChatOpen(false)} language={language} />
         </SheetContent>
       </Sheet>
 
