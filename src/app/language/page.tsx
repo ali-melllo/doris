@@ -384,14 +384,14 @@ export default function LanguageSelectionPage() {
 
   const handleContinue = () => {
     if (selectedLanguage) {
-      router.push("/onboarding")
+      router.push("/login")
     }
   }
 
   const popularLanguages = languages.filter((lang) => lang.popularity >= 75)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-blue-950 dark:to-purple-950 relative overflow-hidden">
+    <div className="min-h-screen pt-20 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-blue-950 dark:to-purple-950 relative overflow-hidden">
       {/* Background Effects */}
       <FloatingParticles />
 
