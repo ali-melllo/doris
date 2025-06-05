@@ -79,7 +79,7 @@ const services = [
     },
     {
         id: "translate",
-        href: "/",
+        href: "/language",
         icon: Languages,
         title: "Translation",
         description: "Multi-language support",
