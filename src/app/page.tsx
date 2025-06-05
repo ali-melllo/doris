@@ -211,7 +211,7 @@ export default function LandingPage() {
     <div className="min-h-screen max-w-7xl mx-auto overflow-x-hidden">
 
       {/* Hero Section */}
-      <section className="md:pt-5 pb-20 px-4 relative">
+      <section className="pt-5 pb-20 px-4 relative">
 
 
         <AnimatedBackground />
