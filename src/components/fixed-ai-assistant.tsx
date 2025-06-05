@@ -418,7 +418,7 @@ export function FixedAIAssistant({
               <CardContent className="p-0 bg-transparent shadow-none">
                 <div
                   className={cn(
-                    "transition-all duration-300 rounded-2xl p-2 flex items-center justify-center ",
+                    "transition-all duration-300 rounded-2xl flex items-center justify-center ",
                     isMobile ? "size-16" : "size-20",
                   )}>
                   <Image
@@ -433,7 +433,7 @@ export function FixedAIAssistant({
                 {/* Status indicator */}
                 {isActive && (
                   <motion.div
-                    className="absolute -top-1 -right-1 rounded-full flex justify-center items-center shadow-lg "
+                    className="absolute -top-2 -right-2 rounded-full flex justify-center items-center shadow-lg "
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ duration: 0.5, repeat: Number.POSITIVE_INFINITY }}
                   >

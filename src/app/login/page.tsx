@@ -662,7 +662,7 @@ export default function OnboardingPage() {
             <AnimatedGrid />
 
             <div className="flex fixed top-0 items-center backdrop-blur-lg w-full h-20 z-50">
-                <div className="fixed top-4 left-5 md:left-10 rounded-3xl bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] shadow-xl">
+                <div className="fixed top-4 left-5 p-2 md:left-10 rounded-3xl bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] shadow-xl">
                 <FixedAIAssistant currentStep={currentStep} language={formData.language} />
                 </div>
 
