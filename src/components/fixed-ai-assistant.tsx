@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { MessageCircle, X, Send, Minimize2, Maximize2, LogIn, PersonStandingIcon, Globe, Flag, Smile, Mic, Paperclip } from "lucide-react"
+import { MessageCircle, X, Send, Minimize2, Maximize2, LogIn, PersonStandingIcon, Globe, Flag, Smile, Mic, Paperclip, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { TypingAnimation } from "./magicui/text-animation"
 import { Badge } from "./ui/badge"
+import Image from "next/image"
 
 // Messages for each step in different languages
 const stepMessages: Record<string, string[]> = {
@@ -53,165 +54,6 @@ const stepMessages: Record<string, string[]> = {
 const getStepMessage = (step: number, language: string) => {
   const messages = stepMessages[language] || stepMessages.en
   return messages[step - 1] || messages[0]
-}
-
-
-
-// Realistic White Dog Component (CSS-based)
-function RealisticWhiteDog({
-  isActive,
-  emotion = "neutral",
-  isMobile = false,
-}: {
-  isActive: boolean
-  emotion?: "neutral" | "happy" | "thinking" | "excited" | "greeting"
-  isMobile?: boolean
-}) {
-  const [isBlinking, setIsBlinking] = useState(false)
-  const [tailWag, setTailWag] = useState(0)
-
-  useEffect(() => {
-    // Blinking animation
-    const blinkInterval = setInterval(
-      () => {
-        setIsBlinking(true)
-        setTimeout(() => setIsBlinking(false), 150)
-      },
-      3000 + Math.random() * 2000,
-    )
-
-    // Tail wagging when active
-    let wagInterval: NodeJS.Timeout
-    if (isActive) {
-      wagInterval = setInterval(() => {
-        setTailWag((prev) => (prev + 1) % 4)
-      }, 200)
-    }
-
-    return () => {
-      clearInterval(blinkInterval)
-      if (wagInterval) clearInterval(wagInterval)
-    }
-  }, [isActive])
-
-  const dogSize = isMobile ? "w-12 h-12" : "w-16 h-16"
-  const eyeSize = isMobile ? "w-1.5 h-1.5" : "w-2 h-2"
-  const noseSize = isMobile ? "w-1 h-1" : "w-1.5 h-1.5"
-
-  return (
-    <div className={cn("relative flex items-center justify-center", dogSize)}>
-      {/* Dog Head */}
-      <div className="relative">
-        {/* Main head shape */}
-        <div
-          className={cn(
-            "bg-white rounded-full border-2 border-gray-200 shadow-lg relative",
-            isMobile ? "w-10 h-10" : "w-12 h-12",
-          )}
-        >
-          {/* Ears */}
-          <div
-            className={cn(
-              "absolute bg-gray-100 rounded-full border border-gray-200",
-              isMobile ? "w-3 h-4 -top-2 -left-1" : "w-4 h-5 -top-2 -left-1",
-            )}
-          />
-          <div
-            className={cn(
-              "absolute bg-gray-100 rounded-full border border-gray-200",
-              isMobile ? "w-3 h-4 -top-2 -right-1" : "w-4 h-5 -top-2 -right-1",
-            )}
-          />
-
-          {/* Eyes */}
-          <div
-            className={cn(
-              "absolute bg-black rounded-full transition-all duration-150",
-              eyeSize,
-              isMobile ? "top-2 left-2" : "top-3 left-2.5",
-              isBlinking && "h-0.5",
-            )}
-          />
-          <div
-            className={cn(
-              "absolute bg-black rounded-full transition-all duration-150",
-              eyeSize,
-              isMobile ? "top-2 right-2" : "top-3 right-2.5",
-              isBlinking && "h-0.5",
-            )}
-          />
-
-          {/* Eye highlights */}
-          {!isBlinking && (
-            <>
-              <div
-                className={cn(
-                  "absolute bg-white rounded-full",
-                  isMobile ? "w-0.5 h-0.5 top-2 left-2.5" : "w-1 h-1 top-3 left-3",
-                )}
-              />
-              <div
-                className={cn(
-                  "absolute bg-white rounded-full",
-                  isMobile ? "w-0.5 h-0.5 top-2 right-2.5" : "w-1 h-1 top-3 right-3",
-                )}
-              />
-            </>
-          )}
-
-          {/* Nose */}
-          <div
-            className={cn(
-              "absolute bg-black rounded-full",
-              noseSize,
-              isMobile ? "top-4 left-1/2 transform -translate-x-1/2" : "top-5 left-1/2 transform -translate-x-1/2",
-            )}
-          />
-
-          {/* Mouth based on emotion */}
-          <div
-            className={cn(
-              "absolute border-b-2 border-black rounded-b-full",
-              isMobile
-                ? "w-2 h-1 top-5 left-1/2 transform -translate-x-1/2"
-                : "w-3 h-1.5 top-6 left-1/2 transform -translate-x-1/2",
-              emotion === "happy" && "border-b-4 w-4",
-              emotion === "excited" && "border-b-4 w-4 animate-pulse",
-            )}
-          />
-
-          {/* Tongue for happy/excited emotions */}
-          {(emotion === "happy" || emotion === "excited") && (
-            <div
-              className={cn(
-                "absolute bg-pink-400 rounded-b-full",
-                isMobile
-                  ? "w-1 h-1.5 top-6 left-1/2 transform -translate-x-1/2"
-                  : "w-1.5 h-2 top-7 left-1/2 transform -translate-x-1/2",
-              )}
-            />
-          )}
-        </div>
-
-        {/* Floating hearts when greeting */}
-        {emotion === "greeting" && (
-          <motion.div
-            className="absolute -top-2 -right-2"
-            animate={{
-              y: [-5, -15, -5],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Number.POSITIVE_INFINITY,
-            }}
-          >
-            <span className="text-red-500 text-xs">❤️</span>
-          </motion.div>
-        )}
-      </div>
-    </div>
-  )
 }
 
 // Enhanced Message Bubble Component
@@ -513,7 +355,6 @@ export function FixedAIAssistant({
   const [isActive, setIsActive] = useState(false)
   const [showMessage, setShowMessage] = useState(true)
   const [currentMessage, setCurrentMessage] = useState("")
-  const [isMinimized, setIsMinimized] = useState(false)
   const [isChatOpen, setIsChatOpen] = useState(false)
   const isMobile = useMediaQuery("(max-width: 768px)")
 
@@ -560,7 +401,6 @@ export function FixedAIAssistant({
         className={cn(
           "fixed z-50 transition-all duration-300",
           positionClasses[position],
-          isMinimized && "scale-75",
           className,
         )}
       >
@@ -568,7 +408,7 @@ export function FixedAIAssistant({
           {/* Enhanced Message Bubble */}
           <MessageBubble
             message={currentMessage}
-            isVisible={showMessage && !isMinimized}
+            isVisible={showMessage}
             position={messagePosition}
             isMobile={isMobile}
           />
@@ -580,44 +420,35 @@ export function FixedAIAssistant({
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsChatOpen(true)}
           >
-            <Card className="bg-transparent shadow-2xl backdrop-blur-md overflow">
+            <Card className="bg-transparent shadow-2xl rounded-2xl backdrop-blur-md overflow">
               <CardContent className="p-0">
                 <div
                   className={cn(
-                    "transition-all duration-300 flex items-center justify-center",
-                    isMobile || isMinimized ? "w-14 h-14" : "w-18 h-18",
-                  )}
-                >
-                  <RealisticWhiteDog
-                    isActive={isActive}
-                    emotion={stepEmotions[currentStep - 1] || "neutral"}
-                    isMobile={isMobile || isMinimized}
+                    "transition-all duration-300 rounded-2xl p-2 flex items-center justify-center bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
+                    isMobile ? "size-16" : "size-20",
+                  )}>
+                  <Image
+                    alt={'Doris'}
+                    src={'/doris.webp'}
+                    width={200}
+                    height={200}
+                    className="md:size-16"
                   />
                 </div>
 
                 {/* Status indicator */}
                 {isActive && (
                   <motion.div
-                    className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full shadow-lg border-2 border-white"
+                    className="absolute -top-1 -right-1 rounded-full flex justify-center items-center shadow-lg "
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ duration: 0.5, repeat: Number.POSITIVE_INFINITY }}
-                  />
+                  >
+                    <Sparkles className="stroke-primary fill-primary/75 size-5"/>
+                  </motion.div>
                 )}
               </CardContent>
             </Card>
-
-            {/* Enhanced Control button */}
-            {/* <Button
-              variant="ghost"
-              size="icon"
-              className="absolute -top-2 -right-2 w-6 h-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-lg rounded-full"
-              onClick={(e) => {
-                e.stopPropagation()
-                setIsMinimized(!isMinimized)
-              }}
-            >
-              {isMinimized ? <Maximize2 className="w-3 h-3" /> : <Minimize2 className="w-3 h-3" />}
-            </Button> */}
+            
           </motion.div>
         </div>
       </motion.div>

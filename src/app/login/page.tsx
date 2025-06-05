@@ -593,7 +593,7 @@ export default function OnboardingPage() {
     // Responsive Step Indicator Component
     const StepIndicator = useCallback(() => {
         return (
-            <div className="flex items-center w-full justify-center mb-6 md:mb-8 px-4">
+            <div className="flex items-center w-full justify-center mb-0 md:mb-8 px-4">
                 <div className={cn("flex items-center")}>
                     {t.steps.map((step: any, index: number) => (
                         <div key={step.id} className="flex items-center">
@@ -657,7 +657,7 @@ export default function OnboardingPage() {
     }, [currentStep])
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 relative overflow-hidden">
+        <div className="min-h-[100dvh] bg-gradient-to-br from-background via-background to-muted/20 relative overflow-hidden">
             {/* Animated Grid Background */}
             <AnimatedGrid />
 
@@ -670,7 +670,7 @@ export default function OnboardingPage() {
                 </div>
             </div>
             {/* Main Content */}
-            <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 md:p-6 lg:p-8">
+            <div className="relative z-10 min-h-screen flex flex-col items-center justify-center pt-0 md:pt-4 p-4 md:p-6 lg:p-8">
 
 
                 {/* Step Indicator */}
@@ -685,9 +685,9 @@ export default function OnboardingPage() {
                     transition={{ delay: 0.5 }}
                     className="w-full max-w-md md:max-w-lg"
                 >
-                    <Card className="backdrop-blur-xl bg-card/90 border-border/50 shadow-2xl md:min-h-[500px] relative ">
+                    <Card className="backdrop-blur-xl bg-transparent md:bg-card/90 border-border/50 md:shadow-2xl md:min-h-[500px] relative ">
                         {/* Card Background Gradient */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5" />
+                        <div className="absolute inset-0 md:bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5" />
 
                         <CardContent className={cn("relative z-10", isMobile ? "p-6" : "p-8")}>
                             {/* Step Header */}
@@ -843,7 +843,7 @@ export default function OnboardingPage() {
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center justify-between">
+                                            {/* <div className="flex items-center justify-between">
                                                 <div className="flex items-center space-x-2">
                                                     <Checkbox
                                                         id="remember"
@@ -859,7 +859,7 @@ export default function OnboardingPage() {
                                                 <Button variant="link" className="text-xs md:text-sm p-0 h-auto">
                                                     {t.forgotPassword}
                                                 </Button>
-                                            </div>
+                                            </div> */}
 
                                             <Button
                                                 onClick={handleGoogleLogin}
@@ -1078,7 +1078,7 @@ export default function OnboardingPage() {
                             </div>
 
                             {/* Navigation Buttons */}
-                            <div className={cn("flex mt-6 md:mt-8", isMobile ? "space-x-2" : "space-x-3")}>
+                            <div className={cn("flex mt-0 md:mt-8", isMobile ? "space-x-2" : "space-x-3")}>
                                 {currentStep > 1 && (
                                     <Button
                                         onClick={handleBack}
