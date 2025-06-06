@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { FixedAIAssistant } from "./fixed-ai-assistant"
 import Link from "next/link"
+import { HeroAnimatedBeam } from "./hero-animated-beams"
 
 // Service constellation data
 const services = [
@@ -89,77 +90,6 @@ const services = [
     },
 ]
 
-// Clean animated beam component
-const AnimatedBeam = ({
-    fromRef,
-    toRef,
-    className,
-    delay = 0,
-}: {
-    fromRef: React.RefObject<HTMLElement>
-    toRef: React.RefObject<HTMLElement>
-    className?: string
-    delay?: number
-}) => {
-    const [pathData, setPathData] = useState("")
-    const [isVisible, setIsVisible] = useState(false)
-
-    useEffect(() => {
-        const updatePath = () => {
-            if (fromRef.current && toRef.current) {
-                const fromRect = fromRef.current.getBoundingClientRect()
-                const toRect = toRef.current.getBoundingClientRect()
-
-                const fromX = fromRect.left + fromRect.width / 2
-                const fromY = fromRect.top + fromRect.height / 2
-                const toX = toRect.left + toRect.width / 2
-                const toY = toRect.top + toRect.height / 2
-
-                // Simple curved path
-                const midX = (fromX + toX) / 2
-                const midY = (fromY + toY) / 2 - 20
-                const path = `M ${fromX} ${fromY} Q ${midX} ${midY} ${toX} ${toY}`
-                setPathData(path)
-                setIsVisible(true)
-            }
-        }
-
-        const timer = setTimeout(() => {
-            updatePath()
-            window.addEventListener("resize", updatePath)
-        }, delay)
-
-        return () => {
-            clearTimeout(timer)
-            window.removeEventListener("resize", updatePath)
-        }
-    }, [fromRef, toRef, delay])
-
-    if (!isVisible) return null
-
-    return (
-        <svg className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
-            <defs>
-                <linearGradient id={`beam-gradient-${delay}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="rgb(59, 130, 246)" stopOpacity="0" />
-                    <stop offset="50%" stopColor="rgb(147, 51, 234)" stopOpacity="0.6" />
-                    <stop offset="100%" stopColor="rgb(236, 72, 153)" stopOpacity="0" />
-                </linearGradient>
-            </defs>
-            <motion.path
-                d={pathData}
-                stroke={`url(#beam-gradient-${delay})`}
-                strokeWidth="2"
-                fill="none"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 2, ease: "easeInOut", delay: delay / 1000 }}
-                className={className}
-            />
-        </svg>
-    )
-}
-
 // Clean service node component
 const ServiceNode = ({
     service,
@@ -211,10 +141,10 @@ const ServiceNode = ({
             <Link
                 href={isCenter ? "#" : service.href}
                 className={cn(
-                    "w-full h-full rounded-full flex items-center justify-center relative overflow- transition-all duration-300",
+                    "w-full h-full  flex items-center justify-center relative transition-all duration-300",
                     isCenter
-                        ? "bg-transparent "
-                        : `bg-gradient-to-br ${service.color} shadow-lg`,
+                        ? "bg-transparent rounded-3xl"
+                        : `bg-gradient-to-br rounded-full ${service.color} shadow-lg`,
                     isActive && "ring-4 ring-white/30 ring-offset-2 hover:scale-105 ring-offset-transparent",
                 )}
                 style={{
@@ -222,12 +152,12 @@ const ServiceNode = ({
                 }}
             >
                 {/* Simple background gradient */}
-                <div className={`absolute inset-0 ${isCenter ? "bg-background transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]" : "bg-gradient-to-br from-white/20 to-transparent "} rounded-full `} />
+                <div className={`absolute inset-0 ${isCenter ? "rounded-3xl bg-background transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]" : "rounded-full bg-gradient-to-br from-white/20 to-transparent "}  `} />
 
                 {/* Icon */}
                 <div className="relative z-10">
                     {isCenter ?
-                        <FixedAIAssistant showBubble={false} currentStep={0} />
+                        <FixedAIAssistant page={"home"} showBubble={false} currentStep={0} />
 
                         : <service.icon className="w-8 h-8 text-white" />}
                 </div>
@@ -380,7 +310,7 @@ const DesktopHero = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="mb-20 space-y-3 md:space-y-5"
+                    className="mb-10 md:mb-16 space-y-3 md:space-y-5"
                 >
                     <motion.div
                         initial={{ scale: 0 }}
@@ -410,7 +340,7 @@ const DesktopHero = () => {
                     </motion.h1>
 
                     <motion.p
-                        className="hidden md:block text-lg text-nowrap text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+                        className="hidden md:block text-xs md:text-lg md:text-nowrap text-muted-foreground max-w-3xl mx-auto leading-relaxed"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.6 }}
@@ -419,61 +349,13 @@ const DesktopHero = () => {
                     </motion.p>
                 </motion.div>
 
-                {/* Service constellation */}
+
                 <motion.div
-                    className="relative w-full max-w-3xl mx-auto -mt-28 md:-mt-20 h-[500px]"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 0.8 }}
-                >
-                    {/* Center node (Doris AI) */}
-                    <ServiceNode
-                        service={services[0]}
-                        isCenter
-                        nodeRef={centerRef}
-                        onClick={() => setActiveService(activeService ? null : "center")}
-                        isActive={activeService === "center"}
-                    />
-
-                    {/* Service nodes */}
-                    {services.map((service, index) => {
-                        if (!serviceRefs.current[service.id]) {
-                            serviceRefs.current[service.id] = { current: null }
-                        }
-
-                        return (
-                            <ServiceNode
-                                key={service.id}
-                                service={service}
-                                nodeRef={serviceRefs.current[service.id]}
-                                onClick={() => setActiveService(activeService === service.id ? null : service.id)}
-                                isActive={activeService === service.id}
-                                index={index}
-                            />
-                        )
-                    })}
-
-                    {/* Clean animated beams */}
-                    {services.map((service, index) => {
-                        if (!serviceRefs.current[service.id] || !centerRef.current) {
-                            return null
-                        }
-
-                        return (
-                            <AnimatedBeam
-                                key={`beam-${service.id}`}
-                                fromRef={centerRef}
-                                toRef={serviceRefs.current[service.id]}
-                                delay={index * 150}
-                                className={cn(
-                                    "transition-opacity duration-300",
-                                    activeService && activeService !== service.id && activeService !== "center"
-                                        ? "opacity-30"
-                                        : "opacity-70",
-                                )}
-                            />
-                        )
-                    })}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                    >
+                 <HeroAnimatedBeam />
                 </motion.div>
 
             </div>

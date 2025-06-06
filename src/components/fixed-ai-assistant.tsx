@@ -145,13 +145,15 @@ function ChatInterface({
   onClose,
   language = "en",
   currentStep,
-  userSoFar
+  userSoFar,
+  page
 }: {
   isOpen: boolean
   onClose: () => void
   language?: string
   currentStep: number;
   userSoFar: any;
+  page: string;
 }) {
 
   const [messages, setMessages] = useState([{
@@ -182,7 +184,7 @@ function ChatInterface({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: inputValue, currentStep: currentStep , currentPage : "login" }),
+        body: JSON.stringify({ prompt: inputValue, currentStep: currentStep, currentPage: page }),
       });
       const data = await response.json();
       const formattedBotResponse = {
@@ -338,12 +340,13 @@ function ChatInterface({
 
 // Main Fixed AI Assistant Component
 interface FixedAIAssistantProps {
-  currentStep: number
+  currentStep?: number
   position?: "top-left" | "top-right" | "bottom-left" | "bottom-right"
   className?: string
   language?: string
   showBubble?: boolean;
   userSoFar?: any;
+  page?: any;
 }
 
 const stepEmotions: Array<"neutral" | "happy" | "thinking" | "excited" | "greeting"> = [
@@ -360,6 +363,7 @@ export function FixedAIAssistant({
   showBubble = true,
   language = "en",
   userSoFar,
+  page,
 }: FixedAIAssistantProps) {
   const [isActive, setIsActive] = useState(false)
   const [showMessage, setShowMessage] = useState(true)
@@ -373,7 +377,7 @@ export function FixedAIAssistant({
     setShowMessage(false)
 
     const timer1 = setTimeout(() => {
-      setCurrentMessage(getStepMessage(currentStep, language))
+      setCurrentMessage(getStepMessage(currentStep || 0, language))
       setShowMessage(true)
     }, 300)
 
@@ -425,15 +429,15 @@ export function FixedAIAssistant({
               <CardContent className="p-0 bg-transparent shadow-none">
                 <div
                   className={cn(
-                    "transition-all duration-300 rounded-2xl flex items-center justify-center ",
+                    "transition-all duration-300 bg- rounded-2xl flex items-center justify-center ",
                     isMobile ? "size-16" : "size-20",
                   )}>
                   <Image
                     alt={'Doris'}
-                    src={'/doris.webp'}
+                    src={'/doris-1.webp'}
                     width={300}
                     height={300}
-                    className=" md:size-16"
+                    className="rounded-b-3xl"
                   />
                 </div>
 
@@ -466,7 +470,7 @@ export function FixedAIAssistant({
           <SheetHeader className="sr-only ">
             <SheetTitle>Chat with Doris AI</SheetTitle>
           </SheetHeader>
-          <ChatInterface userSoFar={userSoFar} isOpen={isChatOpen} currentStep={currentStep} onClose={() => setIsChatOpen(false)} language={language} />
+          <ChatInterface page={page} userSoFar={userSoFar} isOpen={isChatOpen} currentStep={currentStep || 0} onClose={() => setIsChatOpen(false)} language={language} />
         </SheetContent>
       </Sheet>
 
