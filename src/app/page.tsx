@@ -127,13 +127,12 @@ const howItWorksSteps = [
 // Animated background component
 const AnimatedBackground = () => {
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none">
-
+    <div className="fixed inset-0 blur dark:blur-md md:blur-md dark:md:blur-xl overflow-hidden pointer-events-none">
       {/* Floating particles */}
       {[...Array(20)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-30"
+          className="absolute z-10 size-5 md:size-10 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full "
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
@@ -216,28 +215,7 @@ export default function LandingPage() {
 
         <AnimatedBackground />
         {/* Floating Particles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-blue-400/30 rounded-full"
-              animate={{
-                y: [0, -100, 0],
-                opacity: [0, 1, 0],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Number.POSITIVE_INFINITY,
-                delay: Math.random() * 5,
-              }}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-            />
-          ))}
-        </div>
-        {/* <HeroSectionV1/> */}
+
         <HeroSection />
       </section>
 

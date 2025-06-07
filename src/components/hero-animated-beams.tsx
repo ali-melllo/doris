@@ -66,35 +66,35 @@ export function HeroAnimatedBeam() {
                 <div className="flex flex-row items-center justify-between">
                     <Square className="size-20 md:size-24 flex flex-col gap-2" ref={div1Ref}>
                         <svg width="45" height="45" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M496 124.608L96 524.576V1024h832V556.576z" fill="#EAEAEA" /><path d="M256 672h224v352H256z" fill="#434854" /><path d="M544 640h96v96h-96zM672 640h96v96h-96zM672 512h96v96h-96zM544 512h96v96h-96z" fill="#469FCC" /><path d="M544 512h96v32h-96zM672 512h96v32h-96zM544 640h96v32h-96zM672 640h96v32h-96z" fill="" /><path d="M496 64L96 480v96L496 176 928 608v-96z" fill="" /><path d="M1012.576 505.376L541.248 34.048l-22.624-22.624a31.968 31.968 0 0 0-45.248 0l-22.624 22.624L11.424 473.376a31.968 31.968 0 0 0 0 45.248l22.624 22.624a31.968 31.968 0 0 0 45.248 0L496 124.608l448.672 448.672a31.968 31.968 0 0 0 45.248 0l22.624-22.624a32.032 32.032 0 0 0 0.032-45.28z" fill="#EF4D4D" /><path d="M238.24 1024A126.656 126.656 0 0 0 256 960a128 128 0 0 0-256 0c0 23.424 6.752 45.088 17.76 64h220.48zM896 832a127.744 127.744 0 0 0-116.224 75.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h360.384A126.944 126.944 0 0 0 1024 960a128 128 0 0 0-128-128z" fill="#3AAD73" /><path d="M779.776 907.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h139.872A126.656 126.656 0 0 1 768 960c0-18.944 4.384-36.768 11.776-52.96z" fill="" /></svg>
-                        <p className="text-sm">Houses</p>
+                        <p className="font-semibold text-sm">Houses</p>
                     </Square>
                     <Square className="size-20 md:size-24 flex flex-col gap-2" ref={div5Ref}>
                         <svg width="45" height="45" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title>folder_type_public</title><path d="M27.5,5.5H18.2L16.1,9.7H4.4V26.5H29.6V5.5Zm0,4.2H19.3l1.1-2.1h7.1Z" fill="#00a23c" /><path d="M22.6,16.3a3.787,3.787,0,0,1,1.8,2.8,3.048,3.048,0,1,0-1.8-2.8Zm-2,6.3a3.1,3.1,0,1,0-3.1-3.1h0A3.116,3.116,0,0,0,20.6,22.6Zm1.3.2H19.3a3.9,3.9,0,0,0-3.9,3.9V30h0l.2.1A16.106,16.106,0,0,0,21,31a9.638,9.638,0,0,0,4.7-.9l.2-.1h0V26.8A4.148,4.148,0,0,0,21.9,22.8ZM27,19.6H24.4a3.225,3.225,0,0,1-1.2,2.6,4.621,4.621,0,0,1,3.3,4.5v1a9.782,9.782,0,0,0,4.1-.9l.2-.1h0V23.5A3.82,3.82,0,0,0,27,19.6Zm-11.8-.2a3.022,3.022,0,0,0,1.6-.5,3.71,3.71,0,0,1,1.4-2.4v-.2a3.1,3.1,0,0,0-6.2,0,3.272,3.272,0,0,0,3.2,3.1Zm2.7,2.9a4.2,4.2,0,0,1-1.2-2.6H13.8a3.9,3.9,0,0,0-3.9,3.9v3.2h0l.2.1a16.28,16.28,0,0,0,4.4.8v-1a4.81,4.81,0,0,1,3.4-4.4Z" fill="#ffffff" /></svg>
-                        <p className="text-sm">Gov</p>
+                        <p className="font-semibold text-sm">Gov</p>
                     </Square>
                 </div>
                 <div className="flex flex-row items-center justify-between">
                     <Square className="size-20 md:size-24 flex flex-col gap-2" ref={div2Ref}>
                         <Icons.messenger />
-                        <p className="text-sm">Chat</p>
+                        <p className="font-semibold text-sm">AI Chat</p>
                     </Square>
                     <Square className="size-24" ref={div4Ref}>
                         <FixedAIAssistant showBubble={false} />
                     </Square>
                     <Square className="size-20 md:size-24 flex flex-col gap-2" ref={div6Ref}>
                         <svg width="45" height="45" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M852.8 901.6h-688c-66.4 0-120-53.6-120-120V368.8c0-66.4 53.6-120 120-120h688c66.4 0 120 53.6 120 120v413.6c0 65.6-53.6 119.2-120 119.2z" fill="#D6AB7F" /><path d="M146.4 687.2h730.4c35.2 0 68-11.2 95.2-31.2V368c0-66.4-53.6-120-120-120h-688c-66.4 0-120 53.6-120 120v283.2c29.6 23.2 64.8 36 102.4 36z" fill="#0D1014" /><path d="M852.8 909.6h-688c-70.4 0-128-57.6-128-128V368.8c0-70.4 57.6-128 128-128h688c70.4 0 128 57.6 128 128v413.6c0 69.6-57.6 127.2-128 127.2z m-688-652.8c-61.6 0-112 50.4-112 112v413.6c0 61.6 50.4 112 112 112h688c61.6 0 112-50.4 112-112V368.8c0-61.6-50.4-112-112-112h-688z" fill="#6A576D" /><path d="M508.8 729.6c-22.4 0-40-17.6-40-40v-45.6h80v45.6c0 21.6-17.6 40-40 40z" fill="#FFFFFF" /><path d="M508.8 737.6c-26.4 0-48-21.6-48-48V640c0-4.8 3.2-8 8-8h80c4.8 0 8 3.2 8 8v49.6c0 26.4-21.6 48-48 48z m-32-90.4v41.6c0 17.6 14.4 32 32 32s32-14.4 32-32v-41.6h-64z" fill="#6A576D" /><path d="M247.2 214.4H148.8c-62.4 0-113.6 50.4-114.4 113.6L32 523.2c-0.8 64 50.4 116 114.4 116h730.4c64 0 115.2-52 114.4-116l-2.4-196c-0.8-62.4-52-113.6-114.4-113.6H247.2" fill="#938993" /><path d="M877.6 647.2H146.4c-32.8 0-64-12.8-87.2-36.8C36 587.2 24 556 24 523.2l2.4-196c0.8-67.2 56-120.8 122.4-120.8h726.4c67.2 0 121.6 54.4 122.4 120.8l2.4 196c0 32.8-12 64-35.2 88-23.2 23.2-54.4 36-87.2 36zM148.8 222.4c-58.4 0-105.6 47.2-106.4 105.6L40 523.2c0 28.8 10.4 56 30.4 76 20 20.8 47.2 32 76 32h730.4c28.8 0 56-11.2 76-32s31.2-47.2 30.4-76l-2.4-196c-0.8-58.4-48.8-105.6-106.4-105.6H148.8z" fill="#6A576D" /><path d="M509.6 505.6h-1.6c-37.6 0-68 31.2-68 67.2v70.4h137.6v-70.4c0.8-36-29.6-67.2-68-67.2z" fill="#EC7BB0" /><path d="M577.6 647.2H440c-2.4 0-4-0.8-5.6-2.4-1.6-1.6-2.4-3.2-2.4-5.6l0.8-66.4c0-41.6 34.4-75.2 76-75.2h1.6c41.6 0 76 33.6 76 75.2l-0.8 66.4c0 4.8-3.2 8-8 8z m-129.6-16h121.6v-58.4c0-32.8-27.2-59.2-60-59.2h-1.6c-32.8 0-60 26.4-60 59.2v58.4zM680.8 222.4c-4.8 0-8-3.2-8-8 0-26.4-6.4-45.6-19.2-58.4-25.6-25.6-76.8-25.6-136-25.6h-17.6c-59.2 0-110.4 0-136 25.6-12.8 12.8-19.2 32-19.2 58.4 0 4.8-3.2 8-8 8s-8-3.2-8-8c0-31.2 8-53.6 24-69.6 30.4-30.4 84-30.4 147.2-30.4h17.6c62.4 0 116.8 0 147.2 30.4 16 16 24 38.4 24 69.6 0 4-4 8-8 8z" fill="#6A576D" /></svg>
-                        <p className="text-sm">Jobs</p>
+                        <p className="font-semibold text-sm">Jobs</p>
                     </Square>
                 </div>
                 <div className="flex flex-row items-center justify-between">
                     <Square className="size-20 md:size-24 flex flex-col gap-2" ref={div3Ref}>
                         <PlanetIcon />
-                        <p className="text-sm">Lang</p>
+                        <p className="font-semibold text-sm">Lang</p>
 
                     </Square>
                     <Square className="size-20 md:size-24 flex flex-col gap-2" ref={div7Ref}>
                         <MapIcon />
-                        <p className="text-sm">Browse</p>
+                        <p className="font-semibold text-sm">Browse</p>
 
                     </Square>
                 </div>
@@ -486,8 +486,8 @@ const Icons = {
     ),
     messenger: () => (
         <svg
-            width="100"
-            height="100"
+            width="50"
+            height="50"
             viewBox="0 0 48 48"
             xmlns="http://www.w3.org/2000/svg"
         >

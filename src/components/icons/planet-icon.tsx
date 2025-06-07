@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function PlanetIcon() {
   return (
-<svg height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  
+<svg height="45" width="45" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  
 	 viewBox="0 0 512.001 512.001">
 <path fill="#4CF5CB" d="M258.637,8.192v495.616C394.295,502.403,503.83,391.985,503.83,256S394.295,9.597,258.637,8.192z"/>
 <path fill="#D1FDF2" d="M258.637,8.192C370.231,9.902,460.256,120.2,460.256,256s-90.025,246.098-201.619,247.808
