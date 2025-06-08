@@ -52,11 +52,11 @@ const DesktopHero = () => {
                         </AnimatedGradientText>
 
                         <br />
-                        <span className="text-muted-foreground text-2xl md:text-5xl">Your Journey Starts Here</span>
+                        <span className="hidden md:block text-muted-foreground text-2xl font-semibold md:text-5xl">Your Journey Starts Here</span>
                     </motion.h1>
 
                     <motion.p
-                        className="hidden md:block text-xs md:text-lg md:text-nowrap text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+                        className=" text-xs md:text-lg md:text-nowrap text-muted-foreground max-w-3xl mx-auto leading-relaxed"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.6 }}

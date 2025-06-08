@@ -5,9 +5,13 @@ import React, { forwardRef, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { AnimatedBeam } from "@/components/magicui/animated-beam";
 import { FixedAIAssistant } from "./fixed-ai-assistant";
-import { Home } from "lucide-react";
 import PlanetIcon from "./icons/planet-icon";
 import MapIcon from "./icons/map-icon";
+import CreditCardIcon from "./icons/credit-card-icon";
+import InsuranceIcon from "./icons/insurance-icon";
+import Link from "next/link";
+import { Badge } from "./ui/badge";
+import Image from "next/image";
 
 const Circle = forwardRef<
     HTMLDivElement,
@@ -30,8 +34,8 @@ Circle.displayName = "Circle";
 
 const Square = forwardRef<
     HTMLDivElement,
-    { className?: string; children?: React.ReactNode }
->(({ className, children }, ref) => {
+    { className?: string; children?: React.ReactNode, href: string }
+>(({ className, children, href }, ref) => {
     return (
         <div
             ref={ref}
@@ -40,7 +44,9 @@ const Square = forwardRef<
                 className,
             )}
         >
-            {children}
+            <Link className="flex flex-col gap-1 justify-center items-center size-full" href={href}>
+                {children}
+            </Link>
         </div>
     );
 });
@@ -56,6 +62,8 @@ export function HeroAnimatedBeam() {
     const div5Ref = useRef<HTMLDivElement>(null);
     const div6Ref = useRef<HTMLDivElement>(null);
     const div7Ref = useRef<HTMLDivElement>(null);
+    const div8Ref = useRef<HTMLDivElement>(null);
+    const div9Ref = useRef<HTMLDivElement>(null);
 
     return (
         <div
@@ -64,39 +72,58 @@ export function HeroAnimatedBeam() {
         >
             <div className="flex size-full max-h-[300px] md:max-h-[350px] max-w-lg flex-col items-stretch justify-between gap-10">
                 <div className="flex flex-row items-center justify-between">
-                    <Square className="size-20 md:size-24 flex flex-col gap-2" ref={div1Ref}>
+                    <Square href={"/houses"} className="size-20 md:size-24 flex flex-col gap-2" ref={div1Ref}>
                         <svg width="45" height="45" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M496 124.608L96 524.576V1024h832V556.576z" fill="#EAEAEA" /><path d="M256 672h224v352H256z" fill="#434854" /><path d="M544 640h96v96h-96zM672 640h96v96h-96zM672 512h96v96h-96zM544 512h96v96h-96z" fill="#469FCC" /><path d="M544 512h96v32h-96zM672 512h96v32h-96zM544 640h96v32h-96zM672 640h96v32h-96z" fill="" /><path d="M496 64L96 480v96L496 176 928 608v-96z" fill="" /><path d="M1012.576 505.376L541.248 34.048l-22.624-22.624a31.968 31.968 0 0 0-45.248 0l-22.624 22.624L11.424 473.376a31.968 31.968 0 0 0 0 45.248l22.624 22.624a31.968 31.968 0 0 0 45.248 0L496 124.608l448.672 448.672a31.968 31.968 0 0 0 45.248 0l22.624-22.624a32.032 32.032 0 0 0 0.032-45.28z" fill="#EF4D4D" /><path d="M238.24 1024A126.656 126.656 0 0 0 256 960a128 128 0 0 0-256 0c0 23.424 6.752 45.088 17.76 64h220.48zM896 832a127.744 127.744 0 0 0-116.224 75.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h360.384A126.944 126.944 0 0 0 1024 960a128 128 0 0 0-128-128z" fill="#3AAD73" /><path d="M779.776 907.04A94.848 94.848 0 0 0 736 896a96 96 0 0 0-96 96c0 11.296 2.304 21.952 5.888 32h139.872A126.656 126.656 0 0 1 768 960c0-18.944 4.384-36.768 11.776-52.96z" fill="" /></svg>
-                        <p className="font-semibold text-sm">Houses</p>
+                        <p className="font-semibold text-xs md:text-sm">Houses</p>
                     </Square>
-                    <Square className="size-20 md:size-24 flex flex-col gap-2" ref={div5Ref}>
+                    <Square href={"/"} className="size-20 relative md:size-24 flex flex-col gap-2" ref={div9Ref}>
+                        <Badge className="absolute -top-2 -right-5 text-white">Soon</Badge>
+                        <CreditCardIcon />
+                        <p className="font-semibold text-xs md:text-sm">Banking</p>
+                    </Square>
+                    <Square href={"/government"} className="size-20 md:size-24 flex flex-col gap-2" ref={div5Ref}>
                         <svg width="45" height="45" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title>folder_type_public</title><path d="M27.5,5.5H18.2L16.1,9.7H4.4V26.5H29.6V5.5Zm0,4.2H19.3l1.1-2.1h7.1Z" fill="#00a23c" /><path d="M22.6,16.3a3.787,3.787,0,0,1,1.8,2.8,3.048,3.048,0,1,0-1.8-2.8Zm-2,6.3a3.1,3.1,0,1,0-3.1-3.1h0A3.116,3.116,0,0,0,20.6,22.6Zm1.3.2H19.3a3.9,3.9,0,0,0-3.9,3.9V30h0l.2.1A16.106,16.106,0,0,0,21,31a9.638,9.638,0,0,0,4.7-.9l.2-.1h0V26.8A4.148,4.148,0,0,0,21.9,22.8ZM27,19.6H24.4a3.225,3.225,0,0,1-1.2,2.6,4.621,4.621,0,0,1,3.3,4.5v1a9.782,9.782,0,0,0,4.1-.9l.2-.1h0V23.5A3.82,3.82,0,0,0,27,19.6Zm-11.8-.2a3.022,3.022,0,0,0,1.6-.5,3.71,3.71,0,0,1,1.4-2.4v-.2a3.1,3.1,0,0,0-6.2,0,3.272,3.272,0,0,0,3.2,3.1Zm2.7,2.9a4.2,4.2,0,0,1-1.2-2.6H13.8a3.9,3.9,0,0,0-3.9,3.9v3.2h0l.2.1a16.28,16.28,0,0,0,4.4.8v-1a4.81,4.81,0,0,1,3.4-4.4Z" fill="#ffffff" /></svg>
-                        <p className="font-semibold text-sm">Gov</p>
+                        <p className="font-semibold text-xs md:text-sm">Gov</p>
                     </Square>
                 </div>
                 <div className="flex flex-row items-center justify-between">
-                    <Square className="size-20 md:size-24 flex flex-col gap-2" ref={div2Ref}>
-                        <Icons.messenger />
-                        <p className="font-semibold text-sm">AI Chat</p>
+                    <Square href={"/"} className="size-20 md:size-24 relative flex flex-col gap-2" ref={div2Ref}>
+                        <Badge className="absolute -top-2 -right-5 text-white">Soon</Badge>
+                        <InsuranceIcon />
+                        <p className="font-semibold text-xs md:text-sm">Insurance</p>
                     </Square>
-                    <Square className="size-24" ref={div4Ref}>
-                        <FixedAIAssistant showBubble={false} />
+                    <Square href={"/chat"} className="size-24 p-2 pb-px" ref={div4Ref}>
+                        <Image
+                            width={100}
+                            height={100}
+                            alt={'doris'}
+                            src={'/doris-1.webp'}
+                        />
                     </Square>
-                    <Square className="size-20 md:size-24 flex flex-col gap-2" ref={div6Ref}>
+                    <Square href={"/jobs"} className="size-20 md:size-24 flex flex-col gap-2" ref={div6Ref}>
                         <svg width="45" height="45" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M852.8 901.6h-688c-66.4 0-120-53.6-120-120V368.8c0-66.4 53.6-120 120-120h688c66.4 0 120 53.6 120 120v413.6c0 65.6-53.6 119.2-120 119.2z" fill="#D6AB7F" /><path d="M146.4 687.2h730.4c35.2 0 68-11.2 95.2-31.2V368c0-66.4-53.6-120-120-120h-688c-66.4 0-120 53.6-120 120v283.2c29.6 23.2 64.8 36 102.4 36z" fill="#0D1014" /><path d="M852.8 909.6h-688c-70.4 0-128-57.6-128-128V368.8c0-70.4 57.6-128 128-128h688c70.4 0 128 57.6 128 128v413.6c0 69.6-57.6 127.2-128 127.2z m-688-652.8c-61.6 0-112 50.4-112 112v413.6c0 61.6 50.4 112 112 112h688c61.6 0 112-50.4 112-112V368.8c0-61.6-50.4-112-112-112h-688z" fill="#6A576D" /><path d="M508.8 729.6c-22.4 0-40-17.6-40-40v-45.6h80v45.6c0 21.6-17.6 40-40 40z" fill="#FFFFFF" /><path d="M508.8 737.6c-26.4 0-48-21.6-48-48V640c0-4.8 3.2-8 8-8h80c4.8 0 8 3.2 8 8v49.6c0 26.4-21.6 48-48 48z m-32-90.4v41.6c0 17.6 14.4 32 32 32s32-14.4 32-32v-41.6h-64z" fill="#6A576D" /><path d="M247.2 214.4H148.8c-62.4 0-113.6 50.4-114.4 113.6L32 523.2c-0.8 64 50.4 116 114.4 116h730.4c64 0 115.2-52 114.4-116l-2.4-196c-0.8-62.4-52-113.6-114.4-113.6H247.2" fill="#938993" /><path d="M877.6 647.2H146.4c-32.8 0-64-12.8-87.2-36.8C36 587.2 24 556 24 523.2l2.4-196c0.8-67.2 56-120.8 122.4-120.8h726.4c67.2 0 121.6 54.4 122.4 120.8l2.4 196c0 32.8-12 64-35.2 88-23.2 23.2-54.4 36-87.2 36zM148.8 222.4c-58.4 0-105.6 47.2-106.4 105.6L40 523.2c0 28.8 10.4 56 30.4 76 20 20.8 47.2 32 76 32h730.4c28.8 0 56-11.2 76-32s31.2-47.2 30.4-76l-2.4-196c-0.8-58.4-48.8-105.6-106.4-105.6H148.8z" fill="#6A576D" /><path d="M509.6 505.6h-1.6c-37.6 0-68 31.2-68 67.2v70.4h137.6v-70.4c0.8-36-29.6-67.2-68-67.2z" fill="#EC7BB0" /><path d="M577.6 647.2H440c-2.4 0-4-0.8-5.6-2.4-1.6-1.6-2.4-3.2-2.4-5.6l0.8-66.4c0-41.6 34.4-75.2 76-75.2h1.6c41.6 0 76 33.6 76 75.2l-0.8 66.4c0 4.8-3.2 8-8 8z m-129.6-16h121.6v-58.4c0-32.8-27.2-59.2-60-59.2h-1.6c-32.8 0-60 26.4-60 59.2v58.4zM680.8 222.4c-4.8 0-8-3.2-8-8 0-26.4-6.4-45.6-19.2-58.4-25.6-25.6-76.8-25.6-136-25.6h-17.6c-59.2 0-110.4 0-136 25.6-12.8 12.8-19.2 32-19.2 58.4 0 4.8-3.2 8-8 8s-8-3.2-8-8c0-31.2 8-53.6 24-69.6 30.4-30.4 84-30.4 147.2-30.4h17.6c62.4 0 116.8 0 147.2 30.4 16 16 24 38.4 24 69.6 0 4-4 8-8 8z" fill="#6A576D" /></svg>
-                        <p className="font-semibold text-sm">Jobs</p>
+                        <p className="font-semibold text-xs md:text-sm">Jobs</p>
                     </Square>
                 </div>
                 <div className="flex flex-row items-center justify-between">
-                    <Square className="size-20 md:size-24 flex flex-col gap-2" ref={div3Ref}>
+                    <Square href={"/language"} className="size-20 md:size-24 flex flex-col gap-2" ref={div3Ref}>
                         <PlanetIcon />
-                        <p className="font-semibold text-sm">Lang</p>
+                        <p className="font-semibold text-xs md:text-sm">Lang</p>
 
                     </Square>
-                    <Square className="size-20 md:size-24 flex flex-col gap-2" ref={div7Ref}>
+                    <Square href={"/"} className="size-20 md:size-24 relative flex flex-col gap-2" ref={div7Ref}>
+                        <Badge className="absolute -top-2 -right-5 text-white">Soon</Badge>
+                        <svg width="45" height="45" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" preserveAspectRatio="xMidYMid meet"><path fill="#00B1FF" d="M498.629 264.06l-29.251-22.649l-37.291-76.419a48.5 48.5 0 0 0-43.588-27.231H199.952a44.696 44.696 0 0 0-38.862 22.616l-45.143 79.451c-44.091 1.191-86.09 29.911-86.09 29.911c-16.017 7.14-17.251 27.918-17.251 45.455c0 4.287.663 7.763-3.624 7.763a7.763 7.763 0 0 0-7.763 7.763v27.724a7.763 7.763 0 0 0 7.763 7.763h469.044c18.586 0 33.652-15.067 33.652-33.652v-41.887a33.65 33.65 0 0 0-13.049-26.608z"></path><path fill="#0074A8" d="M54.96 357.654c0-39.004 31.619-70.623 70.623-70.623s70.623 31.619 70.623 70.623v8.553H54.96v-8.553zm258.651 8.553h141.246v-8.553c0-39.004-31.619-70.623-70.623-70.623s-70.623 31.619-70.623 70.623v8.553z"></path><path fill="#2B3B47" d="M184.148 359.207c0 31.556-25.581 57.137-57.137 57.137s-57.137-25.581-57.137-57.137s25.581-57.137 57.137-57.137s57.137 25.581 57.137 57.137zm201.514-57.137c-31.556 0-57.137 25.581-57.137 57.137s25.581 57.137 57.137 57.137s57.137-25.581 57.137-57.137s-25.581-57.137-57.137-57.137z"></path><path fill="#9BA5A8" d="M164.461 359.207c0 20.683-16.767 37.45-37.45 37.45s-37.45-16.767-37.45-37.45c0-20.683 16.767-37.45 37.45-37.45s37.45 16.768 37.45 37.45zm221.201-37.449c-20.683 0-37.45 16.767-37.45 37.45c0 20.683 16.767 37.45 37.45 37.45c20.683 0 37.45-16.767 37.45-37.45c0-20.683-16.767-37.45-37.45-37.45z"></path><path fill="#FFF" d="M164.745 232.018l260.328.731c5.331.015 8.829-5.567 6.491-10.358L411 180.253c-5.317-10.896-16.586-17.936-28.71-17.936H208.375a28.143 28.143 0 0 0-24.469 14.24l-25.401 44.705c-2.723 4.791.728 10.741 6.24 10.756z"></path><path fill="#00B1FF" d="M306.63 145.063h27.936v101.59H306.63z"></path><path fill="#E5E4DF" d="M140.13 359.207c0 7.245-5.873 13.118-13.118 13.118s-13.118-5.873-13.118-13.118s5.873-13.118 13.118-13.118s13.118 5.873 13.118 13.118zm245.532-13.118c-7.245 0-13.118 5.873-13.118 13.118s5.873 13.118 13.118 13.118s13.118-5.873 13.118-13.118c.001-7.245-5.873-13.118-13.118-13.118z"></path><path fill="#FFD469" d="M511.599 320.975h-7.708c-8.33 0-13.528-6.753-13.528-15.083s5.198-15.083 13.528-15.083h7.708v30.166zm-499.252-2.07h8.743c8.33 0 13.528-6.753 13.528-15.083s-5.198-15.083-13.528-15.083h-5.912c-3.184 6.178-2.831 30.166-2.831 30.166z"></path><path fill="#2B3B47" d="M206.815 214.949v19.458c0 5.696-7.858 9.048-13.649 5.832c-4.044-2.246-8.147-4.958-11.014-7.909l-19.652-.02c-5.154-.008-8.288-5.68-5.553-10.048l19.673-32.88l8.37 25.334c2.4-1.979 5.201-3.84 7.985-5.487c5.756-3.408 13.84-.064 13.84 5.72zm223.118 17.742c4.343-.013 7.173-4.568 5.26-8.467l-27.438-55.939a10.039 10.039 0 0 0-9.013-5.618h-13.08v70.154l44.271-.13z"></path></svg>
+                        <p className="font-semibold text-xs md:text-sm">Driving LS</p>
+
+                    </Square>
+                    <Square href={"/map"} className="size-20 md:size-24 flex flex-col gap-2" ref={div8Ref}>
                         <MapIcon />
-                        <p className="font-semibold text-sm">Browse</p>
+                        <p className="font-semibold text-xs md:text-sm">Browse</p>
 
                     </Square>
+
+
                 </div>
             </div>
 
@@ -107,6 +134,7 @@ export function HeroAnimatedBeam() {
                 curvature={-75}
                 endYOffset={-10}
             />
+
             <AnimatedBeam
                 containerRef={containerRef}
                 fromRef={div2Ref}
@@ -136,6 +164,22 @@ export function HeroAnimatedBeam() {
             <AnimatedBeam
                 containerRef={containerRef}
                 fromRef={div7Ref}
+                toRef={div4Ref}
+                curvature={75}
+                endYOffset={10}
+                reverse
+            />
+            <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={div8Ref}
+                toRef={div4Ref}
+                curvature={75}
+                endYOffset={10}
+                reverse
+            />
+            <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={div9Ref}
                 toRef={div4Ref}
                 curvature={75}
                 endYOffset={10}

@@ -138,7 +138,7 @@ export function SiteHeader() {
                   <ChevronDown className="w-4 h-4 stroke-foreground opacity-50" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 mr-5 mt-5">
+              <DropdownMenuContent align="end" className="w-48 mr-5 mt-7">
                 {languages.map((lang) => (
                   <DropdownMenuItem
                     key={lang.code}

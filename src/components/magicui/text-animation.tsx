@@ -3,9 +3,10 @@
 import { cn } from "@/lib/utils";
 import { motion, MotionProps } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from 'react-markdown';
 
 interface TypingAnimationProps extends MotionProps {
-  children: string;
+  children: string | any;
   className?: string;
   duration?: number;
   delay?: number;
@@ -79,12 +80,14 @@ export function TypingAnimation({
     <MotionComponent
       ref={elementRef}
       className={cn(
-        "text-4xl font-bold leading-[5rem] tracking-[-0.02em]",
+        "text-4xl leading-[5rem] tracking-[-0.02em]",
         className,
       )}
       {...props}
     >
-      {displayedText}
+      <ReactMarkdown className="prose text-sm leading-relaxed dark:prose-invert">
+        {displayedText}
+      </ReactMarkdown>
     </MotionComponent>
   );
 }

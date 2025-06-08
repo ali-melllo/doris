@@ -115,7 +115,7 @@ export default function ChatPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
                       onClick={() => setInputValue(question)}
-                      className="p-3 text-left bg-muted/50 hover:bg-muted/80 rounded-lg border border-border/50 hover:border-border transition-all duration-200 text-sm"
+                      className="p-3 text-left font-bold bg-muted/50 hover:bg-muted/80 rounded-lg border border-border/50 hover:border-border transition-all duration-200 text-sm"
                     >
                       {question}
                     </motion.button>
@@ -143,7 +143,10 @@ export default function ChatPage() {
                     )}
                   >
                     {(index === messages.length - 1 && message.role === "assistant") ?
-                      <TypingAnimation duration={20} className="text-sm leading-relaxed">{message.content}</TypingAnimation> :
+                      <TypingAnimation duration={20} className="text-sm leading-relaxed">
+                              {message.content}
+                     </TypingAnimation>
+                    :
                       <p className="text-sm leading-relaxed">{message.content}</p>
                     }
                   </Card>
