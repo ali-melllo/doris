@@ -33,6 +33,7 @@ import { FixedAIAssistant } from "@/components/fixed-ai-assistant"
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { ModeToggle } from "@/components/mode-toggle"
+import Image from "next/image"
 
 // Language data
 const languages = [
@@ -1138,7 +1139,7 @@ export default function OnboardingPage() {
 
             {/* Loading Overlay */}
             <AnimatePresence>
-                {isSubmitting && (
+                {!isSubmitting && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -1154,27 +1155,39 @@ export default function OnboardingPage() {
                             <div className="relative">
                                 <motion.div
                                     className={cn(
-                                        "bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto shadow-2xl",
+                                        "bg-background p-2 [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] rounded-3xl flex items-center justify-center mx-auto shadow-2xl",
                                         isMobile ? "w-20 h-20" : "w-24 h-24",
                                     )}
-                                    animate={{ rotate: 360, scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
-                                    transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
                                 >
-                                    <Bot className={cn("text-white", isMobile ? "w-10 h-10" : "w-12 h-12")} />
+                                    <Image
+                                        width={100}
+                                        height={100}
+                                        alt={'doris'}
+                                        src={'/doris-1.webp'}
+                                    />
                                 </motion.div>
 
                             </div>
 
-                            <div className="space-y-4">
+                            <div className="">
                                 <motion.h3
                                     className={cn(
                                         "font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent",
                                         isMobile ? "text-2xl" : "text-3xl",
                                     )}
-                                    animate={{ opacity: [0.5, 1, 0.5] }}
-                                    transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
                                 >
-                                    {t.settingUpDoris}
+                                    <div className="words-loader text-base md:text-2xl">
+                                        Setting up your Doris AI
+                                        <div className="loading-words">
+                                            <span className="word-animate">Language Model ...</span>
+                                            <span className="word-animate">Personal Info ...</span>
+                                            <span className="word-animate">Rsistance info ...</span>
+                                            <span className="word-animate">Goals & targets ...</span>
+                                            <span className="word-animate">Authenticating ...</span>
+                                        </div>
+                                    </div>
+
+
                                 </motion.h3>
                                 <p className={cn("text-muted-foreground", isMobile ? "text-base" : "text-lg")}>{t.personalizing}</p>
                             </div>
@@ -1183,7 +1196,7 @@ export default function OnboardingPage() {
                                 {[...Array(5)].map((_, i) => (
                                     <motion.div
                                         key={i}
-                                        className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"
+                                        className="w-2 h-2 bg-background  [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] rounded-full"
                                         animate={{
                                             scale: [1, 1.5, 1],
                                             opacity: [0.3, 1, 0.3],
