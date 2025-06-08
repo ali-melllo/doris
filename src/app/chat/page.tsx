@@ -6,50 +6,22 @@ import { motion, AnimatePresence } from "framer-motion"
 import {
   Send,
   Mic,
-  Bot,
-  User,
   Smile,
   Paperclip,
-  MoreVertical,
   Home,
   Building2,
   Briefcase,
   Users,
-  Clock,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
-import { ModeToggle } from "@/components/mode-toggle"
 import { cn } from "@/lib/utils"
 import { TypingAnimation } from "@/components/magicui/text-animation"
-import Image from "next/image"
 import MessengerIcon from "@/components/icons/messenger-icon"
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text"
-
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -20 },
-  transition: { duration: 0.3 },
-}
-
-const slideIn = {
-  initial: { opacity: 0, x: 20 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 0.4 },
-}
-
-const slideInLeft = {
-  initial: { opacity: 0, x: -20 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 0.4 },
-}
 
 type Message = {
   role: "assistant" | "user";
@@ -180,7 +152,7 @@ export default function ChatPage() {
 
               {/* Enhanced Typing Indicator */}
               <AnimatePresence>
-                {!isTyping && (
+                {isTyping && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
