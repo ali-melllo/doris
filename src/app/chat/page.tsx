@@ -25,14 +25,11 @@ import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { ModeToggle } from "@/components/mode-toggle"
+import { cn } from "@/lib/utils"
+import { TypingAnimation } from "@/components/magicui/text-animation"
+import Image from "next/image"
+import MessengerIcon from "@/components/icons/messenger-icon"
 
-interface Message {
-  id: string
-  content: string
-  sender: "user" | "bot"
-  timestamp: Date
-  isTyping?: boolean
-}
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -53,35 +50,13 @@ const slideInLeft = {
   transition: { duration: 0.4 },
 }
 
+type Message = {
+  role: "assistant" | "user";
+  content: string;
+};
+
 export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      content:
-        "Hello! I'm your AI assistant for life in the Netherlands. I can help you with housing, jobs, government services, and integration questions. What would you like to know?",
-      sender: "bot",
-      timestamp: new Date(Date.now() - 300000),
-    },
-    {
-      id: "2",
-      content: "Hi! I'm a refugee from Syria and I need help finding housing in Amsterdam. Can you guide me?",
-      sender: "user",
-      timestamp: new Date(Date.now() - 240000),
-    },
-    {
-      id: "3",
-      content:
-        "I'd be happy to help you find housing in Amsterdam! As a refugee, you have several options:\n\n1. **Social Housing (Sociale Huur)**: Contact your local municipality (gemeente) for social housing registration\n2. **Refugee Housing**: COA (Central Agency for the Reception of Asylum Seekers) can provide temporary housing\n3. **Housing Allowance**: You may be eligible for huurtoeslag (rent subsidy)\n\nWould you like me to explain any of these options in more detail? I can also help you in Arabic if that's more comfortable.",
-      sender: "bot",
-      timestamp: new Date(Date.now() - 180000),
-    },
-    {
-      id: "4",
-      content: "Yes, please explain the social housing process in more detail. How do I register?",
-      sender: "user",
-      timestamp: new Date(Date.now() - 120000),
-    },
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
 
   const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
@@ -104,173 +79,125 @@ export default function ChatPage() {
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return
 
-    const newMessage: Message = {
-      id: Date.now().toString(),
+    const newMessage = {
+      role: "user" as const,
       content: inputValue,
-      sender: "user",
-      timestamp: new Date(),
     }
 
     setMessages((prev) => [...prev, newMessage])
     setInputValue("")
     setIsTyping(true)
 
-    // Simulate AI response
-    setTimeout(() => {
-      const botResponse: Message = {
-        id: (Date.now() + 1).toString(),
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/prompt`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: inputValue, currentPage: "chat" }),
+      });
+      const data = await response.json();
+      const formattedBotResponse = {
+        role: "assistant" as const,
         content:
-          "Thank you for your question! I'm processing your request and will provide you with accurate information based on the latest Dutch government data. This is a simulated response for demonstration purposes.",
-        sender: "bot",
-        timestamp: new Date(),
+          data.data.response,
       }
-      setMessages((prev) => [...prev, botResponse])
-      setIsTyping(false)
-    }, 2000)
-  }
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      handleSendMessage()
+      setMessages((prev) => [...prev, formattedBotResponse])
+      setIsTyping(false)
+    } catch (err) {
+      setIsTyping(false)
     }
   }
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    })
-  }
-
-  const TypingIndicator = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      className="flex items-center space-x-2 p-4"
-    >
-      <Avatar className="w-8 h-8">
-        <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-          <Bot className="w-4 h-4" />
-        </AvatarFallback>
-      </Avatar>
-      <Card className="bg-muted/50 backdrop-blur-sm border-border/50">
-        <CardContent className="p-3">
-          <div className="flex space-x-1">
-            <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce delay-100"></div>
-            <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce delay-200"></div>
-          </div>
-        </CardContent>
-      </Card>
-    </motion.div>
-  )
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex flex-col">
-      
+
       {/* Chat Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <ScrollArea className="flex-1 px-4" ref={scrollAreaRef}>
-          <div className="md:max-w-3xl mx-auto pt-16 md:pt-20 pb-48 py-6 space-y-6">
+          <div className="md:max-w-4xl mx-auto pt-16 md:pt-20 pb-48 py-6 space-y-6">
             {/* Welcome Message */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-8"
-            >
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Bot className="w-8 h-8 text-white" />
-              </div>
-              <h2 className="text-xl md:text-2xl font-semibold mb-2">Welcome to GlobalHelp</h2>
-              <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                I'm here to help you navigate life in the Netherlands. Ask me anything about housing, jobs, government
-                services, or integration.
-              </p>
+            {messages.length === 0 &&
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-8 md:mt-32"
+              >
+                <div className="size-20 bg-background rounded-3xl  [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] flex items-center justify-center mx-auto mb-4">
+                <MessengerIcon/>
+                </div>
+                <h2 className="text-xl md:text-2xl font-extrabold mb-2">Welcome to Doris AI</h2>
+                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                  I'm here to help you navigate life in the Netherlands. Ask me anything about housing, jobs, government
+                  services, or integration.
+                </p>
 
-              {/* Sample Questions */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
-                {sampleQuestions.map((question, index) => (
-                  <motion.button
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    onClick={() => setInputValue(question)}
-                    className="p-3 text-left bg-muted/50 hover:bg-muted/80 rounded-lg border border-border/50 hover:border-border transition-all duration-200 text-sm"
-                  >
-                    {question}
-                  </motion.button>
-                ))}
-              </div>
-            </motion.div>
-
-            <Separator className="my-8" />
+                {/* Sample Questions */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl  mx-auto">
+                  {sampleQuestions.map((question, index) => (
+                    <motion.button
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      onClick={() => setInputValue(question)}
+                      className="p-3 text-left bg-muted/50 hover:bg-muted/80 rounded-lg border border-border/50 hover:border-border transition-all duration-200 text-sm"
+                    >
+                      {question}
+                    </motion.button>
+                  ))}
+                </div>
+              </motion.div>}
 
             {/* Messages */}
-            <div className="space-y-4">
-              <AnimatePresence>
-                {messages.map((message, index) => (
-                  <motion.div
-                    key={message.id}
-                    initial={message.sender === "user" ? slideIn.initial : slideInLeft.initial}
-                    animate={message.sender === "user" ? slideIn.animate : slideInLeft.animate}
-                    transition={{ ...slideIn.transition, delay: index * 0.1 }}
-                    className={`flex items-start space-x-3 ${
-                      message.sender === "user" ? "flex-row-reverse space-x-reverse" : ""
-                    }`}
+
+            <div className="space-y-4 pb-32 pt-16">
+              {messages.map((message, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className={cn("flex", message.role === "user" ? "justify-end" : "justify-start")}
+                >
+                  <Card
+                    className={cn(
+                      "max-w-[80%] p-4 shadow-md rounded-[35px] font-semibold",
+                      message.role === "user"
+                        ? "bg-gradient-to-br from-blue-500 rounded-tr-none to-purple-600 text-white border-0"
+                        : "bg-background rounded-tl-none [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
+                    )}
                   >
-                    {/* Avatar */}
-                    <Avatar className="w-8 h-8 flex-shrink-0">
-                      <AvatarFallback
-                        className={
-                          message.sender === "user"
-                            ? "bg-gradient-to-br from-green-500 to-emerald-600 text-white"
-                            : "bg-gradient-to-br from-blue-500 to-purple-600 text-white"
-                        }
-                      >
-                        {message.sender === "user" ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
-                      </AvatarFallback>
-                    </Avatar>
+                    {(index === messages.length - 1 && message.role === "assistant") ?
+                      <TypingAnimation duration={20} className="text-sm leading-relaxed">{message.content}</TypingAnimation> :
+                      <p className="text-sm leading-relaxed">{message.content}</p>
+                    }
+                  </Card>
+                </motion.div>
+              ))}
 
-                    {/* Message Content */}
-                    <div className={`flex-1 max-w-[80%] ${message.sender === "user" ? "text-right" : ""}`}>
-                      <Card
-                        className={`${
-                          message.sender === "user"
-                            ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white border-0"
-                            : "bg-muted/50 backdrop-blur-sm border-border/50"
-                        } shadow-lg`}
-                      >
-                        <CardContent className="p-4">
-                          <div className={`${
-                          message.sender === "user"
-                            ? "text-white"
-                            : "text-gray-500"
-                        } whitespace-pre-wrap text-left text-sm md:text-base leading-relaxed`}>
-                            {message.content}
-                          </div>
-                        </CardContent>
-                      </Card>
-
-                      {/* Timestamp */}
-                      <div
-                        className={`flex items-center mt-2 text-xs text-muted-foreground ${
-                          message.sender === "user" ? "justify-end" : "justify-start"
-                        }`}
-                      >
-                        <Clock className="w-3 h-3 mr-1" />
-                        {formatTime(message.timestamp)}
+              {/* Enhanced Typing Indicator */}
+              <AnimatePresence>
+                {isTyping && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="flex justify-start"
+                  >
+                    <Card className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-600 px-4 py-3 shadow-md">
+                      <div className="flex items-center space-x-2">
+                        <div className="flex space-x-1">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+                          <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce delay-200"></div>
+                          <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce delay-300"></div>
+                        </div>
                       </div>
-                    </div>
+                    </Card>
                   </motion.div>
-                ))}
+                )}
               </AnimatePresence>
-
-              {/* Typing Indicator */}
-              <AnimatePresence>{isTyping && <TypingIndicator />}</AnimatePresence>
             </div>
           </div>
         </ScrollArea>

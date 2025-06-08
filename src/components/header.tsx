@@ -34,6 +34,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
 
 // Language options
 const languages = [
@@ -96,13 +97,18 @@ export function SiteHeader() {
       >
         <div className="flex items-center justify-between w-full">
           {/* Logo */}
-          <Link href="/" className="flex items-center group">
+          <Link href="/" className="flex items-center group gap-2">
             <motion.div
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              className="w-12 h-12 bg-background p-1 [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] rounded-xl flex items-center justify-center"
               whileHover={{ scale: 1.05, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Sparkles className="w-5 stroke-primary h-5  text-white" />
+              <Image
+                width={50}
+                height={100}
+                alt={'doris'}
+                src={'/doris-1.webp'}
+              />
             </motion.div>
             <span className="text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
               Doris AI
@@ -127,9 +133,9 @@ export function SiteHeader() {
             {/* Language Selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="hidden !outline-none md:flex items-center space-x-1">
-                  <Globe className="w-5 h-5" />
-                  <ChevronDown className="w-4 h-4 opacity-50" />
+                <Button className="hidden bg-background px-3 hover:bg-muted [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] !outline-none md:flex items-center space-x-1">
+                  <Globe className="w-5 h-5 stroke-foreground" />
+                  <ChevronDown className="w-4 h-4 stroke-foreground opacity-50" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 mr-5 mt-5">
@@ -155,20 +161,19 @@ export function SiteHeader() {
 
             {/* Theme Toggle */}
             <Button
-              variant="ghost"
               size="default"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="relative hidden md:block"
+              className="relative hidden md:block mx-1 bg-transparent hover:bg-transparent shadow-none opacity-70 hover:opacity-100 transition-all duration-200"
             >
               <Sun
                 className={cn(
-                  "w-5 h-5 absolute transition-all",
+                  "w-5 h-5 stroke-foreground absolute transition-all",
                   theme === "dark" ? "scale-0 rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100",
                 )}
               />
               <Moon
                 className={cn(
-                  "w-5 h-5 transition-all",
+                  "w-5 h-5 stroke-foreground transition-all",
                   theme === "dark" ? "scale-100 rotate-0 opacity-100" : "scale-0 rotate-90 opacity-0",
                 )}
               />
