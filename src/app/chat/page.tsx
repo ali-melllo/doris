@@ -29,6 +29,7 @@ import { cn } from "@/lib/utils"
 import { TypingAnimation } from "@/components/magicui/text-animation"
 import Image from "next/image"
 import MessengerIcon from "@/components/icons/messenger-icon"
+import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text"
 
 
 const fadeInUp = {
@@ -111,7 +112,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex flex-col">
+    <div className="min-h-screen  flex flex-col">
 
       {/* Chat Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -163,9 +164,9 @@ export default function ChatPage() {
                 >
                   <Card
                     className={cn(
-                      "max-w-[80%] p-4 shadow-md rounded-[35px] font-semibold",
+                      "max-w-[80%] p-4 shadow-md rounded-[35px] font-bold",
                       message.role === "user"
-                        ? "bg-gradient-to-br from-blue-500 rounded-tr-none to-purple-600 text-white border-0"
+                        ? "bg-primary rounded-tr-none text-white border-0"
                         : "bg-background rounded-tl-none [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
                     )}
                   >
@@ -179,22 +180,14 @@ export default function ChatPage() {
 
               {/* Enhanced Typing Indicator */}
               <AnimatePresence>
-                {isTyping && (
+                {!isTyping && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="flex justify-start"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex justify-start items-center w-full "
                   >
-                    <Card className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-600 px-4 py-3 shadow-md">
-                      <div className="flex items-center space-x-2">
-                        <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce delay-200"></div>
-                          <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce delay-300"></div>
-                        </div>
-                      </div>
-                    </Card>
+                    <div><AnimatedShinyText className="font-semibold">Thinking ...</AnimatedShinyText></div> 
                   </motion.div>
                 )}
               </AnimatePresence>

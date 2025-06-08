@@ -94,7 +94,7 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         float: "float 6s ease-in-out infinite",
         "pulse-slow": "pulse-slow 4s ease-in-out infinite",
-        "shiny-text": "shiny-text 8s infinite",
+        "shiny-text": "shiny-text 2s infinite",
         gradient: "gradient 8s linear infinite",
       },
       backgroundImage: {

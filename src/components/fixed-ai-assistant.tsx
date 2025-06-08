@@ -232,7 +232,7 @@ function ChatInterface({
                   "max-w-[80%] p-3 shadow-md rounded-3xl",
                   message.role === "user"
                     ? "bg-gradient-to-br from-blue-500 rounded-tr-none to-purple-600 text-white border-0"
-                    : "bg-gradient-to-br from-gray-50 rounded-tl-none to-white dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-600",
+                    : "bg-background rounded-tl-none [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
                 )}
               >
                 {(index === messages.length - 1 && message.role === "assistant") ?
