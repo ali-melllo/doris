@@ -1139,7 +1139,7 @@ export default function OnboardingPage() {
 
             {/* Loading Overlay */}
             <AnimatePresence>
-                {!isSubmitting && (
+                {isSubmitting && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
