@@ -26,6 +26,7 @@ import {
   Search,
   Calendar,
   UserCheck,
+  X,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -50,7 +51,6 @@ const translations = {
     no: "No",
     back: "Back",
     next: "Next",
-    complete: "Complete",
     beginApplication: "Begin TWV Application",
     applicationDescription: "Start the process to hire non-EU workers through UWV",
     loginEHerkenning: "Login with eHerkenning",
@@ -83,20 +83,12 @@ const translations = {
     error: "Error occurred",
     helpTooltip: "Need help? Chat with Doris AI",
     pending: "Pending",
-    // complete: "Complete",
+    complete: "Complete",
     incomplete: "Incomplete",
     uploadFile: "Upload File",
     dragDrop: "Drag and drop files here, or click to select",
     fileUploaded: "File uploaded successfully",
     requiredDocuments: "Required Documents",
-    documentChecklist: [
-      "Valid passport copy",
-      "Employment contract",
-      "Job description",
-      "Salary details",
-      "Company registration",
-      "Vacancy posting proof",
-    ],
     openWerkNl: "Open Werk.nl",
     openEures: "Open EURES",
     submitToUwv: "Submit to UWV",
@@ -106,6 +98,14 @@ const translations = {
     downloadPermit: "Download Work Permit",
     scheduleAppointment: "Schedule Appointment",
     viewStatus: "View Application Status",
+    documentChecklist: [
+      "Valid passport copy",
+      "Employment contract",
+      "Job description",
+      "Salary details",
+      "Company registration",
+      "Vacancy posting proof",
+    ],
   },
   nl: {
     title: "Tewerkstellingsvergunning (TWV) Aanvraag",
@@ -148,20 +148,11 @@ const translations = {
     error: "Er is een fout opgetreden",
     helpTooltip: "Hulp nodig? Chat met Doris AI",
     pending: "In behandeling",
-    // complete: "Voltooid",
     incomplete: "Onvolledig",
     uploadFile: "Bestand Uploaden",
     dragDrop: "Sleep bestanden hierheen, of klik om te selecteren",
     fileUploaded: "Bestand succesvol geüpload",
     requiredDocuments: "Vereiste Documenten",
-    documentChecklist: [
-      "Geldige paspoort kopie",
-      "Arbeidscontract",
-      "Functiebeschrijving",
-      "Salaris details",
-      "Bedrijfsregistratie",
-      "Bewijs vacatureplaatsing",
-    ],
     openWerkNl: "Open Werk.nl",
     openEures: "Open EURES",
     submitToUwv: "Verstuur naar UWV",
@@ -171,6 +162,14 @@ const translations = {
     downloadPermit: "Download Werkvergunning",
     scheduleAppointment: "Plan Afspraak",
     viewStatus: "Bekijk Aanvraag Status",
+    documentChecklist: [
+      "Geldige paspoort kopie",
+      "Arbeidscontract",
+      "Functiebeschrijving",
+      "Salaris details",
+      "Bedrijfsregistratie",
+      "Bewijs vacatureplaatsing",
+    ],
   },
   fr: {
     title: "Demande de Permis de Travail (TWV)",
@@ -213,20 +212,11 @@ const translations = {
     error: "Une erreur s'est produite",
     helpTooltip: "Besoin d'aide ? Chattez avec Doris AI",
     pending: "En attente",
-    // complete: "Terminé",
     incomplete: "Incomplet",
     uploadFile: "Télécharger le Fichier",
     dragDrop: "Glissez-déposez les fichiers ici, ou cliquez pour sélectionner",
     fileUploaded: "Fichier téléchargé avec succès",
     requiredDocuments: "Documents Requis",
-    documentChecklist: [
-      "Copie de passeport valide",
-      "Contrat de travail",
-      "Description du poste",
-      "Détails du salaire",
-      "Enregistrement de l'entreprise",
-      "Preuve de publication d'offre",
-    ],
     openWerkNl: "Ouvrir Werk.nl",
     openEures: "Ouvrir EURES",
     submitToUwv: "Soumettre à UWV",
@@ -236,6 +226,14 @@ const translations = {
     downloadPermit: "Télécharger le Permis de Travail",
     scheduleAppointment: "Planifier un Rendez-vous",
     viewStatus: "Voir le Statut de la Demande",
+    documentChecklist: [
+      "Copie de passeport valide",
+      "Contrat de travail",
+      "Description du poste",
+      "Détails du salaire",
+      "Enregistrement de l'entreprise",
+      "Preuve de publication d'offre",
+    ],
   },
 }
 
@@ -344,9 +342,7 @@ export default function WorkPermitPage() {
       setCurrentStep(nextStep)
     } else {
       // End of flow
-      toast(
-       t.success
-        )
+      toast(t.success)
     }
   }
 
@@ -391,6 +387,7 @@ export default function WorkPermitPage() {
         }))
       }
       toast( t.success)
+    }
   }
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -406,6 +403,13 @@ export default function WorkPermitPage() {
       }
       toast(t.success)
     }
+  }
+
+  const removeFile = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      documentsUploaded: prev.documentsUploaded.filter((_, i) => i !== index),
+    }))
   }
 
   // Animated Background
@@ -922,9 +926,14 @@ export default function WorkPermitPage() {
                       <div className="space-y-2">
                         <h4 className="font-medium">Uploaded Documents:</h4>
                         {formData.documentsUploaded.map((file, index) => (
-                          <div key={index} className="flex items-center space-x-2 p-2 bg-muted/50 rounded">
-                            <FileText className="w-4 h-4" />
-                            <span className="text-sm">{file.name}</span>
+                          <div key={index} className="flex items-center justify-between p-2 bg-muted/50 rounded">
+                            <div className="flex items-center space-x-2">
+                              <FileText className="w-4 h-4" />
+                              <span className="text-sm">{file.name}</span>
+                            </div>
+                            <Button variant="ghost" size="sm" onClick={() => removeFile(index)} className="h-6 w-6 p-0">
+                              <X className="w-3 h-3" />
+                            </Button>
                           </div>
                         ))}
                       </div>
@@ -960,7 +969,7 @@ export default function WorkPermitPage() {
                           <div className="flex items-center space-x-3">
                             <CheckCircle className="w-6 h-6 text-green-600" />
                             <div>
-                              <p className="font-medium">complete</p>
+                              <p className="font-medium">{t.complete}</p>
                               <p className="text-sm text-muted-foreground">All documents are complete</p>
                             </div>
                           </div>
@@ -1158,5 +1167,4 @@ export default function WorkPermitPage() {
       </div>
     </div>
   )
-}
 }
