@@ -83,7 +83,7 @@ const translations = {
     error: "Error occurred",
     helpTooltip: "Need help? Chat with Doris AI",
     pending: "Pending",
-    complete: "Complete",
+    // complete: "Complete",
     incomplete: "Incomplete",
     uploadFile: "Upload File",
     dragDrop: "Drag and drop files here, or click to select",
@@ -148,7 +148,7 @@ const translations = {
     error: "Er is een fout opgetreden",
     helpTooltip: "Hulp nodig? Chat met Doris AI",
     pending: "In behandeling",
-    complete: "Voltooid",
+    // complete: "Voltooid",
     incomplete: "Onvolledig",
     uploadFile: "Bestand Uploaden",
     dragDrop: "Sleep bestanden hierheen, of klik om te selecteren",
@@ -213,7 +213,7 @@ const translations = {
     error: "Une erreur s'est produite",
     helpTooltip: "Besoin d'aide ? Chattez avec Doris AI",
     pending: "En attente",
-    complete: "Terminé",
+    // complete: "Terminé",
     incomplete: "Incomplet",
     uploadFile: "Télécharger le Fichier",
     dragDrop: "Glissez-déposez les fichiers ici, ou cliquez pour sélectionner",
@@ -960,7 +960,7 @@ export default function WorkPermitPage() {
                           <div className="flex items-center space-x-3">
                             <CheckCircle className="w-6 h-6 text-green-600" />
                             <div>
-                              <p className="font-medium">{t.complete}</p>
+                              <p className="font-medium">complete</p>
                               <p className="text-sm text-muted-foreground">All documents are complete</p>
                             </div>
                           </div>
@@ -1158,4 +1158,5 @@ export default function WorkPermitPage() {
       </div>
     </div>
   )
+}
 }
